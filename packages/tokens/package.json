@@ -1,0 +1,28 @@
+{
+  "name": "@canon/tokens",
+  "version": "0.1.0",
+  "description": "Canon Design System tokens — CSS Variables, JS, TypeScript, Tailwind preset",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./css": "./dist/css/variables.css",
+    "./tailwind": "./dist/tailwind/preset.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js && tsup",
+    "dev": "node scripts/build.js --watch"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.1.4",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}
