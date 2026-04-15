@@ -7,7 +7,6 @@
  *   import preset from '@canon/tokens/tailwind'  // Tailwind preset
  */
 
-// 토큰 카테고리별 타입 정의
 export type ColorScale = {
   50: string
   100: string
@@ -29,9 +28,9 @@ export type RadiusScale = Record<string, string>
 // CSS 변수 참조 헬퍼
 export const cssVar = (name: string): string => `var(--${name})`
 
-// 토큰 CSS 변수 상수 (타입 안전하게 사용)
 export const tokens = {
   color: {
+    // ── Primitive ────────────────────────────────────────────────────────────
     gray: {
       0:   cssVar('color-gray-0'),
       50:  cssVar('color-gray-50'),
@@ -46,56 +45,104 @@ export const tokens = {
       900: cssVar('color-gray-900'),
       950: cssVar('color-gray-950'),
     },
-    primary: {
-      50:  cssVar('color-primary-50'),
-      100: cssVar('color-primary-100'),
-      200: cssVar('color-primary-200'),
-      300: cssVar('color-primary-300'),
-      400: cssVar('color-primary-400'),
-      500: cssVar('color-primary-500'),
-      600: cssVar('color-primary-600'),
-      700: cssVar('color-primary-700'),
-      800: cssVar('color-primary-800'),
-      900: cssVar('color-primary-900'),
-      950: cssVar('color-primary-950'),
+    brand: {
+      50:  cssVar('color-brand-50'),
+      100: cssVar('color-brand-100'),
+      200: cssVar('color-brand-200'),
+      300: cssVar('color-brand-300'),
+      400: cssVar('color-brand-400'),
+      500: cssVar('color-brand-500'),
+      600: cssVar('color-brand-600'),
+      700: cssVar('color-brand-700'),
+      800: cssVar('color-brand-800'),
+      900: cssVar('color-brand-900'),
+      950: cssVar('color-brand-950'),
     },
     danger: {
       50:  cssVar('color-danger-50'),
+      100: cssVar('color-danger-100'),
+      200: cssVar('color-danger-200'),
+      300: cssVar('color-danger-300'),
+      400: cssVar('color-danger-400'),
       500: cssVar('color-danger-500'),
       600: cssVar('color-danger-600'),
+      700: cssVar('color-danger-700'),
+      800: cssVar('color-danger-800'),
+      900: cssVar('color-danger-900'),
+      950: cssVar('color-danger-950'),
     },
     success: {
       50:  cssVar('color-success-50'),
+      100: cssVar('color-success-100'),
+      200: cssVar('color-success-200'),
+      300: cssVar('color-success-300'),
+      400: cssVar('color-success-400'),
       500: cssVar('color-success-500'),
       600: cssVar('color-success-600'),
+      700: cssVar('color-success-700'),
+      800: cssVar('color-success-800'),
+      900: cssVar('color-success-900'),
+      950: cssVar('color-success-950'),
     },
-    warning: {
-      50:  cssVar('color-warning-50'),
-      500: cssVar('color-warning-500'),
+    info: {
+      50:  cssVar('color-info-50'),
+      100: cssVar('color-info-100'),
+      200: cssVar('color-info-200'),
+      300: cssVar('color-info-300'),
+      400: cssVar('color-info-400'),
+      500: cssVar('color-info-500'),
+      600: cssVar('color-info-600'),
+      700: cssVar('color-info-700'),
+      800: cssVar('color-info-800'),
+      900: cssVar('color-info-900'),
+      950: cssVar('color-info-950'),
     },
-  },
-  semantic: {
-    background: {
-      default: cssVar('semantic-color-background-default'),
-      subtle:  cssVar('semantic-color-background-subtle'),
-      muted:   cssVar('semantic-color-background-muted'),
+
+    // ── Semantic ─────────────────────────────────────────────────────────────
+    bg: {
+      // neutral
+      strong:        cssVar('color-bg-strong'),
+      strongHover:   cssVar('color-bg-strong-hover'),
+      strongPressed: cssVar('color-bg-strong-pressed'),
+      base:          cssVar('color-bg-base'),
+      baseHover:     cssVar('color-bg-base-hover'),
+      faint:         cssVar('color-bg-faint'),
+      disabled:      cssVar('color-bg-disabled'),
+      // intent
+      brand:         cssVar('color-bg-brand'),
+      brandHover:    cssVar('color-bg-brand-hover'),
+      brandPressed:  cssVar('color-bg-brand-pressed'),
+      danger:        cssVar('color-bg-danger'),
+      dangerHover:   cssVar('color-bg-danger-hover'),
+      dangerFaint:   cssVar('color-bg-danger-faint'),
+      success:       cssVar('color-bg-success'),
+      info:          cssVar('color-bg-info'),
     },
-    foreground: {
-      default:  cssVar('semantic-color-foreground-default'),
-      subtle:   cssVar('semantic-color-foreground-subtle'),
-      muted:    cssVar('semantic-color-foreground-muted'),
-      inverted: cssVar('semantic-color-foreground-inverted'),
+    text: {
+      // neutral
+      strong:      cssVar('color-text-strong'),
+      strongHover: cssVar('color-text-strong-hover'),
+      base:        cssVar('color-text-base'),
+      faint:       cssVar('color-text-faint'),
+      disabled:    cssVar('color-text-disabled'),
+      // intent
+      brand:       cssVar('color-text-brand'),
+      brandHover:  cssVar('color-text-brand-hover'),
+      danger:      cssVar('color-text-danger'),
+      success:     cssVar('color-text-success'),
     },
     border: {
-      default: cssVar('semantic-color-border-default'),
-      strong:  cssVar('semantic-color-border-strong'),
-    },
-    primary: {
-      default:    cssVar('semantic-color-primary-default'),
-      hover:      cssVar('semantic-color-primary-hover'),
-      foreground: cssVar('semantic-color-primary-foreground'),
+      // neutral
+      base:        cssVar('color-border-base'),
+      baseHover:   cssVar('color-border-base-hover'),
+      faint:       cssVar('color-border-faint'),
+      disabled:    cssVar('color-border-disabled'),
+      // intent
+      danger:      cssVar('color-border-danger'),
+      dangerHover: cssVar('color-border-danger-hover'),
     },
   },
+
   spacing: {
     0:    cssVar('spacing-0'),
     px:   cssVar('spacing-px'),
@@ -119,11 +166,11 @@ export const tokens = {
       mono: cssVar('font-family-mono'),
     },
     size: {
-      xs:   cssVar('font-size-xs'),
-      sm:   cssVar('font-size-sm'),
-      base: cssVar('font-size-base'),
-      lg:   cssVar('font-size-lg'),
-      xl:   cssVar('font-size-xl'),
+      xs:    cssVar('font-size-xs'),
+      sm:    cssVar('font-size-sm'),
+      base:  cssVar('font-size-base'),
+      lg:    cssVar('font-size-lg'),
+      xl:    cssVar('font-size-xl'),
       '2xl': cssVar('font-size-2xl'),
       '3xl': cssVar('font-size-3xl'),
       '4xl': cssVar('font-size-4xl'),

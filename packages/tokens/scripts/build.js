@@ -39,12 +39,13 @@ StyleDictionary.registerFormat({
   },
 })
 
-// ── CSS 변수명 변환 (--color-primary-500 형태) ─────────────────────────────
+// ── CSS 변수명 변환 (--color-bg-strong 형태, default 세그먼트 제거) ───────────
 StyleDictionary.registerTransform({
   name: 'canon/css-variable-name',
   type: 'name',
   transform: (token) => {
-    return '--' + token.path.join('-').replace(/\./g, '-')
+    const path = token.path.filter((segment) => segment !== 'default')
+    return '--' + path.join('-').replace(/\./g, '-')
   },
 })
 

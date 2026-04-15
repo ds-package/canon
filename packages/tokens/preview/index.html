@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canon Tokens Preview</title>
+  <link rel="stylesheet" href="../dist/css/variables.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="preview">
+    <header class="preview-header">
+      <h1 class="preview-title">Canon Tokens</h1>
+      <p class="preview-subtitle">{category}.{property}.{modifier}.{state}</p>
+    </header>
+
+    <section class="section">
+      <h2 class="section-title">Primitive</h2>
+      <div id="primitive-list" class="scale-list"></div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section">
+      <h2 class="section-title">color.bg</h2>
+      <div id="bg-grid" class="token-grid"></div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section">
+      <h2 class="section-title">color.text</h2>
+      <div id="text-rows" class="text-rows"></div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section">
+      <h2 class="section-title">color.border</h2>
+      <div id="border-rows" class="border-rows"></div>
+    </section>
+  </main>
+
+  <script>
+    const rootStyle = getComputedStyle(document.documentElement)
+
+    function getVar(name) {
+      return rootStyle.getPropertyValue(name).trim()
+    }
+
+    function tokenLabelFromCssVar(name) {
+      return name.replace(/^color-/, 'color.').replace(/-/g, '.')
+    }
+
+    function createPrimitiveSwatch(name, step) {
+      const swatch = document.createElement('div')
+      swatch.className = 'swatch'
+
+      const box = document.createElement('div')
+      box.className = 'swatch-box'
+      box.style.background = `var(--color-${name}-${step})`
+
+      const label = document.createElement('span')
+      label.className = 'swatch-step'
+      label.textContent = String(step)
+
+      swatch.append(box, label)
+      return swatch
+    }
+
+    function renderPrimitive() {
+      const primitiveScales = [
+        { name: 'gray', steps: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+        { name: 'blue', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+        { name: 'red', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+        { name: 'green', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+        { name: 'purple', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+      ]
+
+      const primitiveList = document.getElementById('primitive-list')
+
+      primitiveScales.forEach((scale) => {
+        const row = document.createElement('div')
+        row.className = 'scale-row'
+
+        const title = document.createElement('div')
+        title.className = 'scale-name'
+        title.textContent = scale.name
+        row.appendChild(title)
+
+        scale.steps.forEach((step) => {
+          row.appendChild(createPrimitiveSwatch(scale.name, step))
+        })
+
+        primitiveList.appendChild(row)
+      })
+    }
+
+    function renderBgTokens() {
+      const bgTokens = [
+        'color-bg-strong', 'color-bg-strong-hover', 'color-bg-strong-pressed',
+        'color-bg-base', 'color-bg-base-hover', 'color-bg-faint', 'color-bg-disabled',
+        'color-bg-brand', 'color-bg-brand-hover', 'color-bg-brand-pressed',
+        'color-bg-danger', 'color-bg-danger-hover', 'color-bg-danger-faint',
+        'color-bg-success', 'color-bg-info',
+      ]
+
+      const bgGrid = document.getElementById('bg-grid')
+
+      bgTokens.forEach((name) => {
+        const tokenCard = document.createElement('article')
+        tokenCard.className = 'token-card'
+
+        const swatch = document.createElement('div')
+        swatch.className = 'token-swatch'
+        swatch.style.background = `var(--${name})`
+
+        const isOutlined = ['base', 'faint', 'disabled', 'danger-faint'].some((key) => name.includes(key))
+        if (isOutlined) {
+          swatch.classList.add('outlined')
+        }
+
+        const body = document.createElement('div')
+        body.className = 'token-body'
+
+        const label = document.createElement('p')
+        label.className = 'token-name'
+        label.textContent = tokenLabelFromCssVar(name)
+
+        const value = document.createElement('p')
+        value.className = 'token-value'
+        value.textContent = getVar(`--${name}`)
+
+        body.append(label, value)
+        tokenCard.append(swatch, body)
+        bgGrid.appendChild(tokenCard)
+      })
+    }
+
+    function renderTextTokens() {
+      const textTokens = [
+        'color-text-strong', 'color-text-strong-hover',
+        'color-text-base', 'color-text-faint', 'color-text-disabled',
+        'color-text-brand', 'color-text-brand-hover',
+        'color-text-danger', 'color-text-success',
+      ]
+
+      const textRows = document.getElementById('text-rows')
+
+      textTokens.forEach((name) => {
+        const row = document.createElement('div')
+        row.className = 'text-row'
+
+        const label = document.createElement('span')
+        label.className = 'text-label'
+        label.textContent = tokenLabelFromCssVar(name)
+
+        const sample = document.createElement('span')
+        sample.className = 'text-sample'
+        sample.style.color = `var(--${name})`
+        sample.textContent = 'The quick brown fox jumps'
+
+        const value = document.createElement('span')
+        value.className = 'value-label'
+        value.textContent = getVar(`--${name}`)
+
+        row.append(label, sample, value)
+        textRows.appendChild(row)
+      })
+    }
+
+    function renderBorderTokens() {
+      const borderTokens = [
+        'color-border-base', 'color-border-base-hover',
+        'color-border-faint', 'color-border-disabled',
+        'color-border-danger', 'color-border-danger-hover',
+      ]
+
+      const borderRows = document.getElementById('border-rows')
+
+      borderTokens.forEach((name) => {
+        const row = document.createElement('div')
+        row.className = 'border-row'
+
+        const preview = document.createElement('div')
+        preview.className = 'border-preview'
+
+        const box = document.createElement('div')
+        box.className = 'border-box'
+        box.style.borderColor = `var(--${name})`
+        preview.appendChild(box)
+
+        const label = document.createElement('span')
+        label.className = 'border-label'
+        label.textContent = tokenLabelFromCssVar(name)
+
+        const value = document.createElement('span')
+        value.className = 'value-label'
+        value.textContent = getVar(`--${name}`)
+
+        row.append(preview, label, value)
+        borderRows.appendChild(row)
+      })
+    }
+
+    renderPrimitive()
+    renderBgTokens()
+    renderTextTokens()
+    renderBorderTokens()
+  </script>
+</body>
+</html>
