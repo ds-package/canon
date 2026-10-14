@@ -23,6 +23,7 @@
     "picocolors": "^1.0.1"
   },
   "devDependencies": {
+    "@types/node": "^20.19.43",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0"
   }
