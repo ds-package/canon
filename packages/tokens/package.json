@@ -1,7 +1,7 @@
 {
   "name": "@canon/tokens",
   "version": "0.1.0",
-  "description": "Canon Design System tokens — CSS Variables, JS, TypeScript, Tailwind preset",
+  "description": "Canon Design System tokens: CSS Variables, JS, TypeScript, Tailwind preset",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -10,7 +10,7 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [

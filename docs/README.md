@@ -16,19 +16,36 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 
 ## 원칙
 
-1. **Figma가 설계 정본이다.** `packages/tokens`는 Figma를 따라가는 동기화 대상이다. 지금은 맞지 않는다(아래 표).
+1. **Figma가 설계 정본이다.** `packages/tokens`는 Figma를 따라가며, 아래 동기화 상태를 함께 관리한다.
 2. **컴포넌트는 시멘틱 토큰만 바인딩한다.** 프리미티브(`color/gray/200`)를 컴포넌트에 직접 연결하지 않는다. 직접 연결하면 다크 모드가 안 된다.
 3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `status/informative/solid`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
 4. **참고는 선별한다.** 다른 시스템의 규칙은 근거가 코드나 표준에 있는 것만 가져오고, 통째로 따르지 않는다. 기준은 [references.md](./references.md)에 있다.
 5. **바꿀 때는 추가, 재바인딩, 검증, 삭제 순서로 한다.** 옛것을 먼저 지우지 않는다. 자세한 절차는 [workflow.md](./workflow.md)에 있다.
 
-## 코드 토큰과 Figma의 차이 (미동기화)
+## 코드 토큰과 Figma 동기화 상태
 
-2026-10-14 기준으로 Figma를 새로 정리했고 `packages/tokens`는 아직 그대로다. 코드 쪽을 Figma에 맞추는 일은 별도 작업이다.
+2026-10-14 기준으로 `packages/tokens`를 Figma 정본에 맞췄다.
 
-| 영역 | Figma (정본) | `packages/tokens` (현재) |
-| --- | --- | --- |
-| 시멘틱 컬러 | `semantic` 60개. `surface`, `text`, `icon`, `border`, `neutral`, `overlay`, `static`, `status/*`. light와 dark 두 모드 | `semantic.json` 30개. `color/{bg,text,border}` x `strong/base/faint`. 단일 모드 |
-| 프리미티브 컬러 | 10색 x 12단계(50~1000), gray, warm, alpha. OKLCH 기준점으로 생성 | `color.json` 51개. gray, blue, red, green 등 100~1000 단계 |
-| 폰트 | Pretendard Variable | Inter, JetBrains Mono |
-| 텍스트 | 역할 기반 스타일 25개(Display, Heading, Body, Label, Caption) | 크기, 행간, 굵기, 자간 토큰(`xs`~`7xl`) |
+| 영역 | 동기화 결과 |
+| --- | --- |
+| 시멘틱 컬러 | `semantic` 60개를 `surface`, `text`, `icon`, `border`, `neutral`, `overlay`, `static`, `status/*` 구조로 제공한다. light와 dark가 같은 CSS 변수명을 공유한다. |
+| 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha를 제공한다. 10색 값은 `ramps.py` 출력과 같다. |
+| 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
+| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 25개를 제공한다. |
+| 코드 전용 토큰 | spacing, radius, shadow는 이번 Figma 동기화 범위가 아니어서 기존 값을 유지한다. |
+
+다크 모드는 `[data-theme="dark"]`에서 명시적으로 적용하고, 테마 속성이 없으면 `prefers-color-scheme: dark`를 따른다. `data-theme="light"`는 시스템 다크보다 우선한다.
+
+### 옛 시멘틱 토큰 대응
+
+옛 이름의 호환 별칭은 남기지 않았다. 사용 맥락에 따라 아래 새 토큰으로 옮긴다.
+
+| 옛 그룹 | 새 토큰 |
+| --- | --- |
+| `color/bg/strong*` | `neutral/solid`, `neutral/solid-hover`, `neutral/solid-pressed` |
+| `color/bg/base`, `base-hover`, `faint`, `disabled` | `surface/default`, `overlay/hover`, `surface/muted` |
+| `color/bg/brand`, `danger`, `success`, `info` | `status/informative`, `status/negative`, `status/positive`의 `solid`, `subtle`, 상태 토큰 |
+| `color/text/strong`, `base`, `faint`, `disabled` | `text/primary`, `text/secondary`, `text/tertiary`, `text/disabled` |
+| `color/text/brand`, `danger`, `success` | `text/link` 또는 해당 `status/*/text` |
+| `color/border/base*`, `faint`, `disabled` | `border/default`, `border/emphasis`, `border/disabled` |
+| `color/border/danger*` | `status/negative/border` 또는 상태 오버레이 |

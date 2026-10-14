@@ -10,203 +10,216 @@
 <body>
   <main class="preview">
     <header class="preview-header">
-      <h1 class="preview-title">Canon Tokens</h1>
-      <p class="preview-subtitle">{category}.{property}.{modifier}.{state}</p>
+      <div>
+        <h1 class="preview-title">Canon Tokens</h1>
+        <p class="preview-subtitle">Figma primitive, semantic, typography</p>
+      </div>
+      <div class="theme-control" aria-label="테마 선택">
+        <button type="button" data-theme-option="light">Light</button>
+        <button type="button" data-theme-option="dark">Dark</button>
+        <button type="button" data-theme-option="system" aria-pressed="true">System</button>
+      </div>
     </header>
 
     <section class="section">
-      <h2 class="section-title">Primitive</h2>
+      <h2 class="section-title">Primitive colors</h2>
       <div id="primitive-list" class="scale-list"></div>
     </section>
 
-    <div class="divider"></div>
-
     <section class="section">
-      <h2 class="section-title">color.bg</h2>
-      <div id="bg-grid" class="token-grid"></div>
+      <h2 class="section-title">Semantic colors</h2>
+      <div id="semantic-groups" class="semantic-groups"></div>
     </section>
 
-    <div class="divider"></div>
-
     <section class="section">
-      <h2 class="section-title">color.text</h2>
-      <div id="text-rows" class="text-rows"></div>
-    </section>
-
-    <div class="divider"></div>
-
-    <section class="section">
-      <h2 class="section-title">color.border</h2>
-      <div id="border-rows" class="border-rows"></div>
+      <h2 class="section-title">Typography</h2>
+      <div id="typography-list" class="typography-list"></div>
     </section>
   </main>
 
   <script>
-    const rootStyle = getComputedStyle(document.documentElement)
+    const chromaticSteps = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000]
+    const alphaSteps = ['alpha-100', 'alpha-200', 'alpha-300']
+    const primitiveScales = [
+      ...['red', 'orange', 'yellow', 'green', 'teal', 'cyan', 'blue', 'indigo', 'purple', 'pink']
+        .map((name) => ({ name, steps: [...chromaticSteps, ...alphaSteps] })),
+      { name: 'gray', steps: [...chromaticSteps, 1100] },
+      { name: 'warm', steps: chromaticSteps },
+      { name: 'white-alpha', label: 'whiteAlpha', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+      { name: 'black-alpha', label: 'blackAlpha', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+    ]
 
-    function getVar(name) {
-      return rootStyle.getPropertyValue(name).trim()
+    const semanticGroups = {
+      surface: ['body', 'default', 'raised', 'overlay', 'muted', 'inverse'],
+      text: ['primary', 'secondary', 'tertiary', 'disabled', 'inverse', 'link'],
+      icon: ['primary', 'secondary', 'disabled', 'inverse'],
+      border: ['default', 'emphasis', 'focus', 'disabled'],
+      neutral: ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'on-solid', 'text', 'border'],
+      overlay: ['hover', 'pressed', 'scrim'],
+      static: ['white', 'black'],
+      'status/informative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
+      'status/positive': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
+      'status/notice': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
+      'status/negative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
     }
 
-    function tokenLabelFromCssVar(name) {
-      return name.replace(/^color-/, 'color.').replace(/-/g, '.')
-    }
+    const typographyStyles = [
+      ['Display/60', 'display-60'],
+      ['Display/48', 'display-48'],
+      ['Heading/36', 'heading-36'],
+      ['Heading/30', 'heading-30'],
+      ['Heading/24', 'heading-24'],
+      ['Heading/20', 'heading-20'],
+      ['Body/18', 'body-18'],
+      ['Body/18 Strong', 'body-18-strong'],
+      ['Body/16', 'body-16'],
+      ['Body/16 Strong', 'body-16-strong'],
+      ['Body/14', 'body-14'],
+      ['Body/14 Strong', 'body-14-strong'],
+      ['Label/18', 'label-18'],
+      ['Label/18 Strong', 'label-18-strong'],
+      ['Label/16', 'label-16'],
+      ['Label/16 Strong', 'label-16-strong'],
+      ['Label/14', 'label-14'],
+      ['Label/14 Strong', 'label-14-strong'],
+      ['Label/12', 'label-12'],
+      ['Label/12 Strong', 'label-12-strong'],
+      ['Label/11', 'label-11'],
+      ['Label/10', 'label-10'],
+      ['Caption/12', 'caption-12'],
+      ['Caption/11', 'caption-11'],
+      ['Caption/10', 'caption-10'],
+    ]
 
-    function createPrimitiveSwatch(name, step) {
-      const swatch = document.createElement('div')
-      swatch.className = 'swatch'
+    const variableValue = (name) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
-      const box = document.createElement('div')
-      box.className = 'swatch-box'
-      box.style.background = `var(--color-${name}-${step})`
-
-      const label = document.createElement('span')
-      label.className = 'swatch-step'
-      label.textContent = String(step)
-
-      swatch.append(box, label)
-      return swatch
-    }
-
-    function renderPrimitive() {
-      const primitiveScales = [
-        { name: 'gray', steps: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
-        { name: 'blue', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
-        { name: 'red', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
-        { name: 'green', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
-        { name: 'purple', steps: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
-      ]
-
-      const primitiveList = document.getElementById('primitive-list')
+    function renderPrimitives() {
+      const list = document.getElementById('primitive-list')
 
       primitiveScales.forEach((scale) => {
-        const row = document.createElement('div')
+        const row = document.createElement('article')
         row.className = 'scale-row'
 
-        const title = document.createElement('div')
-        title.className = 'scale-name'
-        title.textContent = scale.name
-        row.appendChild(title)
+        const name = document.createElement('h3')
+        name.className = 'scale-name'
+        name.textContent = scale.label ?? scale.name
+        row.appendChild(name)
+
+        const swatches = document.createElement('div')
+        swatches.className = 'swatches'
 
         scale.steps.forEach((step) => {
-          row.appendChild(createPrimitiveSwatch(scale.name, step))
+          const item = document.createElement('div')
+          item.className = 'swatch'
+
+          const box = document.createElement('div')
+          box.className = 'swatch-box'
+          box.style.background = `var(--color-${scale.name}-${step})`
+
+          const label = document.createElement('span')
+          label.textContent = String(step).replace('alpha-', 'a')
+
+          item.append(box, label)
+          swatches.appendChild(item)
         })
 
-        primitiveList.appendChild(row)
+        row.appendChild(swatches)
+        list.appendChild(row)
       })
     }
 
-    function renderBgTokens() {
-      const bgTokens = [
-        'color-bg-strong', 'color-bg-strong-hover', 'color-bg-strong-pressed',
-        'color-bg-base', 'color-bg-base-hover', 'color-bg-faint', 'color-bg-disabled',
-        'color-bg-brand', 'color-bg-brand-hover', 'color-bg-brand-pressed',
-        'color-bg-danger', 'color-bg-danger-hover', 'color-bg-danger-faint',
-        'color-bg-success', 'color-bg-info',
-      ]
+    function renderSemantics() {
+      const groups = document.getElementById('semantic-groups')
+      groups.replaceChildren()
 
-      const bgGrid = document.getElementById('bg-grid')
+      Object.entries(semanticGroups).forEach(([group, names]) => {
+        const section = document.createElement('article')
+        section.className = 'semantic-group'
 
-      bgTokens.forEach((name) => {
-        const tokenCard = document.createElement('article')
-        tokenCard.className = 'token-card'
+        const title = document.createElement('h3')
+        title.className = 'group-title'
+        title.textContent = group
+        section.appendChild(title)
 
-        const swatch = document.createElement('div')
-        swatch.className = 'token-swatch'
-        swatch.style.background = `var(--${name})`
+        const grid = document.createElement('div')
+        grid.className = 'token-grid'
 
-        const isOutlined = ['base', 'faint', 'disabled', 'danger-faint'].some((key) => name.includes(key))
-        if (isOutlined) {
-          swatch.classList.add('outlined')
+        names.forEach((name) => {
+          const tokenPath = `${group}/${name}`
+          const variable = `--semantic-${tokenPath.replaceAll('/', '-')}`
+          const card = document.createElement('div')
+          card.className = 'token-card'
+
+          const swatch = document.createElement('div')
+          swatch.className = 'token-swatch'
+          swatch.style.background = `var(${variable})`
+
+          const label = document.createElement('code')
+          label.textContent = tokenPath
+
+          const value = document.createElement('span')
+          value.textContent = variableValue(variable)
+
+          card.append(swatch, label, value)
+          grid.appendChild(card)
+        })
+
+        section.appendChild(grid)
+        groups.appendChild(section)
+      })
+    }
+
+    function renderTypography() {
+      const list = document.getElementById('typography-list')
+
+      typographyStyles.forEach(([label, path]) => {
+        const prefix = `--typography-${path}`
+        const row = document.createElement('article')
+        row.className = 'type-row'
+
+        const metadata = document.createElement('div')
+        metadata.className = 'type-metadata'
+        metadata.innerHTML = `<strong>${label}</strong><code>${variableValue(`${prefix}-font-size`)} / ${variableValue(`${prefix}-line-height`)}</code>`
+
+        const sample = document.createElement('p')
+        sample.textContent = '가나다라마바사 Canon Design System'
+        sample.style.fontFamily = `var(${prefix}-font-family)`
+        sample.style.fontSize = `var(${prefix}-font-size)`
+        sample.style.fontWeight = `var(${prefix}-font-weight)`
+        sample.style.letterSpacing = `var(${prefix}-letter-spacing)`
+        sample.style.lineHeight = `var(${prefix}-line-height)`
+
+        row.append(metadata, sample)
+        list.appendChild(row)
+      })
+    }
+
+    document.querySelectorAll('[data-theme-option]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const theme = button.dataset.themeOption
+
+        if (theme === 'system') {
+          document.documentElement.removeAttribute('data-theme')
+        } else {
+          document.documentElement.dataset.theme = theme
         }
 
-        const body = document.createElement('div')
-        body.className = 'token-body'
+        document.querySelectorAll('[data-theme-option]').forEach((item) => {
+          item.setAttribute('aria-pressed', String(item === button))
+        })
 
-        const label = document.createElement('p')
-        label.className = 'token-name'
-        label.textContent = tokenLabelFromCssVar(name)
-
-        const value = document.createElement('p')
-        value.className = 'token-value'
-        value.textContent = getVar(`--${name}`)
-
-        body.append(label, value)
-        tokenCard.append(swatch, body)
-        bgGrid.appendChild(tokenCard)
+        renderSemantics()
       })
-    }
+    })
 
-    function renderTextTokens() {
-      const textTokens = [
-        'color-text-strong', 'color-text-strong-hover',
-        'color-text-base', 'color-text-faint', 'color-text-disabled',
-        'color-text-brand', 'color-text-brand-hover',
-        'color-text-danger', 'color-text-success',
-      ]
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (!document.documentElement.dataset.theme) renderSemantics()
+    })
 
-      const textRows = document.getElementById('text-rows')
-
-      textTokens.forEach((name) => {
-        const row = document.createElement('div')
-        row.className = 'text-row'
-
-        const label = document.createElement('span')
-        label.className = 'text-label'
-        label.textContent = tokenLabelFromCssVar(name)
-
-        const sample = document.createElement('span')
-        sample.className = 'text-sample'
-        sample.style.color = `var(--${name})`
-        sample.textContent = 'The quick brown fox jumps'
-
-        const value = document.createElement('span')
-        value.className = 'value-label'
-        value.textContent = getVar(`--${name}`)
-
-        row.append(label, sample, value)
-        textRows.appendChild(row)
-      })
-    }
-
-    function renderBorderTokens() {
-      const borderTokens = [
-        'color-border-base', 'color-border-base-hover',
-        'color-border-faint', 'color-border-disabled',
-        'color-border-danger', 'color-border-danger-hover',
-      ]
-
-      const borderRows = document.getElementById('border-rows')
-
-      borderTokens.forEach((name) => {
-        const row = document.createElement('div')
-        row.className = 'border-row'
-
-        const preview = document.createElement('div')
-        preview.className = 'border-preview'
-
-        const box = document.createElement('div')
-        box.className = 'border-box'
-        box.style.borderColor = `var(--${name})`
-        preview.appendChild(box)
-
-        const label = document.createElement('span')
-        label.className = 'border-label'
-        label.textContent = tokenLabelFromCssVar(name)
-
-        const value = document.createElement('span')
-        value.className = 'value-label'
-        value.textContent = getVar(`--${name}`)
-
-        row.append(preview, label, value)
-        borderRows.appendChild(row)
-      })
-    }
-
-    renderPrimitive()
-    renderBgTokens()
-    renderTextTokens()
-    renderBorderTokens()
+    renderPrimitives()
+    renderSemantics()
+    renderTypography()
   </script>
 </body>
 </html>
