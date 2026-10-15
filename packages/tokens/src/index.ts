@@ -49,6 +49,21 @@ const semanticStatus = (intent: string) => ({
   onSolid: cssVar(`semantic-status-${intent}-on-solid`),
 })
 
+const brandScale = () => ({
+  50: cssVar('brand-50'),
+  100: cssVar('brand-100'),
+  200: cssVar('brand-200'),
+  300: cssVar('brand-300'),
+  400: cssVar('brand-400'),
+  500: cssVar('brand-500'),
+  600: cssVar('brand-600'),
+  700: cssVar('brand-700'),
+  800: cssVar('brand-800'),
+  900: cssVar('brand-900'),
+  950: cssVar('brand-950'),
+  1000: cssVar('brand-1000'),
+})
+
 const typographyStyle = (name: string) => ({
   fontFamily: cssVar(`${name}-font-family`),
   fontSize: cssVar(`${name}-font-size`),
@@ -103,6 +118,7 @@ export const tokens = {
     whiteAlpha: alphaScale('white-alpha'),
     blackAlpha: alphaScale('black-alpha'),
   },
+  brand: brandScale(),
   semantic: {
     surface: {
       body: cssVar('semantic-surface-body'),
@@ -149,6 +165,15 @@ export const tokens = {
     static: {
       white: cssVar('semantic-static-white'),
       black: cssVar('semantic-static-black'),
+    },
+    accent: {
+      solid: cssVar('semantic-accent-solid'),
+      solidHover: cssVar('semantic-accent-solid-hover'),
+      solidPressed: cssVar('semantic-accent-solid-pressed'),
+      subtle: cssVar('semantic-accent-subtle'),
+      text: cssVar('semantic-accent-text'),
+      border: cssVar('semantic-accent-border'),
+      onSolid: cssVar('semantic-accent-on-solid'),
     },
     status: {
       informative: semanticStatus('informative'),
@@ -289,6 +314,7 @@ export const tokens = {
   },
   radius: {
     none: cssVar('radius-none'),
+    xs: cssVar('radius-xs'),
     sm: cssVar('radius-sm'),
     md: cssVar('radius-md'),
     lg: cssVar('radius-lg'),

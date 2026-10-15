@@ -1,0 +1,61 @@
+{
+  "tint": {
+    "$type": "color",
+    "cool": {
+      "surface": {
+        "body": { "$value": "{color.gray.50}" },
+        "default": { "$value": "{color.white}" },
+        "raised": { "$value": "{color.white}" },
+        "overlay": { "$value": "{color.white}" },
+        "muted": { "$value": "{color.gray.100}" }
+      },
+      "text": {
+        "secondary": { "$value": "{color.gray.800}" },
+        "tertiary": { "$value": "{color.gray.600}" },
+        "disabled": { "$value": "{color.gray.400}" }
+      },
+      "icon": {
+        "primary": { "$value": "{color.gray.900}" },
+        "secondary": { "$value": "{color.gray.600}" },
+        "disabled": { "$value": "{color.gray.400}" }
+      },
+      "border": {
+        "default": { "$value": "{color.gray.200}" },
+        "emphasis": { "$value": "{color.gray.400}" },
+        "disabled": { "$value": "{color.gray.100}" }
+      },
+      "neutral": {
+        "subtle": { "$value": "{color.gray.100}" },
+        "border": { "$value": "{color.gray.400}" }
+      }
+    },
+    "warm": {
+      "surface": {
+        "body": { "$value": "{color.warm.200}" },
+        "default": { "$value": "{color.warm.50}" },
+        "raised": { "$value": "{color.warm.50}" },
+        "overlay": { "$value": "{color.warm.50}" },
+        "muted": { "$value": "{color.warm.100}" }
+      },
+      "text": {
+        "secondary": { "$value": "{color.gray.950}" },
+        "tertiary": { "$value": "{color.gray.900}" },
+        "disabled": { "$value": "{color.gray.500}" }
+      },
+      "icon": {
+        "primary": { "$value": "{color.gray.950}" },
+        "secondary": { "$value": "{color.gray.900}" },
+        "disabled": { "$value": "{color.gray.500}" }
+      },
+      "border": {
+        "default": { "$value": "{color.warm.200}" },
+        "emphasis": { "$value": "{color.warm.300}" },
+        "disabled": { "$value": "{color.warm.100}" }
+      },
+      "neutral": {
+        "subtle": { "$value": "{color.warm.200}" },
+        "border": { "$value": "{color.warm.300}" }
+      }
+    }
+  }
+}
