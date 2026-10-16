@@ -17,12 +17,16 @@ const SPEC = [
   ['Body/16 Strong', 16, 26, 'SemiBold', 0],
   ['Body/14', 14, 22, 'Regular', 0],
   ['Body/14 Strong', 14, 22, 'SemiBold', 0],
+  ['Body/13', 13, 20, 'Regular', 0],
+  ['Body/13 Strong', 13, 20, 'SemiBold', 0],
   ['Label/18', 18, 28, 'Medium', 0],
   ['Label/18 Strong', 18, 28, 'SemiBold', 0],
   ['Label/16', 16, 24, 'Medium', 0],
   ['Label/16 Strong', 16, 24, 'SemiBold', 0],
   ['Label/14', 14, 20, 'Medium', 0],
   ['Label/14 Strong', 14, 20, 'SemiBold', 0],
+  ['Label/13', 13, 18, 'Medium', 0],
+  ['Label/13 Strong', 13, 18, 'SemiBold', 0],
   ['Label/12', 12, 16, 'Medium', 0],
   ['Label/12 Strong', 12, 16, 'SemiBold', 0],
   ['Label/11', 11, 16, 'Medium', 0],
@@ -33,7 +37,7 @@ const SPEC = [
 ];
 
 // primitives to add when missing (existing line-height naming = px / 4)
-const NEED_SIZE = [30, 36];
+const NEED_SIZE = [13, 30, 36];
 const NEED_LH = [18, 22, 26, 72];
 // variable names cannot contain "." so 4.5 becomes 4_5
 const lhName = px => 'line-height/' + String(px / 4).replace('.', '_');

@@ -230,6 +230,7 @@ export const tokens = {
       10: cssVar('font-size-10'),
       11: cssVar('font-size-11'),
       12: cssVar('font-size-12'),
+      13: cssVar('font-size-13'),
       14: cssVar('font-size-14'),
       16: cssVar('font-size-16'),
       18: cssVar('font-size-18'),
@@ -296,6 +297,10 @@ export const tokens = {
         default: typographyStyle('typography-body-14'),
         strong: typographyStyle('typography-body-14-strong'),
       },
+      13: {
+        default: typographyStyle('typography-body-13'),
+        strong: typographyStyle('typography-body-13-strong'),
+      },
     },
     label: {
       18: {
@@ -309,6 +314,10 @@ export const tokens = {
       14: {
         default: typographyStyle('typography-label-14'),
         strong: typographyStyle('typography-label-14-strong'),
+      },
+      13: {
+        default: typographyStyle('typography-label-13'),
+        strong: typographyStyle('typography-label-13-strong'),
       },
       12: {
         default: typographyStyle('typography-label-12'),

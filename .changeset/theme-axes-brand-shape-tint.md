@@ -20,3 +20,4 @@ Restructure semantic colors by layer: `background` (page), `surface` (cards, cal
 - `tint` keys follow: `tint.*.background.base`, `tint.*.control.neutral.*`.
 - Dark `surface/overlay` moves from gray/950 to gray/900 so the dark layers step up one tone each: default 1000, raised 950, overlay 900.
 - Adds `text/placeholder` (gray/700 light, gray/600 dark) and `text/helper` (gray/700 light, gray/500 dark). They reference primitives directly, so they do not vary with `data-tint`.
+- Adds the 13px step: `--font-size-13` and the `Body/13`, `Body/13 Strong`, `Label/13`, `Label/13 Strong` typography tokens (line-height 20px for Body, 18px for Label).

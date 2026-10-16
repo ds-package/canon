@@ -8,7 +8,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 | 문서 | 다루는 것 |
 | --- | --- |
 | [color.md](./color.md) | 프리미티브 램프, 시멘틱 토큰 구조, 라이트/다크 값, 바인딩 규칙 |
-| [typography.md](./typography.md) | 역할 기반 텍스트 스타일 25개, 한글 우선 행간, 변수 바인딩 |
+| [typography.md](./typography.md) | 역할 기반 텍스트 스타일 29개, 한글 우선 행간, 변수 바인딩 |
 | [components.md](./components.md) | 컴포넌트 프로퍼티 이름과 값, boolean과 variant 구분, 열린 결정 |
 | [workflow.md](./workflow.md) | Figma 작업 방식, 마이그레이션 순서, 도구의 제약과 함정 |
 | [references.md](./references.md) | 참고한 디자인 시스템과 가져온 것, 가져오지 않은 것 |
@@ -31,7 +31,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 | 시멘틱 컬러 | `semantic` 컬러를 `background`, `surface`, `control`, `text`, `icon`, `border`, `overlay`, `static`, `accent`, `status/*` 구조로 제공한다. light와 dark가 같은 CSS 변수명을 공유한다. |
 | 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha를 제공한다. 10색 값은 `ramps.py` 출력과 같다. |
 | 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
-| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 25개를 제공한다. |
+| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. |
 | 코드 전용 토큰 | spacing, radius, shadow는 이번 Figma 동기화 범위가 아니어서 기존 값을 유지한다. |
 
 다크 모드는 `[data-theme="dark"]`에서 명시적으로 적용하고, 테마 속성이 없으면 `prefers-color-scheme: dark`를 따른다. `data-theme="light"`는 시스템 다크보다 우선한다.

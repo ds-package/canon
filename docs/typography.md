@@ -3,7 +3,7 @@ verified: 2026-10-14
 ---
 # 타이포그래피
 
-폰트는 Pretendard Variable이다. 텍스트 스타일은 역할과 실제 글자 크기로 이름을 붙인 25개다.
+폰트는 Pretendard Variable이다. 텍스트 스타일은 역할과 실제 글자 크기로 이름을 붙인 29개다.
 
 ## 1. 텍스트 스타일
 
@@ -21,12 +21,16 @@ verified: 2026-10-14
 | Body | `Body/16 Strong` | 16px / 26px | SemiBold | 0% |
 | Body | `Body/14` | 14px / 22px | Regular | 0% |
 | Body | `Body/14 Strong` | 14px / 22px | SemiBold | 0% |
+| Body | `Body/13` | 13px / 20px | Regular | 0% |
+| Body | `Body/13 Strong` | 13px / 20px | SemiBold | 0% |
 | Label | `Label/18` | 18px / 28px | Medium | 0% |
 | Label | `Label/18 Strong` | 18px / 28px | SemiBold | 0% |
 | Label | `Label/16` | 16px / 24px | Medium | 0% |
 | Label | `Label/16 Strong` | 16px / 24px | SemiBold | 0% |
 | Label | `Label/14` | 14px / 20px | Medium | 0% |
 | Label | `Label/14 Strong` | 14px / 20px | SemiBold | 0% |
+| Label | `Label/13` | 13px / 18px | Medium | 0% |
+| Label | `Label/13 Strong` | 13px / 18px | SemiBold | 0% |
 | Label | `Label/12` | 12px / 16px | Medium | 0% |
 | Label | `Label/12 Strong` | 12px / 16px | SemiBold | 0% |
 | Label | `Label/11` | 11px / 16px | Medium | 0% |
