@@ -10,6 +10,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 | [color.md](./color.md) | 프리미티브 램프, 시멘틱 토큰 구조, 라이트/다크 값, 바인딩 규칙 |
 | [typography.md](./typography.md) | 역할 기반 텍스트 스타일 29개, 한글 우선 행간, 변수 바인딩 |
 | [components.md](./components.md) | 컴포넌트 프로퍼티 이름과 값, boolean과 variant 구분, 열린 결정 |
+| [icons.md](./icons.md) | Phosphor 채택 결정, 실측 규격, 크기와 weight 매핑, 사용 규칙 |
 | [workflow.md](./workflow.md) | Figma 작업 방식, 마이그레이션 순서, 도구의 제약과 함정 |
 | [references.md](./references.md) | 참고한 디자인 시스템과 가져온 것, 가져오지 않은 것 |
 | [tools/](./tools/) | 램프 생성기(`ramps.py`), 텍스트 스타일 생성 Figma 플러그인 |
