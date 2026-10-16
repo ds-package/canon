@@ -2,8 +2,10 @@
   "tint": {
     "$type": "color",
     "cool": {
+      "background": {
+        "base": { "$value": "{color.gray.50}" }
+      },
       "surface": {
-        "body": { "$value": "{color.gray.50}" },
         "default": { "$value": "{color.white}" },
         "raised": { "$value": "{color.white}" },
         "overlay": { "$value": "{color.white}" },
@@ -24,14 +26,18 @@
         "emphasis": { "$value": "{color.gray.400}" },
         "disabled": { "$value": "{color.gray.100}" }
       },
-      "neutral": {
-        "subtle": { "$value": "{color.gray.100}" },
-        "border": { "$value": "{color.gray.400}" }
+      "control": {
+        "neutral": {
+          "subtle": { "$value": "{color.gray.100}" },
+          "border": { "$value": "{color.gray.400}" }
+        }
       }
     },
     "warm": {
+      "background": {
+        "base": { "$value": "{color.warm.200}" }
+      },
       "surface": {
-        "body": { "$value": "{color.warm.200}" },
         "default": { "$value": "{color.warm.50}" },
         "raised": { "$value": "{color.warm.50}" },
         "overlay": { "$value": "{color.warm.50}" },
@@ -52,9 +58,11 @@
         "emphasis": { "$value": "{color.warm.300}" },
         "disabled": { "$value": "{color.warm.100}" }
       },
-      "neutral": {
-        "subtle": { "$value": "{color.warm.200}" },
-        "border": { "$value": "{color.warm.300}" }
+      "control": {
+        "neutral": {
+          "subtle": { "$value": "{color.warm.200}" },
+          "border": { "$value": "{color.warm.300}" }
+        }
       }
     }
   }

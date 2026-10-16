@@ -49,18 +49,27 @@
       { name: 'black-alpha', label: 'blackAlpha', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
     ]
 
+    const controlSteps = ['solid', 'solid-hover', 'solid-pressed', 'on-solid']
     const semanticGroups = {
-      surface: ['body', 'default', 'raised', 'overlay', 'muted', 'inverse'],
-      text: ['primary', 'secondary', 'tertiary', 'disabled', 'inverse', 'link'],
+      background: ['base', 'inverse'],
+      surface: ['default', 'raised', 'overlay', 'muted', 'informative', 'positive', 'notice', 'negative', 'accent'],
+      text: ['primary', 'secondary', 'tertiary', 'placeholder', 'helper', 'disabled', 'inverse', 'link'],
       icon: ['primary', 'secondary', 'disabled', 'inverse'],
       border: ['default', 'emphasis', 'focus', 'disabled'],
-      neutral: ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'on-solid', 'text', 'border'],
+      'control/neutral': [...controlSteps, 'subtle', 'text', 'border'],
+      'control/accent': controlSteps,
+      'control/informative': controlSteps,
+      'control/positive': controlSteps,
+      'control/notice': controlSteps,
+      'control/negative': controlSteps,
+      control: ['disabled'],
       overlay: ['hover', 'pressed', 'scrim'],
       static: ['white', 'black'],
-      'status/informative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/positive': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/notice': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/negative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
+      accent: ['text', 'border'],
+      'status/informative': ['text', 'border'],
+      'status/positive': ['text', 'border'],
+      'status/notice': ['text', 'border'],
+      'status/negative': ['text', 'border'],
     }
 
     const typographyStyles = [

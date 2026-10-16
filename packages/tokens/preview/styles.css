@@ -7,7 +7,7 @@
 body {
   margin: 0;
   font-family: var(--font-family-sans);
-  background: var(--semantic-surface-body);
+  background: var(--semantic-background-base);
   color: var(--semantic-text-primary);
 }
 
@@ -63,8 +63,8 @@ code {
 }
 
 .theme-control button[aria-pressed="true"] {
-  background: var(--semantic-neutral-solid);
-  color: var(--semantic-neutral-on-solid);
+  background: var(--semantic-control-neutral-solid);
+  color: var(--semantic-control-neutral-on-solid);
 }
 
 .section + .section {

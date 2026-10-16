@@ -48,7 +48,7 @@ verified: 2026-10-14
 | Alert | `informative, positive, notice, negative` |
 | Radio, Checkbox, Switch, Tabs | 색 속성 없음. 항상 neutral 강조 사용 |
 
-Button의 `neutral`은 `solid`에서 검정(`neutral/solid`), `subtle`에서 회색 면, `outline`에서 검정 테두리를 쓴다.
+Button의 `neutral`은 `solid`에서 검정(`control/neutral/solid`), `subtle`에서 회색 면, `outline`에서 검정 테두리를 쓴다.
 
 1. **`intent`는 의미색이 필요한 컴포넌트에만 둔다.**
    - 이유: Radio, Checkbox, Switch, Tabs는 항상 neutral 강조를 쓰므로 색 축이 필요하지 않다.

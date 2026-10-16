@@ -40,13 +40,15 @@ const alphaScale = (name: string) => ({
 })
 
 const semanticStatus = (intent: string) => ({
-  solid: cssVar(`semantic-status-${intent}-solid`),
-  solidHover: cssVar(`semantic-status-${intent}-solid-hover`),
-  solidPressed: cssVar(`semantic-status-${intent}-solid-pressed`),
-  subtle: cssVar(`semantic-status-${intent}-subtle`),
   text: cssVar(`semantic-status-${intent}-text`),
   border: cssVar(`semantic-status-${intent}-border`),
-  onSolid: cssVar(`semantic-status-${intent}-on-solid`),
+})
+
+const semanticControl = (name: string) => ({
+  solid: cssVar(`semantic-control-${name}-solid`),
+  solidHover: cssVar(`semantic-control-${name}-solid-hover`),
+  solidPressed: cssVar(`semantic-control-${name}-solid-pressed`),
+  onSolid: cssVar(`semantic-control-${name}-on-solid`),
 })
 
 const brandScale = () => ({
@@ -120,18 +122,27 @@ export const tokens = {
   },
   brand: brandScale(),
   semantic: {
+    background: {
+      base: cssVar('semantic-background-base'),
+      inverse: cssVar('semantic-background-inverse'),
+    },
     surface: {
-      body: cssVar('semantic-surface-body'),
       default: cssVar('semantic-surface-default'),
       raised: cssVar('semantic-surface-raised'),
       overlay: cssVar('semantic-surface-overlay'),
       muted: cssVar('semantic-surface-muted'),
-      inverse: cssVar('semantic-surface-inverse'),
+      informative: cssVar('semantic-surface-informative'),
+      positive: cssVar('semantic-surface-positive'),
+      notice: cssVar('semantic-surface-notice'),
+      negative: cssVar('semantic-surface-negative'),
+      accent: cssVar('semantic-surface-accent'),
     },
     text: {
       primary: cssVar('semantic-text-primary'),
       secondary: cssVar('semantic-text-secondary'),
       tertiary: cssVar('semantic-text-tertiary'),
+      placeholder: cssVar('semantic-text-placeholder'),
+      helper: cssVar('semantic-text-helper'),
       disabled: cssVar('semantic-text-disabled'),
       inverse: cssVar('semantic-text-inverse'),
       link: cssVar('semantic-text-link'),
@@ -148,14 +159,19 @@ export const tokens = {
       focus: cssVar('semantic-border-focus'),
       disabled: cssVar('semantic-border-disabled'),
     },
-    neutral: {
-      solid: cssVar('semantic-neutral-solid'),
-      solidHover: cssVar('semantic-neutral-solid-hover'),
-      solidPressed: cssVar('semantic-neutral-solid-pressed'),
-      subtle: cssVar('semantic-neutral-subtle'),
-      onSolid: cssVar('semantic-neutral-on-solid'),
-      text: cssVar('semantic-neutral-text'),
-      border: cssVar('semantic-neutral-border'),
+    control: {
+      neutral: {
+        ...semanticControl('neutral'),
+        subtle: cssVar('semantic-control-neutral-subtle'),
+        text: cssVar('semantic-control-neutral-text'),
+        border: cssVar('semantic-control-neutral-border'),
+      },
+      accent: semanticControl('accent'),
+      informative: semanticControl('informative'),
+      positive: semanticControl('positive'),
+      notice: semanticControl('notice'),
+      negative: semanticControl('negative'),
+      disabled: cssVar('semantic-control-disabled'),
     },
     overlay: {
       hover: cssVar('semantic-overlay-hover'),
@@ -167,13 +183,8 @@ export const tokens = {
       black: cssVar('semantic-static-black'),
     },
     accent: {
-      solid: cssVar('semantic-accent-solid'),
-      solidHover: cssVar('semantic-accent-solid-hover'),
-      solidPressed: cssVar('semantic-accent-solid-pressed'),
-      subtle: cssVar('semantic-accent-subtle'),
       text: cssVar('semantic-accent-text'),
       border: cssVar('semantic-accent-border'),
-      onSolid: cssVar('semantic-accent-on-solid'),
     },
     status: {
       informative: semanticStatus('informative'),
