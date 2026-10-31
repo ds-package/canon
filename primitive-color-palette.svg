@@ -1,0 +1,682 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1540" height="2610" viewBox="0 0 1540 2610">
+<rect width="1540" height="2610" fill="#F6F7F9"/>
+<text x="64" y="74" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="600" letter-spacing="2" fill="#67727E">CANON / COLOR FOUNDATIONS</text>
+<text x="64" y="132" font-family="Inter,Arial,sans-serif" font-size="40" font-weight="700" fill="#17202B">Primitive color palette</text>
+<text x="64" y="164" font-family="Inter,Arial,sans-serif" font-size="15" fill="#596675">13 families · 12 steps · shared lightness targets · sRGB values</text>
+<text x="64" y="207" font-family="Inter,Arial,sans-serif" font-size="13" fill="#596675">Same number follows a shared tone. Chroma rises through the middle, then eases toward the dark end.</text>
+<rect x="64" y="232" width="680" height="206" rx="16" fill="#FFFFFF"/>
+<text x="86" y="265" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#17202B">OKLCH lightness</text>
+<line x1="86" y1="290" x2="714" y2="290" stroke="#E6E9ED"/>
+<line x1="86" y1="340" x2="714" y2="340" stroke="#E6E9ED"/>
+<line x1="86" y1="390" x2="714" y2="390" stroke="#E6E9ED"/>
+<polyline points="91.0,299.4 147.4,301.6 203.8,303.9 260.2,308.7 316.6,314.9 373.0,321.8 429.4,329.1 485.8,337.1 542.2,345.0 598.6,352.8 655.0,361.8 711.4,371.1" fill="none" stroke="#6B7280" stroke-width="2"/>
+<polyline points="91.0,299.4 147.4,301.6 203.8,303.9 260.2,308.6 316.6,314.9 373.0,321.8 429.4,329.2 485.8,336.9 542.2,344.9 598.6,352.7 655.0,361.7 711.4,371.2" fill="none" stroke="#B39B77" stroke-width="2"/>
+<polyline points="91.0,299.3 147.4,301.5 203.8,303.9 260.2,308.7 316.6,315.0 373.0,321.8 429.4,329.1 485.8,337.0 542.2,344.8 598.6,352.8 655.0,361.8 711.4,371.2" fill="none" stroke="#285FD6" stroke-width="2"/>
+<polyline points="91.0,299.3 147.4,301.4 203.8,303.9 260.2,308.6 316.6,314.9 373.0,321.9 429.4,329.2 485.8,337.1 542.2,345.0 598.6,352.7 655.0,361.5 711.4,371.3" fill="none" stroke="#D49A16" stroke-width="2"/>
+<polyline points="91.0,299.4 147.4,301.6 203.8,303.9 260.2,308.6 316.6,315.0 373.0,321.7 429.4,329.1 485.8,336.9 542.2,344.9 598.6,352.6 655.0,361.6 711.4,371.1" fill="none" stroke="#CC5B9A" stroke-width="2"/>
+<text x="86" y="426" font-family="Inter,Arial,sans-serif" font-size="10" fill="#7A8590">50</text>
+<text x="689" y="426" font-family="Inter,Arial,sans-serif" font-size="10" fill="#7A8590">1000</text>
+<rect x="795" y="232" width="680" height="206" rx="16" fill="#FFFFFF"/>
+<text x="817" y="265" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#17202B">OKLCH chroma</text>
+<line x1="817" y1="290" x2="1445" y2="290" stroke="#E6E9ED"/>
+<line x1="817" y1="340" x2="1445" y2="340" stroke="#E6E9ED"/>
+<line x1="817" y1="390" x2="1445" y2="390" stroke="#E6E9ED"/>
+<polyline points="822.0,399.2 878.4,398.7 934.8,397.9 991.2,397.9 1047.6,397.3 1104.0,396.6 1160.4,396.3 1216.8,396.2 1273.2,396.9 1329.6,396.8 1386.0,397.6 1442.4,397.9" fill="none" stroke="#6B7280" stroke-width="2"/>
+<polyline points="822.0,398.1 878.4,397.4 934.8,395.0 991.2,393.5 1047.6,391.6 1104.0,389.3 1160.4,387.7 1216.8,387.3 1273.2,388.4 1329.6,389.5 1386.0,392.0 1442.4,394.7" fill="none" stroke="#B39B77" stroke-width="2"/>
+<polyline points="822.0,394.8 878.4,389.0 934.8,381.8 991.2,370.4 1047.6,356.4 1104.0,345.1 1160.4,343.0 1216.8,345.5 1273.2,350.2 1329.6,356.4 1386.0,365.6 1442.4,376.8" fill="none" stroke="#285FD6" stroke-width="2"/>
+<polyline points="822.0,394.6 878.4,388.5 934.8,381.3 991.2,369.9 1047.6,356.5 1104.0,345.2 1160.4,343.1 1216.8,345.4 1273.2,349.8 1329.6,356.7 1386.0,365.7 1442.4,377.5" fill="none" stroke="#D49A16" stroke-width="2"/>
+<polyline points="822.0,394.3 878.4,388.8 934.8,381.7 991.2,370.4 1047.6,356.3 1104.0,345.5 1160.4,343.6 1216.8,345.2 1273.2,349.7 1329.6,356.7 1386.0,365.8 1442.4,377.1" fill="none" stroke="#CC5B9A" stroke-width="2"/>
+<text x="817" y="426" font-family="Inter,Arial,sans-serif" font-size="10" fill="#7A8590">50</text>
+<text x="1420" y="426" font-family="Inter,Arial,sans-serif" font-size="10" fill="#7A8590">1000</text>
+<text x="64" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Gray</text>
+<text x="64" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/gray/&#123;step&#125;</text>
+<rect x="64" y="520" width="188" height="68" rx="9" fill="#F0F1F2"/>
+<text x="76" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="76" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F0F1F2  ·  L 0.96</text>
+<text x="76" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.002</text>
+<rect x="64" y="596" width="188" height="68" rx="9" fill="#E9EAEC"/>
+<text x="76" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="76" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E9EAEC  ·  L 0.94</text>
+<text x="76" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.003</text>
+<rect x="64" y="672" width="188" height="68" rx="9" fill="#E1E3E6"/>
+<text x="76" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="76" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E1E3E6  ·  L 0.92</text>
+<text x="76" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.005</text>
+<rect x="64" y="748" width="188" height="68" rx="9" fill="#D2D4D7"/>
+<text x="76" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="76" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D2D4D7  ·  L 0.87</text>
+<text x="76" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.005</text>
+<rect x="64" y="824" width="188" height="68" rx="9" fill="#BFC1C5"/>
+<text x="76" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="76" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#BFC1C5  ·  L 0.81</text>
+<text x="76" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.006</text>
+<rect x="64" y="900" width="188" height="68" rx="9" fill="#AAACB1"/>
+<text x="76" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="76" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#AAACB1  ·  L 0.74</text>
+<text x="76" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.007</text>
+<rect x="64" y="976" width="188" height="68" rx="9" fill="#94979C"/>
+<text x="76" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="76" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#94979C  ·  L 0.68</text>
+<text x="76" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.008</text>
+<rect x="64" y="1052" width="188" height="68" rx="9" fill="#7D8085"/>
+<text x="76" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="76" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#7D8085  ·  L 0.60</text>
+<text x="76" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.008</text>
+<rect x="64" y="1128" width="188" height="68" rx="9" fill="#686A6E"/>
+<text x="76" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="76" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#686A6E  ·  L 0.52</text>
+<text x="76" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.007</text>
+<rect x="64" y="1204" width="188" height="68" rx="9" fill="#535559"/>
+<text x="76" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="76" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#535559  ·  L 0.45</text>
+<text x="76" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.007</text>
+<rect x="64" y="1280" width="188" height="68" rx="9" fill="#3D3E41"/>
+<text x="76" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="76" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#3D3E41  ·  L 0.36</text>
+<text x="76" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.005</text>
+<rect x="64" y="1356" width="188" height="68" rx="9" fill="#26282A"/>
+<text x="76" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="76" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#26282A  ·  L 0.28</text>
+<text x="76" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.005</text>
+<text x="268" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Warm</text>
+<text x="268" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/warm/&#123;step&#125;</text>
+<rect x="268" y="520" width="188" height="68" rx="9" fill="#F2F1EE"/>
+<text x="280" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="280" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F2F1EE  ·  L 0.96</text>
+<text x="280" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.004</text>
+<rect x="268" y="596" width="188" height="68" rx="9" fill="#ECEAE6"/>
+<text x="280" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="280" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#ECEAE6  ·  L 0.94</text>
+<text x="280" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.006</text>
+<rect x="268" y="672" width="188" height="68" rx="9" fill="#E5E3DB"/>
+<text x="280" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="280" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E5E3DB  ·  L 0.92</text>
+<text x="280" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.011</text>
+<rect x="268" y="748" width="188" height="68" rx="9" fill="#D8D4CA"/>
+<text x="280" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="280" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D8D4CA  ·  L 0.87</text>
+<text x="280" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.014</text>
+<rect x="268" y="824" width="188" height="68" rx="9" fill="#C5C1B4"/>
+<text x="280" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="280" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#C5C1B4  ·  L 0.81</text>
+<text x="280" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.018</text>
+<rect x="268" y="900" width="188" height="68" rx="9" fill="#B2AC9C"/>
+<text x="280" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="280" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#B2AC9C  ·  L 0.74</text>
+<text x="280" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.023</text>
+<rect x="268" y="976" width="188" height="68" rx="9" fill="#9D9684"/>
+<text x="280" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="280" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#9D9684  ·  L 0.67</text>
+<text x="280" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.027</text>
+<rect x="268" y="1052" width="188" height="68" rx="9" fill="#87806E"/>
+<text x="280" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="280" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#87806E  ·  L 0.60</text>
+<text x="280" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.028</text>
+<rect x="268" y="1128" width="188" height="68" rx="9" fill="#706A5A"/>
+<text x="280" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="280" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#706A5A  ·  L 0.53</text>
+<text x="280" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.025</text>
+<rect x="268" y="1204" width="188" height="68" rx="9" fill="#5A5547"/>
+<text x="280" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="280" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#5A5547  ·  L 0.45</text>
+<text x="280" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.023</text>
+<rect x="268" y="1280" width="188" height="68" rx="9" fill="#423E34"/>
+<text x="280" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="280" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#423E34  ·  L 0.36</text>
+<text x="280" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.017</text>
+<rect x="268" y="1356" width="188" height="68" rx="9" fill="#2A2721"/>
+<text x="280" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="280" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#2A2721  ·  L 0.27</text>
+<text x="280" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.012</text>
+<text x="472" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Red</text>
+<text x="472" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/red/&#123;step&#125;</text>
+<rect x="472" y="520" width="188" height="68" rx="9" fill="#F9EEED"/>
+<text x="484" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="484" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F9EEED  ·  L 0.96</text>
+<text x="484" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="472" y="596" width="188" height="68" rx="9" fill="#FAE5E2"/>
+<text x="484" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="484" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#FAE5E2  ·  L 0.94</text>
+<text x="484" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.023</text>
+<rect x="472" y="672" width="188" height="68" rx="9" fill="#FDD9D6"/>
+<text x="484" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="484" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#FDD9D6  ·  L 0.91</text>
+<text x="484" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.041</text>
+<rect x="472" y="748" width="188" height="68" rx="9" fill="#FCC4BF"/>
+<text x="484" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="484" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#FCC4BF  ·  L 0.87</text>
+<text x="484" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="472" y="824" width="188" height="68" rx="9" fill="#F8A9A2"/>
+<text x="484" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="484" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8A9A2  ·  L 0.81</text>
+<text x="484" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.094</text>
+<rect x="472" y="900" width="188" height="68" rx="9" fill="#EF8D86"/>
+<text x="484" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="484" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EF8D86  ·  L 0.75</text>
+<text x="484" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="472" y="976" width="188" height="68" rx="9" fill="#D9766F"/>
+<text x="484" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="484" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D9766F  ·  L 0.68</text>
+<text x="484" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="472" y="1052" width="188" height="68" rx="9" fill="#BD615B"/>
+<text x="484" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="484" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#BD615B  ·  L 0.60</text>
+<text x="484" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.119</text>
+<rect x="472" y="1128" width="188" height="68" rx="9" fill="#A04E49"/>
+<text x="484" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="484" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#A04E49  ·  L 0.52</text>
+<text x="484" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.110</text>
+<rect x="472" y="1204" width="188" height="68" rx="9" fill="#823E3A"/>
+<text x="484" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="484" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#823E3A  ·  L 0.45</text>
+<text x="484" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="472" y="1280" width="188" height="68" rx="9" fill="#602D2A"/>
+<text x="484" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="484" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#602D2A  ·  L 0.37</text>
+<text x="484" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="472" y="1356" width="188" height="68" rx="9" fill="#3D1D1B"/>
+<text x="484" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="484" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#3D1D1B  ·  L 0.28</text>
+<text x="484" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.050</text>
+<text x="676" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Orange</text>
+<text x="676" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/orange/&#123;step&#125;</text>
+<rect x="676" y="520" width="188" height="68" rx="9" fill="#F8EFEA"/>
+<text x="688" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="688" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8EFEA  ·  L 0.96</text>
+<text x="688" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="676" y="596" width="188" height="68" rx="9" fill="#F8E7DC"/>
+<text x="688" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="688" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8E7DC  ·  L 0.94</text>
+<text x="688" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="676" y="672" width="188" height="68" rx="9" fill="#FADCCB"/>
+<text x="688" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="688" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#FADCCB  ·  L 0.91</text>
+<text x="688" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="676" y="748" width="188" height="68" rx="9" fill="#F8C9AE"/>
+<text x="688" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="688" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8C9AE  ·  L 0.87</text>
+<text x="688" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="676" y="824" width="188" height="68" rx="9" fill="#F3B088"/>
+<text x="688" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="688" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F3B088  ·  L 0.81</text>
+<text x="688" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="676" y="900" width="188" height="68" rx="9" fill="#E89662"/>
+<text x="688" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="688" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E89662  ·  L 0.75</text>
+<text x="688" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="676" y="976" width="188" height="68" rx="9" fill="#D37F49"/>
+<text x="688" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="688" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D37F49  ·  L 0.68</text>
+<text x="688" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="676" y="1052" width="188" height="68" rx="9" fill="#B76935"/>
+<text x="688" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="688" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#B76935  ·  L 0.60</text>
+<text x="688" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="676" y="1128" width="188" height="68" rx="9" fill="#9B5626"/>
+<text x="688" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="688" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#9B5626  ·  L 0.53</text>
+<text x="688" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.110</text>
+<rect x="676" y="1204" width="188" height="68" rx="9" fill="#7E441D"/>
+<text x="688" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="688" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#7E441D  ·  L 0.45</text>
+<text x="688" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="676" y="1280" width="188" height="68" rx="9" fill="#5D3215"/>
+<text x="688" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="688" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#5D3215  ·  L 0.37</text>
+<text x="688" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="676" y="1356" width="188" height="68" rx="9" fill="#3B200F"/>
+<text x="688" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="688" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#3B200F  ·  L 0.28</text>
+<text x="688" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.050</text>
+<text x="880" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Amber</text>
+<text x="880" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/amber/&#123;step&#125;</text>
+<rect x="880" y="520" width="188" height="68" rx="9" fill="#F6F0E8"/>
+<text x="892" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="892" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F6F0E8  ·  L 0.96</text>
+<text x="892" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="880" y="596" width="188" height="68" rx="9" fill="#F4E9D9"/>
+<text x="892" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="892" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F4E9D9  ·  L 0.94</text>
+<text x="892" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="880" y="672" width="188" height="68" rx="9" fill="#F2E0C6"/>
+<text x="892" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="892" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F2E0C6  ·  L 0.91</text>
+<text x="892" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="880" y="748" width="188" height="68" rx="9" fill="#EDCFA5"/>
+<text x="892" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="892" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EDCFA5  ·  L 0.87</text>
+<text x="892" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="880" y="824" width="188" height="68" rx="9" fill="#E4B979"/>
+<text x="892" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="892" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E4B979  ·  L 0.81</text>
+<text x="892" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="880" y="900" width="188" height="68" rx="9" fill="#D7A24C"/>
+<text x="892" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="892" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D7A24C  ·  L 0.75</text>
+<text x="892" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="880" y="976" width="188" height="68" rx="9" fill="#C18B2D"/>
+<text x="892" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="892" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#C18B2D  ·  L 0.67</text>
+<text x="892" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.124</text>
+<rect x="880" y="1052" width="188" height="68" rx="9" fill="#A87514"/>
+<text x="892" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="892" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#A87514  ·  L 0.60</text>
+<text x="892" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="880" y="1128" width="188" height="68" rx="9" fill="#8D6000"/>
+<text x="892" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="892" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#8D6000  ·  L 0.52</text>
+<text x="892" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.110</text>
+<rect x="880" y="1204" width="188" height="68" rx="9" fill="#724D00"/>
+<text x="892" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="892" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#724D00  ·  L 0.45</text>
+<text x="892" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.094</text>
+<rect x="880" y="1280" width="188" height="68" rx="9" fill="#543802"/>
+<text x="892" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="892" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#543802  ·  L 0.36</text>
+<text x="892" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="880" y="1356" width="188" height="68" rx="9" fill="#352407"/>
+<text x="892" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="892" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#352407  ·  L 0.27</text>
+<text x="892" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.049</text>
+<text x="1084" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Yellow</text>
+<text x="1084" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/yellow/&#123;step&#125;</text>
+<rect x="1084" y="520" width="188" height="68" rx="9" fill="#F2F2E9"/>
+<text x="1096" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="1096" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F2F2E9  ·  L 0.96</text>
+<text x="1096" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="1084" y="596" width="188" height="68" rx="9" fill="#EDECD9"/>
+<text x="1096" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="1096" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EDECD9  ·  L 0.94</text>
+<text x="1096" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.025</text>
+<rect x="1084" y="672" width="188" height="68" rx="9" fill="#E7E5C6"/>
+<text x="1096" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="1096" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E7E5C6  ·  L 0.92</text>
+<text x="1096" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.041</text>
+<rect x="1084" y="748" width="188" height="68" rx="9" fill="#DCD7A5"/>
+<text x="1096" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="1096" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#DCD7A5  ·  L 0.87</text>
+<text x="1096" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.066</text>
+<rect x="1084" y="824" width="188" height="68" rx="9" fill="#CCC47A"/>
+<text x="1096" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="1096" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#CCC47A  ·  L 0.81</text>
+<text x="1096" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="1084" y="900" width="188" height="68" rx="9" fill="#BAAF4D"/>
+<text x="1096" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="1096" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#BAAF4D  ·  L 0.74</text>
+<text x="1096" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="1084" y="976" width="188" height="68" rx="9" fill="#A5992E"/>
+<text x="1096" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="1096" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#A5992E  ·  L 0.67</text>
+<text x="1096" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="1084" y="1052" width="188" height="68" rx="9" fill="#8E8215"/>
+<text x="1096" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="1096" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#8E8215  ·  L 0.60</text>
+<text x="1096" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="1084" y="1128" width="188" height="68" rx="9" fill="#766C01"/>
+<text x="1096" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="1096" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#766C01  ·  L 0.52</text>
+<text x="1096" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.110</text>
+<rect x="1084" y="1204" width="188" height="68" rx="9" fill="#5F5700"/>
+<text x="1096" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="1096" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#5F5700  ·  L 0.45</text>
+<text x="1096" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="1084" y="1280" width="188" height="68" rx="9" fill="#464003"/>
+<text x="1096" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="1096" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#464003  ·  L 0.37</text>
+<text x="1096" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="1084" y="1356" width="188" height="68" rx="9" fill="#2C2807"/>
+<text x="1096" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="1096" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#2C2807  ·  L 0.27</text>
+<text x="1096" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.049</text>
+<text x="1288" y="486" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Green</text>
+<text x="1288" y="506" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/green/&#123;step&#125;</text>
+<rect x="1288" y="520" width="188" height="68" rx="9" fill="#ECF3EC"/>
+<text x="1300" y="544" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="1300" y="564" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#ECF3EC  ·  L 0.96</text>
+<text x="1300" y="579" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="1288" y="596" width="188" height="68" rx="9" fill="#E1EFE1"/>
+<text x="1300" y="620" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="1300" y="640" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E1EFE1  ·  L 0.94</text>
+<text x="1300" y="655" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="1288" y="672" width="188" height="68" rx="9" fill="#D3EAD3"/>
+<text x="1300" y="696" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="1300" y="716" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D3EAD3  ·  L 0.91</text>
+<text x="1300" y="731" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.039</text>
+<rect x="1288" y="748" width="188" height="68" rx="9" fill="#BAE0BA"/>
+<text x="1300" y="772" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="1300" y="792" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#BAE0BA  ·  L 0.87</text>
+<text x="1300" y="807" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="1288" y="824" width="188" height="68" rx="9" fill="#9AD29B"/>
+<text x="1300" y="848" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="1300" y="868" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#9AD29B  ·  L 0.81</text>
+<text x="1300" y="883" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.096</text>
+<rect x="1288" y="900" width="188" height="68" rx="9" fill="#7AC07C"/>
+<text x="1300" y="924" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="1300" y="944" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#7AC07C  ·  L 0.74</text>
+<text x="1300" y="959" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="1288" y="976" width="188" height="68" rx="9" fill="#62AB65"/>
+<text x="1300" y="1000" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="1300" y="1020" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#62AB65  ·  L 0.68</text>
+<text x="1300" y="1035" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="1288" y="1052" width="188" height="68" rx="9" fill="#4D9351"/>
+<text x="1300" y="1076" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="1300" y="1096" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#4D9351  ·  L 0.60</text>
+<text x="1300" y="1111" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.121</text>
+<rect x="1288" y="1128" width="188" height="68" rx="9" fill="#3D7B40"/>
+<text x="1300" y="1152" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="1300" y="1172" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#3D7B40  ·  L 0.53</text>
+<text x="1300" y="1187" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.111</text>
+<rect x="1288" y="1204" width="188" height="68" rx="9" fill="#2F6332"/>
+<text x="1300" y="1228" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="1300" y="1248" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#2F6332  ·  L 0.45</text>
+<text x="1300" y="1263" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.096</text>
+<rect x="1288" y="1280" width="188" height="68" rx="9" fill="#224924"/>
+<text x="1300" y="1304" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="1300" y="1324" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#224924  ·  L 0.37</text>
+<text x="1300" y="1339" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.076</text>
+<rect x="1288" y="1356" width="188" height="68" rx="9" fill="#172E18"/>
+<text x="1300" y="1380" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="1300" y="1400" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#172E18  ·  L 0.28</text>
+<text x="1300" y="1415" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.049</text>
+<text x="64" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Teal</text>
+<text x="64" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/teal/&#123;step&#125;</text>
+<rect x="64" y="1540" width="188" height="68" rx="9" fill="#E9F4F1"/>
+<text x="76" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="76" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E9F4F1  ·  L 0.96</text>
+<text x="76" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="64" y="1616" width="188" height="68" rx="9" fill="#DBF0EA"/>
+<text x="76" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="76" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#DBF0EA  ·  L 0.94</text>
+<text x="76" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="64" y="1692" width="188" height="68" rx="9" fill="#C8ECE2"/>
+<text x="76" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="76" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#C8ECE2  ·  L 0.91</text>
+<text x="76" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="64" y="1768" width="188" height="68" rx="9" fill="#A7E3D3"/>
+<text x="76" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="76" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#A7E3D3  ·  L 0.87</text>
+<text x="76" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="64" y="1844" width="188" height="68" rx="9" fill="#79D5BF"/>
+<text x="76" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="76" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#79D5BF  ·  L 0.81</text>
+<text x="76" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.094</text>
+<rect x="64" y="1920" width="188" height="68" rx="9" fill="#42C5A9"/>
+<text x="76" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="76" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#42C5A9  ·  L 0.75</text>
+<text x="76" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="64" y="1996" width="188" height="68" rx="9" fill="#09AF94"/>
+<text x="76" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="76" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#09AF94  ·  L 0.67</text>
+<text x="76" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="64" y="2072" width="188" height="68" rx="9" fill="#00967E"/>
+<text x="76" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="76" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#00967E  ·  L 0.60</text>
+<text x="76" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.112</text>
+<rect x="64" y="2148" width="188" height="68" rx="9" fill="#007C68"/>
+<text x="76" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="76" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#007C68  ·  L 0.52</text>
+<text x="76" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.098</text>
+<rect x="64" y="2224" width="188" height="68" rx="9" fill="#006453"/>
+<text x="76" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="76" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#006453  ·  L 0.45</text>
+<text x="76" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.084</text>
+<rect x="64" y="2300" width="188" height="68" rx="9" fill="#004A3D"/>
+<text x="76" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="76" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#004A3D  ·  L 0.37</text>
+<text x="76" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.068</text>
+<rect x="64" y="2376" width="188" height="68" rx="9" fill="#022F27"/>
+<text x="76" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="76" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#022F27  ·  L 0.27</text>
+<text x="76" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.049</text>
+<text x="268" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Cyan</text>
+<text x="268" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/cyan/&#123;step&#125;</text>
+<rect x="268" y="1540" width="188" height="68" rx="9" fill="#E8F4F5"/>
+<text x="280" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="280" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E8F4F5  ·  L 0.96</text>
+<text x="280" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.013</text>
+<rect x="268" y="1616" width="188" height="68" rx="9" fill="#D9F0F2"/>
+<text x="280" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="280" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D9F0F2  ·  L 0.94</text>
+<text x="280" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="268" y="1692" width="188" height="68" rx="9" fill="#C5EBF0"/>
+<text x="280" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="280" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#C5EBF0  ·  L 0.91</text>
+<text x="280" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="268" y="1768" width="188" height="68" rx="9" fill="#A1E1E9"/>
+<text x="280" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="280" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#A1E1E9  ·  L 0.87</text>
+<text x="280" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="268" y="1844" width="188" height="68" rx="9" fill="#6FD3DE"/>
+<text x="280" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="280" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#6FD3DE  ·  L 0.81</text>
+<text x="280" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="268" y="1920" width="188" height="68" rx="9" fill="#29C2D0"/>
+<text x="280" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="280" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#29C2D0  ·  L 0.75</text>
+<text x="280" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="268" y="1996" width="188" height="68" rx="9" fill="#00ABB8"/>
+<text x="280" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="280" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#00ABB8  ·  L 0.68</text>
+<text x="280" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.115</text>
+<rect x="268" y="2072" width="188" height="68" rx="9" fill="#00919D"/>
+<text x="280" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="280" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#00919D  ·  L 0.60</text>
+<text x="280" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.102</text>
+<rect x="268" y="2148" width="188" height="68" rx="9" fill="#007983"/>
+<text x="280" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="280" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#007983  ·  L 0.53</text>
+<text x="280" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.090</text>
+<rect x="268" y="2224" width="188" height="68" rx="9" fill="#006169"/>
+<text x="280" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="280" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#006169  ·  L 0.45</text>
+<text x="280" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.077</text>
+<rect x="268" y="2300" width="188" height="68" rx="9" fill="#00484E"/>
+<text x="280" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="280" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#00484E  ·  L 0.37</text>
+<text x="280" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.062</text>
+<rect x="268" y="2376" width="188" height="68" rx="9" fill="#002E33"/>
+<text x="280" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="280" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#002E33  ·  L 0.28</text>
+<text x="280" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.047</text>
+<text x="472" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Blue</text>
+<text x="472" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/blue/&#123;step&#125;</text>
+<rect x="472" y="1540" width="188" height="68" rx="9" fill="#ECF2F9"/>
+<text x="484" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="484" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#ECF2F9  ·  L 0.96</text>
+<text x="484" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.011</text>
+<rect x="472" y="1616" width="188" height="68" rx="9" fill="#E0ECFB"/>
+<text x="484" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="484" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E0ECFB  ·  L 0.94</text>
+<text x="484" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="472" y="1692" width="188" height="68" rx="9" fill="#D2E5FE"/>
+<text x="484" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="484" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#D2E5FE  ·  L 0.92</text>
+<text x="484" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="472" y="1768" width="188" height="68" rx="9" fill="#B8D7FF"/>
+<text x="484" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="484" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#B8D7FF  ·  L 0.87</text>
+<text x="484" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="472" y="1844" width="188" height="68" rx="9" fill="#97C4FE"/>
+<text x="484" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="484" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#97C4FE  ·  L 0.81</text>
+<text x="484" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.096</text>
+<rect x="472" y="1920" width="188" height="68" rx="9" fill="#77AFF7"/>
+<text x="484" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="484" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#77AFF7  ·  L 0.74</text>
+<text x="484" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="472" y="1996" width="188" height="68" rx="9" fill="#5F99E2"/>
+<text x="484" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="484" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#5F99E2  ·  L 0.67</text>
+<text x="484" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="472" y="2072" width="188" height="68" rx="9" fill="#4C82C6"/>
+<text x="484" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="484" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#4C82C6  ·  L 0.60</text>
+<text x="484" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.119</text>
+<rect x="472" y="2148" width="188" height="68" rx="9" fill="#3B6CA8"/>
+<text x="484" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="484" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#3B6CA8  ·  L 0.53</text>
+<text x="484" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.109</text>
+<rect x="472" y="2224" width="188" height="68" rx="9" fill="#2E5689"/>
+<text x="484" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="484" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#2E5689  ·  L 0.45</text>
+<text x="484" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.096</text>
+<rect x="472" y="2300" width="188" height="68" rx="9" fill="#213F65"/>
+<text x="484" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="484" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#213F65  ·  L 0.36</text>
+<text x="484" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="472" y="2376" width="188" height="68" rx="9" fill="#162840"/>
+<text x="484" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="484" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#162840  ·  L 0.27</text>
+<text x="484" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.051</text>
+<text x="676" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Indigo</text>
+<text x="676" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/indigo/&#123;step&#125;</text>
+<rect x="676" y="1540" width="188" height="68" rx="9" fill="#EFF0F9"/>
+<text x="688" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="688" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EFF0F9  ·  L 0.96</text>
+<text x="688" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.012</text>
+<rect x="676" y="1616" width="188" height="68" rx="9" fill="#E7E9FB"/>
+<text x="688" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="688" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E7E9FB  ·  L 0.94</text>
+<text x="688" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="676" y="1692" width="188" height="68" rx="9" fill="#DDE1FE"/>
+<text x="688" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="688" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#DDE1FE  ·  L 0.92</text>
+<text x="688" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="676" y="1768" width="188" height="68" rx="9" fill="#CBD0FF"/>
+<text x="688" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="688" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#CBD0FF  ·  L 0.87</text>
+<text x="688" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="676" y="1844" width="188" height="68" rx="9" fill="#B4BBFE"/>
+<text x="688" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="688" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#B4BBFE  ·  L 0.81</text>
+<text x="688" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="676" y="1920" width="188" height="68" rx="9" fill="#9EA3F7"/>
+<text x="688" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="688" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#9EA3F7  ·  L 0.74</text>
+<text x="688" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.121</text>
+<rect x="676" y="1996" width="188" height="68" rx="9" fill="#888DE2"/>
+<text x="688" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="688" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#888DE2  ·  L 0.67</text>
+<text x="688" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.125</text>
+<rect x="676" y="2072" width="188" height="68" rx="9" fill="#7377C6"/>
+<text x="688" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="688" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#7377C6  ·  L 0.60</text>
+<text x="688" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.119</text>
+<rect x="676" y="2148" width="188" height="68" rx="9" fill="#5F62A8"/>
+<text x="688" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="688" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#5F62A8  ·  L 0.53</text>
+<text x="688" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.109</text>
+<rect x="676" y="2224" width="188" height="68" rx="9" fill="#4C4E89"/>
+<text x="688" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="688" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#4C4E89  ·  L 0.45</text>
+<text x="688" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="676" y="2300" width="188" height="68" rx="9" fill="#373965"/>
+<text x="688" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="688" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#373965  ·  L 0.36</text>
+<text x="688" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="676" y="2376" width="188" height="68" rx="9" fill="#232540"/>
+<text x="688" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="688" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#232540  ·  L 0.28</text>
+<text x="688" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.050</text>
+<text x="880" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Purple</text>
+<text x="880" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/purple/&#123;step&#125;</text>
+<rect x="880" y="1540" width="188" height="68" rx="9" fill="#F3EFF8"/>
+<text x="892" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="892" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F3EFF8  ·  L 0.96</text>
+<text x="892" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.013</text>
+<rect x="880" y="1616" width="188" height="68" rx="9" fill="#EEE7F8"/>
+<text x="892" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="892" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EEE7F8  ·  L 0.94</text>
+<text x="892" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="880" y="1692" width="188" height="68" rx="9" fill="#E9DDF9"/>
+<text x="892" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="892" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E9DDF9  ·  L 0.92</text>
+<text x="892" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="880" y="1768" width="188" height="68" rx="9" fill="#DECAF7"/>
+<text x="892" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="892" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#DECAF7  ·  L 0.87</text>
+<text x="892" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="880" y="1844" width="188" height="68" rx="9" fill="#CFB2F3"/>
+<text x="892" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="892" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#CFB2F3  ·  L 0.81</text>
+<text x="892" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.095</text>
+<rect x="880" y="1920" width="188" height="68" rx="9" fill="#BE98E9"/>
+<text x="892" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="892" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#BE98E9  ·  L 0.74</text>
+<text x="892" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="880" y="1996" width="188" height="68" rx="9" fill="#A982D4"/>
+<text x="892" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="892" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#A982D4  ·  L 0.68</text>
+<text x="892" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.124</text>
+<rect x="880" y="2072" width="188" height="68" rx="9" fill="#916CB9"/>
+<text x="892" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="892" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#916CB9  ·  L 0.60</text>
+<text x="892" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="880" y="2148" width="188" height="68" rx="9" fill="#79589D"/>
+<text x="892" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="892" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#79589D  ·  L 0.52</text>
+<text x="892" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.111</text>
+<rect x="880" y="2224" width="188" height="68" rx="9" fill="#62467F"/>
+<text x="892" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="892" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#62467F  ·  L 0.45</text>
+<text x="892" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="880" y="2300" width="188" height="68" rx="9" fill="#48335E"/>
+<text x="892" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="892" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#48335E  ·  L 0.36</text>
+<text x="892" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.076</text>
+<rect x="880" y="2376" width="188" height="68" rx="9" fill="#2D213B"/>
+<text x="892" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="892" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#2D213B  ·  L 0.27</text>
+<text x="892" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.049</text>
+<text x="1084" y="1506" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" fill="#17202B">Pink</text>
+<text x="1084" y="1526" font-family="Inter,Arial,sans-serif" font-size="11" fill="#73808D">color/pink/&#123;step&#125;</text>
+<rect x="1084" y="1540" width="188" height="68" rx="9" fill="#F8EEF3"/>
+<text x="1096" y="1564" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">50</text>
+<text x="1096" y="1584" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8EEF3  ·  L 0.96</text>
+<text x="1096" y="1599" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.013</text>
+<rect x="1084" y="1616" width="188" height="68" rx="9" fill="#F7E4EE"/>
+<text x="1096" y="1640" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">100</text>
+<text x="1096" y="1660" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F7E4EE  ·  L 0.94</text>
+<text x="1096" y="1675" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.024</text>
+<rect x="1084" y="1692" width="188" height="68" rx="9" fill="#F8D9E9"/>
+<text x="1096" y="1716" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">200</text>
+<text x="1096" y="1736" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F8D9E9  ·  L 0.92</text>
+<text x="1096" y="1751" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.040</text>
+<rect x="1084" y="1768" width="188" height="68" rx="9" fill="#F5C4DE"/>
+<text x="1096" y="1792" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">300</text>
+<text x="1096" y="1812" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#F5C4DE  ·  L 0.87</text>
+<text x="1096" y="1827" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.065</text>
+<rect x="1084" y="1844" width="188" height="68" rx="9" fill="#EEA8CF"/>
+<text x="1096" y="1868" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">400</text>
+<text x="1096" y="1888" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#EEA8CF  ·  L 0.81</text>
+<text x="1096" y="1903" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.096</text>
+<rect x="1084" y="1920" width="188" height="68" rx="9" fill="#E28DBE"/>
+<text x="1096" y="1944" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">500</text>
+<text x="1096" y="1964" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#E28DBE  ·  L 0.75</text>
+<text x="1096" y="1979" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.119</text>
+<rect x="1084" y="1996" width="188" height="68" rx="9" fill="#CC76A8"/>
+<text x="1096" y="2020" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">600</text>
+<text x="1096" y="2040" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#CC76A8  ·  L 0.68</text>
+<text x="1096" y="2055" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.124</text>
+<rect x="1084" y="2072" width="188" height="68" rx="9" fill="#B26191"/>
+<text x="1096" y="2096" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#17202B">700</text>
+<text x="1096" y="2116" font-family="Inter,Arial,sans-serif" font-size="11" fill="#17202B">#B26191  ·  L 0.60</text>
+<text x="1096" y="2131" font-family="Inter,Arial,sans-serif" font-size="10" fill="#17202B">C 0.120</text>
+<rect x="1084" y="2148" width="188" height="68" rx="9" fill="#964E79"/>
+<text x="1096" y="2172" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">800</text>
+<text x="1096" y="2192" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#964E79  ·  L 0.52</text>
+<text x="1096" y="2207" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.110</text>
+<rect x="1084" y="2224" width="188" height="68" rx="9" fill="#7A3E61"/>
+<text x="1096" y="2248" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">900</text>
+<text x="1096" y="2268" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#7A3E61  ·  L 0.45</text>
+<text x="1096" y="2283" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.095</text>
+<rect x="1084" y="2300" width="188" height="68" rx="9" fill="#5A2D47"/>
+<text x="1096" y="2324" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">950</text>
+<text x="1096" y="2344" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#5A2D47  ·  L 0.37</text>
+<text x="1096" y="2359" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.075</text>
+<rect x="1084" y="2376" width="188" height="68" rx="9" fill="#391D2D"/>
+<text x="1096" y="2400" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">1000</text>
+<text x="1096" y="2420" font-family="Inter,Arial,sans-serif" font-size="11" fill="#FFFFFF">#391D2D  ·  L 0.28</text>
+<text x="1096" y="2435" font-family="Inter,Arial,sans-serif" font-size="10" fill="#FFFFFF">C 0.050</text>
+<text x="64" y="2572" font-family="Inter,Arial,sans-serif" font-size="12" fill="#7A8590">Proposal for visual review · warm 50 / 100 / 200 use the three supplied HEX references · no Figma variables were changed</text>
+</svg>
