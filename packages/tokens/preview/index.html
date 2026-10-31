@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Canon Tokens Preview</title>
   <link rel="stylesheet" href="../dist/css/variables.css" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?shape=1" />
 </head>
 <body>
   <main class="preview">
@@ -29,6 +29,12 @@
     <section class="section">
       <h2 class="section-title">Semantic colors</h2>
       <div id="semantic-groups" class="semantic-groups"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Shape</h2>
+      <p class="preview-subtitle">같은 크기의 상자로 세 가지 모서리 스타일을 비교해요.</p>
+      <div id="shape-groups" class="shape-groups"></div>
     </section>
 
     <section class="section">
@@ -230,9 +236,37 @@
       if (!document.documentElement.dataset.theme) renderSemantics()
     })
 
+    const shapeGroups = document.getElementById('shape-groups')
+    ;['default', 'sharp', 'soft'].forEach((mode) => {
+      const section = document.createElement('article')
+      section.className = 'shape-group'
+      section.dataset.shape = mode
+      const heading = document.createElement('h3')
+      heading.className = 'group-title'
+      heading.textContent = mode
+      const grid = document.createElement('div')
+      grid.className = 'shape-grid'
+      section.append(heading, grid)
+      shapeGroups.appendChild(section)
+      ;['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'].forEach((name) => {
+        const item = document.createElement('div')
+        item.className = 'shape-item'
+        const sample = document.createElement('div')
+        sample.className = 'shape-sample'
+        sample.style.borderRadius = `var(--radius-${name})`
+        const label = document.createElement('code')
+        label.textContent = name
+        const value = document.createElement('span')
+        value.textContent = getComputedStyle(section).getPropertyValue(`--radius-${name}`).trim()
+        item.append(sample, label, value)
+        grid.appendChild(item)
+      })
+    })
+
     renderPrimitives()
     renderSemantics()
     renderTypography()
+    if (location.hash === '#shape-groups') shapeGroups.scrollIntoView()
   </script>
 </body>
 </html>

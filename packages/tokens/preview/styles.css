@@ -88,6 +88,24 @@ code {
   gap: 24px;
 }
 
+.shape-group {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 24px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--semantic-border-default);
+}
+
+.shape-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 16px;
+}
+
+.shape-item { display: grid; gap: 6px; font-size: 12px; }
+.shape-item span { color: var(--semantic-text-tertiary); }
+.shape-sample { width: 64px; height: 64px; background: var(--semantic-control-accent-solid); }
+
 .scale-row {
   display: grid;
   grid-template-columns: 96px minmax(0, 1fr);
@@ -237,6 +255,7 @@ code {
 
   .scale-row,
   .semantic-group,
+  .shape-group,
   .type-row {
     grid-template-columns: 1fr;
   }
