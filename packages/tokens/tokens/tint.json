@@ -28,8 +28,7 @@
       },
       "control": {
         "neutral": {
-          "subtle": { "$value": "{color.gray.100}" },
-          "border": { "$value": "{color.gray.400}" }
+          "subtle": { "$value": "{color.gray.100}" }
         }
       }
     },
@@ -60,8 +59,7 @@
       },
       "control": {
         "neutral": {
-          "subtle": { "$value": "{color.warm.200}" },
-          "border": { "$value": "{color.warm.300}" }
+          "subtle": { "$value": "{color.warm.200}" }
         }
       }
     }

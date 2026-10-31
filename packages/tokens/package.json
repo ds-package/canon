@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "build": "node scripts/build.js && tsup",
-    "dev": "node scripts/build.js --watch"
+    "dev": "node scripts/build.js --watch",
+    "test": "pnpm build && node --test scripts/build.test.js"
   },
   "devDependencies": {
     "style-dictionary": "^4.1.4",

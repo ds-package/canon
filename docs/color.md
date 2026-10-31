@@ -1,5 +1,5 @@
 ---
-verified: 2026-10-14
+verified: 2026-11-01
 ---
 # 컬러
 
@@ -50,30 +50,26 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | --- | --- | --- |
 | `background` | `base`, `inverse` | 맨 뒤 바탕. `base`는 페이지 바탕, `inverse`는 반전 바탕 |
 | `surface` | `default`, `raised`, `overlay`, `muted`, `informative`, `positive`, `notice`, `negative`, `accent` | 배경 위에 얹는 면. `default`는 기본 면, `raised`는 바닥 위로 한 단계 떠 있는 면이고 Card의 `elevated` variant가 쓴다, `overlay`는 가장 위에 뜨는 팝오버와 모달, `muted`는 옅은 면, 나머지는 상태 콜아웃 면 |
-| `control` | `neutral`, `accent`, `informative`, `positive`, `notice`, `negative`, `disabled` | 배경과 면 위에 놓는 컨트롤 UI의 채움. 색마다 `solid`, `solid-hover`, `solid-pressed`, `on-solid`를 가진다. `neutral`만 `subtle`, `text`, `border`를 더 가진다(기본 버튼, 체크 상태, 선택된 탭) |
-| `text` | `primary`, `secondary`, `tertiary`, `placeholder`, `helper`, `disabled`, `inverse`, `link` | 글자. `placeholder`는 입력 안내 문구, `helper`는 입력 아래 도움말과 캡션 |
-| `icon` | `primary`, `secondary`, `disabled`, `inverse` | 아이콘 |
-| `border` | `default`, `emphasis`, `focus`, `disabled` | 테두리 |
+| `control` | `neutral`, `accent`, `informative`, `positive`, `notice`, `negative`, `disabled` | 배경과 면 위에 놓는 컨트롤 UI의 채움. 색마다 `solid`, `solid-hover`, `solid-pressed`, `on-solid`를 가지고 `neutral`만 `subtle`을 더 가진다 |
+| `text` | 기본 역할, `accent` | 글자. `placeholder`는 입력 안내 문구, `helper`는 입력 아래 도움말과 캡션 |
+| `icon` | 기본 역할 | 아이콘 |
+| `status` | `informative`, `positive`, `notice`, `negative` | 글자와 아이콘이 공유하는 상태·의도 색 |
+| `border` | 기본 역할, `selected*`, `accent`, `status-*`, `status-*-subtle` | 테두리. 공용 상태색과 값이나 역할이 달라서 stroke 대상에 예외를 둔다 |
 | `overlay` | `hover`, `pressed`, `scrim` | 반투명 상태 오버레이와 딤 |
-| `accent` | `text`, `border` | brand 축을 따르는 글자와 테두리. 기본은 blue |
-| `status/informative` | `text`, `border` | 정보. blue |
-| `status/positive` | 위와 같음 | 성공. green |
-| `status/notice` | 위와 같음 | 경고. yellow |
-| `status/negative` | 위와 같음 | 오류, 파괴. red |
 | `static` | `white`, `black` | 모드와 상관없이 고정되는 흰색과 검정 |
 
-위에서 아래로 쌓인다: `background` 위에 `surface`, 그 위에 `control`. 컨트롤 채움은 `control/{색}/solid`, 상태 콜아웃 면은 `surface/{색}`, 그 면의 글자와 테두리는 `status/{색}/text`, `status/{색}/border`다. 이름만 보고 `control/negative/solid-hover`, `surface/negative`를 예측할 수 있게 한다.
+위에서 아래로 쌓인다: `background` 위에 `surface`, 그 위에 `control`. 글자와 아이콘의 상태색은 `status/{의미}`를 함께 쓴다. 대상별 값이나 역할이 다를 때만 대상 그룹에 역할을 붙인다. 현재 테두리는 `border/status-{의미}`와 `border/status-{의미}-subtle`이 그 예외다.
 
 ### 규칙
 
-1. **brand는 별도 축이다.** `control/accent`, `surface/accent`, `accent/*`, `text/link`, `border/focus`가 brand 축을 따르고, 기본값은 blue다. 정보 색은 `status/informative`와 `control/informative`로 따로 두어, brand를 바꿔도 정보 색이 같이 움직이지 않는다.
+1. **brand는 별도 축이다.** `control/accent`, `surface/accent`, `text/accent`, `text/link`, `border/accent`, `border/focus`가 brand 축을 따르고, 기본값은 blue다. 정보 색은 `status/informative`, `border/status-informative`, `control/informative`로 따로 두어, brand를 바꿔도 정보 색이 같이 움직이지 않는다.
 2. **hover와 pressed는 두 가지로 처리한다.**
    - 채워진 강조(`control/neutral/solid`, `control/*/solid`)는 전용 토큰을 쓴다(`solid-hover`, `solid-pressed`).
    - 투명하거나 옅은 면(아웃라인 버튼, 행, 메뉴 항목)은 `overlay/hover`, `overlay/pressed`를 얹는다. 회색 solid 버튼처럼 기본 면이 있는 경우에는 fill을 두 겹(`control/disabled` 또는 `surface/muted` + `overlay`)으로 쓴다.
    - 이유: 오버레이는 어떤 바탕 위에서도 동작해서 토큰 수를 줄이고, 선명한 강조에는 색 이동이 필요하다.
 3. **solid 위 글자는 `on-solid`다.** `control/notice/on-solid`만 어두운 글자(`gray/1000`)이고 나머지는 흰색이다. 노란 바탕에 흰 글자는 대비가 부족하다.
 4. **disabled는 항목이 아니라 의미로 고른다.** 글자는 `text/disabled`, 아이콘은 `icon/disabled`, 테두리는 `border/disabled`, 채움은 `control/disabled`, 면은 `surface/muted`로 간다. 색조를 유지한 흐린 색을 만들지 않는다.
-5. **아이콘 색은 같은 컴포넌트의 라벨 글자와 같은 토큰에 묶는다.** Button과 Tag의 아이콘이 해당한다. 상태나 의도가 바뀔 때 아이콘이 따로 어긋나지 않게 한다.
+5. **같은 값과 역할이면 `status/*`를 공유한다.** 상태 텍스트와 아이콘은 같은 토큰을 쓴다. 대상에 따라 값이나 역할이 실제로 달라질 때만 `text/status-*`, `icon/status-*`, `border/status-*`처럼 대상 그룹에 별도 토큰을 만든다.
 
 ### 값 (라이트 / 다크)
 
@@ -93,6 +89,7 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `text/disabled` | gray/400 | gray/800 |
 | `text/inverse` | white | gray/1000 |
 | `text/link` | blue/600 | blue/400 |
+| `text/accent` | brand/800 | brand/300 |
 | `icon/primary` | gray/900 | gray/100 |
 | `icon/secondary` | gray/600 | gray/500 |
 | `icon/disabled` | gray/400 | gray/800 |
@@ -101,19 +98,21 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `border/emphasis` | gray/400 | gray/800 |
 | `border/focus` | blue/600 | blue/400 |
 | `border/disabled` | gray/100 | gray/1000 |
+| `border/selected` | gray/1000 | gray/50 |
+| `border/selected-hover` | gray/950 | gray/100 |
+| `border/selected-pressed` | gray/950 | gray/100 |
+| `border/accent` | brand/200 | brand/800 |
 | `control/disabled` | gray/100 | gray/950 |
 | `control/neutral/solid` | gray/1000 | gray/50 |
 | `control/neutral/solid-hover` | gray/950 | gray/100 |
-| `control/neutral/solid-pressed` | gray/900 | gray/200 |
+| `control/neutral/solid-pressed` | gray/950 | gray/100 |
 | `control/neutral/subtle` | gray/100 | gray/950 |
 | `control/neutral/on-solid` | white | gray/1000 |
-| `control/neutral/text` | gray/1000 | gray/50 |
-| `control/neutral/border` | gray/400 | gray/800 |
 | `overlay/hover` | blackAlpha/100 | whiteAlpha/100 |
 | `overlay/pressed` | blackAlpha/300 | whiteAlpha/300 |
 | `overlay/scrim` | blackAlpha/500 | blackAlpha/700 |
 
-`control/*`과 `surface/*`, `status/*`는 네 색이 같은 틀을 따른다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
+`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 intent를 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
 
 | 키 | 라이트 | 다크 |
 | --- | --- | --- |
@@ -121,8 +120,9 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `control/{c}/solid-hover` | 한 단계 진하게(700, 800, 600, 700) | 한 단계 밝게(500, 600, 400, 500) |
 | `control/{c}/solid-pressed` | 두 단계 진하게(800, 900, 700, 800) | 두 단계 밝게(400, 500, 300, 400) |
 | `surface/{c}` | 50 | 950 |
-| `status/{c}/text` | 800 (yellow는 900) | 300 |
-| `status/{c}/border` | 200 (yellow는 300) | 800 |
+| `status/{c}` | 800 (yellow는 900) | 300 |
+| `border/status-{c}` | blue/600, green/700, yellow/900, red/600 | blue/600, green/700, yellow/300, red/600 |
+| `border/status-{c}-subtle` | 200 (yellow는 300) | 800 |
 | `control/{c}/on-solid` | white (notice는 gray/1000) | 라이트와 같음 |
 
 ## 3. 컴포넌트 바인딩
@@ -134,4 +134,4 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 ## 4. 변수 이름 규칙
 
 - 변수 이름에 `.`을 쓸 수 없다. 소수는 `_`로 쓴다(`line-height/4_5`).
-- 의미색 그룹의 값 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 `control/notice/*`, `surface/notice`, `status/notice/*`를 쓴다.
+- 의미색 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.

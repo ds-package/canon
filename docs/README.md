@@ -1,5 +1,5 @@
 ---
-verified: 2026-10-14
+verified: 2026-11-01
 ---
 # Canon 제작 가이드
 
@@ -25,11 +25,11 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 
 ## 코드 토큰과 Figma 동기화 상태
 
-2026-10-14 기준으로 `packages/tokens`를 Figma 정본에 맞췄다.
+2026-11-01 기준으로 `packages/tokens`를 Figma 정본에 맞췄다.
 
 | 영역 | 동기화 결과 |
 | --- | --- |
-| 시멘틱 컬러 | `semantic` 컬러를 `background`, `surface`, `control`, `text`, `icon`, `border`, `overlay`, `static`, `accent`, `status/*` 구조로 제공한다. light와 dark가 같은 CSS 변수명을 공유한다. |
+| 시멘틱 컬러 | `semantic` 컬러를 적용 대상 중심의 `background`, `surface`, `control`, `text`, `icon`, `border`, `status`, `overlay`, `static` 구조로 제공한다. `status/*`는 글자·아이콘이 함께 쓰는 의미색이고, 대상별 값이나 역할이 다를 때만 `border/status-*`처럼 대상 그룹에 예외를 둔다. light와 dark가 같은 CSS 변수명을 공유한다. |
 | 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha를 제공한다. 10색 값은 `ramps.py` 출력과 같다. |
 | 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
 | 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. |
@@ -47,6 +47,6 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 | `color/bg/base`, `base-hover`, `faint`, `disabled` | `surface/default`, `overlay/hover`, `surface/muted`, `control/disabled` |
 | `color/bg/brand`, `danger`, `success`, `info` | `control/informative`, `control/negative`, `control/positive`의 `solid`와 `surface/*` 상태 면 |
 | `color/text/strong`, `base`, `faint`, `disabled` | `text/primary`, `text/secondary`, `text/tertiary`, `text/disabled` |
-| `color/text/brand`, `danger`, `success` | `text/link` 또는 해당 `status/*/text` |
+| `color/text/brand`, `danger`, `success` | `text/link`, `text/accent` 또는 해당 `status/*` 의미색 |
 | `color/border/base*`, `faint`, `disabled` | `border/default`, `border/emphasis`, `border/disabled` |
-| `color/border/danger*` | `status/negative/border` 또는 상태 오버레이 |
+| `color/border/danger*` | `border/status-negative`, `border/status-negative-subtle` 또는 상태 오버레이 |

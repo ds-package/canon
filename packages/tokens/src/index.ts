@@ -39,11 +39,6 @@ const alphaScale = (name: string) => ({
   900: cssVar(`color-${name}-900`),
 })
 
-const semanticStatus = (intent: string) => ({
-  text: cssVar(`semantic-status-${intent}-text`),
-  border: cssVar(`semantic-status-${intent}-border`),
-})
-
 const semanticControl = (name: string) => ({
   solid: cssVar(`semantic-control-${name}-solid`),
   solidHover: cssVar(`semantic-control-${name}-solid-hover`),
@@ -146,6 +141,7 @@ export const tokens = {
       disabled: cssVar('semantic-text-disabled'),
       inverse: cssVar('semantic-text-inverse'),
       link: cssVar('semantic-text-link'),
+      accent: cssVar('semantic-text-accent'),
     },
     icon: {
       primary: cssVar('semantic-icon-primary'),
@@ -153,18 +149,34 @@ export const tokens = {
       disabled: cssVar('semantic-icon-disabled'),
       inverse: cssVar('semantic-icon-inverse'),
     },
+    status: {
+      informative: cssVar('semantic-status-informative'),
+      positive: cssVar('semantic-status-positive'),
+      notice: cssVar('semantic-status-notice'),
+      negative: cssVar('semantic-status-negative'),
+    },
     border: {
       default: cssVar('semantic-border-default'),
       emphasis: cssVar('semantic-border-emphasis'),
       focus: cssVar('semantic-border-focus'),
       disabled: cssVar('semantic-border-disabled'),
+      selected: cssVar('semantic-border-selected'),
+      selectedHover: cssVar('semantic-border-selected-hover'),
+      selectedPressed: cssVar('semantic-border-selected-pressed'),
+      accent: cssVar('semantic-border-accent'),
+      statusInformative: cssVar('semantic-border-status-informative'),
+      statusPositive: cssVar('semantic-border-status-positive'),
+      statusNotice: cssVar('semantic-border-status-notice'),
+      statusNegative: cssVar('semantic-border-status-negative'),
+      statusInformativeSubtle: cssVar('semantic-border-status-informative-subtle'),
+      statusPositiveSubtle: cssVar('semantic-border-status-positive-subtle'),
+      statusNoticeSubtle: cssVar('semantic-border-status-notice-subtle'),
+      statusNegativeSubtle: cssVar('semantic-border-status-negative-subtle'),
     },
     control: {
       neutral: {
         ...semanticControl('neutral'),
         subtle: cssVar('semantic-control-neutral-subtle'),
-        text: cssVar('semantic-control-neutral-text'),
-        border: cssVar('semantic-control-neutral-border'),
       },
       accent: semanticControl('accent'),
       informative: semanticControl('informative'),
@@ -181,16 +193,6 @@ export const tokens = {
     static: {
       white: cssVar('semantic-static-white'),
       black: cssVar('semantic-static-black'),
-    },
-    accent: {
-      text: cssVar('semantic-accent-text'),
-      border: cssVar('semantic-accent-border'),
-    },
-    status: {
-      informative: semanticStatus('informative'),
-      positive: semanticStatus('positive'),
-      notice: semanticStatus('notice'),
-      negative: semanticStatus('negative'),
     },
   },
   spacing: {
