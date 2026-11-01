@@ -60,16 +60,30 @@ export function DialogPlayground() {
           </div>
         </div>
         <div className="playground-preview">
-          <DialogTrigger>
-            <button type="button">Open dialog</button>
-            <Dialog {...model.dialogProps}>
-              {model.showCloseButton && <DialogClose aria-label="Close dialog" />}
-              <DialogTitle>Delete document?</DialogTitle>
-              <DialogDescription>This action cannot be undone.</DialogDescription>
-              <DialogBody>Review the document before deleting it.</DialogBody>
-              {model.showFooter && <DialogFooter><DialogClose>Done</DialogClose></DialogFooter>}
-            </Dialog>
-          </DialogTrigger>
+          <div className="playground-preview-toolbar">
+            <span>Preview</span>
+            <DialogTrigger>
+              <button type="button">Open interactive dialog</button>
+              <Dialog {...model.dialogProps}>
+                {model.showCloseButton && <DialogClose aria-label="Close dialog" />}
+                <DialogTitle>Delete document?</DialogTitle>
+                <DialogDescription>This action cannot be undone.</DialogDescription>
+                <DialogBody>Review the document before deleting it.</DialogBody>
+                {model.showFooter && <DialogFooter><DialogClose>Done</DialogClose></DialogFooter>}
+              </Dialog>
+            </DialogTrigger>
+          </div>
+          <div className="playground-preview-stage">
+            <div className="canon-dialog-modal playground-dialog-specimen" aria-hidden="true">
+              <div className="canon-dialog">
+                {model.showCloseButton && <span className="canon-dialog-close playground-specimen-close">×</span>}
+                <DialogTitle>Delete document?</DialogTitle>
+                <DialogDescription>This action cannot be undone.</DialogDescription>
+                <DialogBody>Review the document before deleting it.</DialogBody>
+                {model.showFooter && <DialogFooter><span className="canon-dialog-close">Done</span></DialogFooter>}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <pre className="playground-code"><code>{model.jsx}</code></pre>
