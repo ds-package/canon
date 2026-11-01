@@ -39,14 +39,26 @@ const alphaScale = (name: string) => ({
   900: cssVar(`color-${name}-900`),
 })
 
-const semanticStatus = (intent: string) => ({
-  solid: cssVar(`semantic-status-${intent}-solid`),
-  solidHover: cssVar(`semantic-status-${intent}-solid-hover`),
-  solidPressed: cssVar(`semantic-status-${intent}-solid-pressed`),
-  subtle: cssVar(`semantic-status-${intent}-subtle`),
-  text: cssVar(`semantic-status-${intent}-text`),
-  border: cssVar(`semantic-status-${intent}-border`),
-  onSolid: cssVar(`semantic-status-${intent}-on-solid`),
+const semanticControl = (name: string) => ({
+  solid: cssVar(`semantic-control-${name}-solid`),
+  solidHover: cssVar(`semantic-control-${name}-solid-hover`),
+  solidPressed: cssVar(`semantic-control-${name}-solid-pressed`),
+  onSolid: cssVar(`semantic-control-${name}-on-solid`),
+})
+
+const brandScale = () => ({
+  50: cssVar('brand-50'),
+  100: cssVar('brand-100'),
+  200: cssVar('brand-200'),
+  300: cssVar('brand-300'),
+  400: cssVar('brand-400'),
+  500: cssVar('brand-500'),
+  600: cssVar('brand-600'),
+  700: cssVar('brand-700'),
+  800: cssVar('brand-800'),
+  900: cssVar('brand-900'),
+  950: cssVar('brand-950'),
+  1000: cssVar('brand-1000'),
 })
 
 const typographyStyle = (name: string) => ({
@@ -103,22 +115,33 @@ export const tokens = {
     whiteAlpha: alphaScale('white-alpha'),
     blackAlpha: alphaScale('black-alpha'),
   },
+  brand: brandScale(),
   semantic: {
+    background: {
+      base: cssVar('semantic-background-base'),
+      inverse: cssVar('semantic-background-inverse'),
+    },
     surface: {
-      body: cssVar('semantic-surface-body'),
       default: cssVar('semantic-surface-default'),
       raised: cssVar('semantic-surface-raised'),
       overlay: cssVar('semantic-surface-overlay'),
       muted: cssVar('semantic-surface-muted'),
-      inverse: cssVar('semantic-surface-inverse'),
+      informative: cssVar('semantic-surface-informative'),
+      positive: cssVar('semantic-surface-positive'),
+      notice: cssVar('semantic-surface-notice'),
+      negative: cssVar('semantic-surface-negative'),
+      accent: cssVar('semantic-surface-accent'),
     },
     text: {
       primary: cssVar('semantic-text-primary'),
       secondary: cssVar('semantic-text-secondary'),
       tertiary: cssVar('semantic-text-tertiary'),
+      placeholder: cssVar('semantic-text-placeholder'),
+      helper: cssVar('semantic-text-helper'),
       disabled: cssVar('semantic-text-disabled'),
       inverse: cssVar('semantic-text-inverse'),
       link: cssVar('semantic-text-link'),
+      accent: cssVar('semantic-text-accent'),
     },
     icon: {
       primary: cssVar('semantic-icon-primary'),
@@ -126,20 +149,41 @@ export const tokens = {
       disabled: cssVar('semantic-icon-disabled'),
       inverse: cssVar('semantic-icon-inverse'),
     },
+    status: {
+      informative: cssVar('semantic-status-informative'),
+      positive: cssVar('semantic-status-positive'),
+      notice: cssVar('semantic-status-notice'),
+      negative: cssVar('semantic-status-negative'),
+    },
     border: {
       default: cssVar('semantic-border-default'),
       emphasis: cssVar('semantic-border-emphasis'),
       focus: cssVar('semantic-border-focus'),
       disabled: cssVar('semantic-border-disabled'),
+      selected: cssVar('semantic-border-selected'),
+      selectedHover: cssVar('semantic-border-selected-hover'),
+      selectedPressed: cssVar('semantic-border-selected-pressed'),
+      accent: cssVar('semantic-border-accent'),
+      statusInformative: cssVar('semantic-border-status-informative'),
+      statusPositive: cssVar('semantic-border-status-positive'),
+      statusNotice: cssVar('semantic-border-status-notice'),
+      statusNegative: cssVar('semantic-border-status-negative'),
+      statusInformativeSubtle: cssVar('semantic-border-status-informative-subtle'),
+      statusPositiveSubtle: cssVar('semantic-border-status-positive-subtle'),
+      statusNoticeSubtle: cssVar('semantic-border-status-notice-subtle'),
+      statusNegativeSubtle: cssVar('semantic-border-status-negative-subtle'),
     },
-    neutral: {
-      solid: cssVar('semantic-neutral-solid'),
-      solidHover: cssVar('semantic-neutral-solid-hover'),
-      solidPressed: cssVar('semantic-neutral-solid-pressed'),
-      subtle: cssVar('semantic-neutral-subtle'),
-      onSolid: cssVar('semantic-neutral-on-solid'),
-      text: cssVar('semantic-neutral-text'),
-      border: cssVar('semantic-neutral-border'),
+    control: {
+      neutral: {
+        ...semanticControl('neutral'),
+        subtle: cssVar('semantic-control-neutral-subtle'),
+      },
+      accent: semanticControl('accent'),
+      informative: semanticControl('informative'),
+      positive: semanticControl('positive'),
+      notice: semanticControl('notice'),
+      negative: semanticControl('negative'),
+      disabled: cssVar('semantic-control-disabled'),
     },
     overlay: {
       hover: cssVar('semantic-overlay-hover'),
@@ -149,12 +193,6 @@ export const tokens = {
     static: {
       white: cssVar('semantic-static-white'),
       black: cssVar('semantic-static-black'),
-    },
-    status: {
-      informative: semanticStatus('informative'),
-      positive: semanticStatus('positive'),
-      notice: semanticStatus('notice'),
-      negative: semanticStatus('negative'),
     },
   },
   spacing: {
@@ -194,6 +232,7 @@ export const tokens = {
       10: cssVar('font-size-10'),
       11: cssVar('font-size-11'),
       12: cssVar('font-size-12'),
+      13: cssVar('font-size-13'),
       14: cssVar('font-size-14'),
       16: cssVar('font-size-16'),
       18: cssVar('font-size-18'),
@@ -260,6 +299,10 @@ export const tokens = {
         default: typographyStyle('typography-body-14'),
         strong: typographyStyle('typography-body-14-strong'),
       },
+      13: {
+        default: typographyStyle('typography-body-13'),
+        strong: typographyStyle('typography-body-13-strong'),
+      },
     },
     label: {
       18: {
@@ -273,6 +316,10 @@ export const tokens = {
       14: {
         default: typographyStyle('typography-label-14'),
         strong: typographyStyle('typography-label-14-strong'),
+      },
+      13: {
+        default: typographyStyle('typography-label-13'),
+        strong: typographyStyle('typography-label-13-strong'),
       },
       12: {
         default: typographyStyle('typography-label-12'),
@@ -289,6 +336,7 @@ export const tokens = {
   },
   radius: {
     none: cssVar('radius-none'),
+    xs: cssVar('radius-xs'),
     sm: cssVar('radius-sm'),
     md: cssVar('radius-md'),
     lg: cssVar('radius-lg'),

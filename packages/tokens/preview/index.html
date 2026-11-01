@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Canon Tokens Preview</title>
   <link rel="stylesheet" href="../dist/css/variables.css" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?preview=3" />
 </head>
 <body>
   <main class="preview">
@@ -14,12 +14,50 @@
         <h1 class="preview-title">Canon Tokens</h1>
         <p class="preview-subtitle">Figma primitive, semantic, typography</p>
       </div>
+      <div class="preview-controls">
       <div class="theme-control" aria-label="테마 선택">
         <button type="button" data-theme-option="light">Light</button>
         <button type="button" data-theme-option="dark">Dark</button>
         <button type="button" data-theme-option="system" aria-pressed="true">System</button>
       </div>
+      <div class="theme-control" aria-label="색조 선택">
+        <button type="button" data-tint-option="cool" aria-pressed="true">Cool</button>
+        <button type="button" data-tint-option="warm" aria-pressed="false">Warm</button>
+      </div>
+      </div>
     </header>
+
+    <section class="section" id="color-preview">
+      <h2 class="section-title">색상 조합 미리보기</h2>
+      <p class="preview-subtitle">위에서 모드와 색조를 바꿔 실제 조합을 살펴보세요. 컴포넌트의 예시 화면이에요.</p>
+      <div class="sample-layout">
+        <article class="sample-card">
+          <span class="sample-eyebrow">CANON NOTES</span>
+          <h3>오늘의 작은 기록</h3>
+          <p>좋았던 생각을 모아두고, 나중에 다시 꺼내 보세요.</p>
+          <label for="sample-title">제목</label>
+          <input id="sample-title" type="text" placeholder="어떤 생각을 기록할까요?" />
+          <span class="sample-helper">이곳에 자유롭게 적어보세요.</span>
+          <div class="sample-actions">
+            <button class="sample-primary" type="button">기록하기</button>
+            <button class="sample-secondary" type="button">나중에</button>
+          </div>
+        </article>
+        <div class="sample-stack">
+          <article class="sample-card sample-card-raised">
+            <span class="sample-eyebrow">MY COLLECTION</span>
+            <h3>차곡차곡 모아둔 것들</h3>
+            <p>좋아하는 문장과 아이디어가 여기에 쌓여요.</p>
+            <span class="sample-badge">기록 12개</span>
+          </article>
+          <div class="sample-notice"><strong>새로운 시작</strong><span>하나씩 천천히 채워나가요.</span></div>
+        </div>
+      </div>
+      <p class="sample-note">현재 코드 기준 미리보기예요. Dark에서는 현재 코드상 Cool과 Warm이 같은 중립색을 사용해요.</p>
+      <h3 class="comparison-heading">Figma와 코드의 차이</h3>
+      <p class="preview-subtitle">확인된 참조값의 일부를 비교해요. 어느 쪽이 정답인지는 아직 정하지 않았어요.</p>
+      <div class="comparison-grid" id="color-comparison"></div>
+    </section>
 
     <section class="section">
       <h2 class="section-title">Primitive colors</h2>
@@ -29,6 +67,12 @@
     <section class="section">
       <h2 class="section-title">Semantic colors</h2>
       <div id="semantic-groups" class="semantic-groups"></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Shape</h2>
+      <p class="preview-subtitle">같은 크기의 상자로 세 가지 모서리 스타일을 비교해요.</p>
+      <div id="shape-groups" class="shape-groups"></div>
     </section>
 
     <section class="section">
@@ -49,18 +93,23 @@
       { name: 'black-alpha', label: 'blackAlpha', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
     ]
 
+    const controlSteps = ['solid', 'solid-hover', 'solid-pressed', 'on-solid']
     const semanticGroups = {
-      surface: ['body', 'default', 'raised', 'overlay', 'muted', 'inverse'],
-      text: ['primary', 'secondary', 'tertiary', 'disabled', 'inverse', 'link'],
+      background: ['base', 'inverse'],
+      surface: ['default', 'raised', 'overlay', 'muted', 'informative', 'positive', 'notice', 'negative', 'accent'],
+      text: ['primary', 'secondary', 'tertiary', 'placeholder', 'helper', 'disabled', 'inverse', 'link', 'accent'],
       icon: ['primary', 'secondary', 'disabled', 'inverse'],
-      border: ['default', 'emphasis', 'focus', 'disabled'],
-      neutral: ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'on-solid', 'text', 'border'],
+      status: ['informative', 'positive', 'notice', 'negative'],
+      border: ['default', 'emphasis', 'focus', 'disabled', 'selected', 'selected-hover', 'selected-pressed', 'accent', 'status-informative', 'status-positive', 'status-notice', 'status-negative', 'status-informative-subtle', 'status-positive-subtle', 'status-notice-subtle', 'status-negative-subtle'],
+      'control/neutral': [...controlSteps, 'subtle'],
+      'control/accent': controlSteps,
+      'control/informative': controlSteps,
+      'control/positive': controlSteps,
+      'control/notice': controlSteps,
+      'control/negative': controlSteps,
+      control: ['disabled'],
       overlay: ['hover', 'pressed', 'scrim'],
       static: ['white', 'black'],
-      'status/informative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/positive': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/notice': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
-      'status/negative': ['solid', 'solid-hover', 'solid-pressed', 'subtle', 'text', 'border', 'on-solid'],
     }
 
     const typographyStyles = [
@@ -76,12 +125,16 @@
       ['Body/16 Strong', 'body-16-strong'],
       ['Body/14', 'body-14'],
       ['Body/14 Strong', 'body-14-strong'],
+      ['Body/13', 'body-13'],
+      ['Body/13 Strong', 'body-13-strong'],
       ['Label/18', 'label-18'],
       ['Label/18 Strong', 'label-18-strong'],
       ['Label/16', 'label-16'],
       ['Label/16 Strong', 'label-16-strong'],
       ['Label/14', 'label-14'],
       ['Label/14 Strong', 'label-14-strong'],
+      ['Label/13', 'label-13'],
+      ['Label/13 Strong', 'label-13-strong'],
       ['Label/12', 'label-12'],
       ['Label/12 Strong', 'label-12-strong'],
       ['Label/11', 'label-11'],
@@ -195,6 +248,49 @@
       })
     }
 
+    function renderComparison() {
+      const dark = document.documentElement.dataset.theme === 'dark' ||
+        (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches)
+      const warm = document.documentElement.dataset.tint === 'warm'
+      const comparisons = [
+        ...(!dark ? [{ label: `tint/background/base · ${warm ? 'warm' : 'cool'}`, figma: 'white', code: warm ? 'warm-200' : 'gray-50' }] : []),
+        { label: 'control/disabled', figma: dark ? 'gray-1000' : 'gray-50', code: dark ? 'gray-950' : 'gray-100' },
+        { label: 'overlay/pressed', figma: dark ? 'white-alpha-100' : 'black-alpha-100', code: dark ? 'white-alpha-300' : 'black-alpha-300' },
+      ]
+      const grid = document.getElementById('color-comparison')
+      grid.replaceChildren()
+      comparisons.forEach(({label, figma, code}) => {
+        const card = document.createElement('article')
+        card.className = 'comparison-card'
+        const title = document.createElement('code')
+        title.textContent = label
+        card.append(title)
+        ;[['Figma', figma], ['코드', code]].forEach(([source, color]) => {
+          const row = document.createElement('div')
+          row.className = 'comparison-row'
+          const swatch = document.createElement('span')
+          swatch.className = 'comparison-swatch'
+          swatch.style.backgroundColor = `var(--color-${color})`
+          const text = document.createElement('span')
+          text.textContent = `${source} · ${color}`
+          row.append(swatch, text)
+          card.append(row)
+        })
+        grid.append(card)
+      })
+    }
+
+    document.querySelectorAll('[data-tint-option]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.documentElement.dataset.tint = button.dataset.tintOption
+        document.querySelectorAll('[data-tint-option]').forEach((item) => {
+          item.setAttribute('aria-pressed', String(item === button))
+        })
+        renderSemantics()
+        renderComparison()
+      })
+    })
+
     document.querySelectorAll('[data-theme-option]').forEach((button) => {
       button.addEventListener('click', () => {
         const theme = button.dataset.themeOption
@@ -210,16 +306,49 @@
         })
 
         renderSemantics()
+        renderComparison()
       })
     })
 
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (!document.documentElement.dataset.theme) renderSemantics()
+      if (!document.documentElement.dataset.theme) {
+        renderSemantics()
+        renderComparison()
+      }
+    })
+
+    const shapeGroups = document.getElementById('shape-groups')
+    ;['default', 'sharp', 'soft'].forEach((mode) => {
+      const section = document.createElement('article')
+      section.className = 'shape-group'
+      section.dataset.shape = mode
+      const heading = document.createElement('h3')
+      heading.className = 'group-title'
+      heading.textContent = mode
+      const grid = document.createElement('div')
+      grid.className = 'shape-grid'
+      section.append(heading, grid)
+      shapeGroups.appendChild(section)
+      ;['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'].forEach((name) => {
+        const item = document.createElement('div')
+        item.className = 'shape-item'
+        const sample = document.createElement('div')
+        sample.className = 'shape-sample'
+        sample.style.borderRadius = `var(--radius-${name})`
+        const label = document.createElement('code')
+        label.textContent = name
+        const value = document.createElement('span')
+        value.textContent = getComputedStyle(section).getPropertyValue(`--radius-${name}`).trim()
+        item.append(sample, label, value)
+        grid.appendChild(item)
+      })
     })
 
     renderPrimitives()
+    renderComparison()
     renderSemantics()
     renderTypography()
+    if (location.hash === '#shape-groups') shapeGroups.scrollIntoView()
   </script>
 </body>
 </html>

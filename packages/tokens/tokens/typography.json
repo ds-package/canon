@@ -1,14 +1,21 @@
 {
   "font": {
     "family": {
-      "sans": { "$value": "\"Pretendard Variable\", Pretendard, ui-sans-serif, system-ui, sans-serif", "$type": "fontFamily" },
-      "mono": { "$value": "JetBrains Mono, ui-monospace, monospace", "$type": "fontFamily" }
+      "sans": {
+        "$value": "\"Pretendard Variable\", Pretendard, ui-sans-serif, system-ui, sans-serif",
+        "$type": "fontFamily"
+      },
+      "mono": {
+        "$value": "JetBrains Mono, ui-monospace, monospace",
+        "$type": "fontFamily"
+      }
     },
     "size": {
       "$type": "dimension",
       "10": { "$value": "10px" },
       "11": { "$value": "11px" },
       "12": { "$value": "12px" },
+      "13": { "$value": "13px" },
       "14": { "$value": "14px" },
       "16": { "$value": "16px" },
       "18": { "$value": "18px" },
@@ -174,6 +181,26 @@
             "lineHeight": "{line-height.5_5}"
           }
         }
+      },
+      "13": {
+        "default": {
+          "$value": {
+            "fontFamily": "{font.family.sans}",
+            "fontSize": "{font.size.13}",
+            "fontWeight": "{font.weight.regular}",
+            "letterSpacing": "{letter-spacing.normal}",
+            "lineHeight": "{line-height.5}"
+          }
+        },
+        "strong": {
+          "$value": {
+            "fontFamily": "{font.family.sans}",
+            "fontSize": "{font.size.13}",
+            "fontWeight": "{font.weight.semibold}",
+            "letterSpacing": "{letter-spacing.normal}",
+            "lineHeight": "{line-height.5}"
+          }
+        }
       }
     },
     "label": {
@@ -234,6 +261,26 @@
             "fontWeight": "{font.weight.semibold}",
             "letterSpacing": "{letter-spacing.normal}",
             "lineHeight": "{line-height.5}"
+          }
+        }
+      },
+      "13": {
+        "default": {
+          "$value": {
+            "fontFamily": "{font.family.sans}",
+            "fontSize": "{font.size.13}",
+            "fontWeight": "{font.weight.medium}",
+            "letterSpacing": "{letter-spacing.normal}",
+            "lineHeight": "{line-height.4_5}"
+          }
+        },
+        "strong": {
+          "$value": {
+            "fontFamily": "{font.family.sans}",
+            "fontSize": "{font.size.13}",
+            "fontWeight": "{font.weight.semibold}",
+            "letterSpacing": "{letter-spacing.normal}",
+            "lineHeight": "{line-height.4_5}"
           }
         }
       },

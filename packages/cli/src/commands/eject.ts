@@ -6,9 +6,11 @@ import pc from 'picocolors'
 const TOKEN_FILES = [
   'color.json',
   'semantic.json',
+  'tint.json',
+  'brand.json',
+  'shape.json',
   'spacing.json',
   'typography.json',
-  'radius.json',
   'shadow.json',
 ]
 

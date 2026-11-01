@@ -5,6 +5,10 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 
+// Theme axes that vary independently of the light/dark scheme (semantic.light/dark).
+// axis -> mode applied on :root; every other mode becomes [data-<axis>="<mode>"].
+const AXES = { tint: 'cool', brand: 'default', shape: 'default' }
+
 const toKebab = (segment) =>
   String(segment)
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
@@ -14,7 +18,10 @@ const toKebab = (segment) =>
 const cssPath = (pathSegments) => {
   const tokenPath = [...pathSegments]
 
-  if (tokenPath[0] === 'semantic') {
+  if (tokenPath[0] === 'shape') {
+    // shape.<mode>.radius.md -> --radius-md (shape swaps the public radius scale)
+    tokenPath.splice(0, 2)
+  } else if (tokenPath[0] === 'semantic' || tokenPath[0] in AXES) {
     tokenPath.splice(1, 1)
   }
 
@@ -62,10 +69,38 @@ const setDeep = (target, pathSegments, value) => {
   })
 }
 
+const isAxisToken = (token) => token.path[0] in AXES
+const isDefaultAxisMode = (token) => token.path[1] === AXES[token.path[0]]
+
 const formatCss = ({ dictionary }) => {
   const primitiveTokens = dictionary.allTokens.filter(
-    (token) => token.path[0] !== 'semantic' && token.path[0] !== 'typography',
+    (token) =>
+      token.path[0] !== 'semantic' &&
+      token.path[0] !== 'typography' &&
+      !isAxisToken(token),
   )
+  const defaultAxisTokens = dictionary.allTokens.filter(
+    (token) => isAxisToken(token) && isDefaultAxisMode(token),
+  )
+  const axisBlocks = Object.keys(AXES).flatMap((axis) => {
+    const modes = [
+      ...new Set(
+        dictionary.allTokens
+          .filter((token) => token.path[0] === axis && token.path[1] !== AXES[axis])
+          .map((token) => token.path[1]),
+      ),
+    ]
+
+    return modes.flatMap((mode) => [
+      `[data-${axis}="${mode}"] {`,
+      dictionary.allTokens
+        .filter((token) => token.path[0] === axis && token.path[1] === mode)
+        .map(declaration)
+        .join('\n'),
+      '}',
+      '',
+    ])
+  })
   const typographyTokens = dictionary.allTokens.filter(
     (token) => token.path[0] === 'typography',
   )
@@ -79,6 +114,7 @@ const formatCss = ({ dictionary }) => {
   const root = [
     ...primitiveTokens.map(declaration),
     ...typographyTokens.flatMap(typographyDeclarations),
+    ...defaultAxisTokens.map(declaration),
     ...lightTokens.map(declaration),
   ].join('\n')
   const dark = darkTokens.map(declaration).join('\n')
@@ -91,6 +127,7 @@ const formatCss = ({ dictionary }) => {
     root,
     '}',
     '',
+    ...axisBlocks,
     '[data-theme="dark"] {',
     dark,
     '}',
@@ -108,10 +145,16 @@ const formatJavascript = ({ dictionary }) => {
   const tokens = {}
 
   dictionary.allTokens
-    .filter((token) => !(token.path[0] === 'semantic' && token.path[1] === 'dark'))
+    .filter(
+      (token) =>
+        !(token.path[0] === 'semantic' && token.path[1] === 'dark') &&
+        !(isAxisToken(token) && !isDefaultAxisMode(token)),
+    )
     .forEach((token) => {
-      const tokenPath =
-        token.path[0] === 'semantic' ? ['semantic', ...token.path.slice(2)] : token.path
+      let tokenPath = token.path
+      if (token.path[0] === 'shape') tokenPath = token.path.slice(2)
+      else if (token.path[0] === 'semantic' || isAxisToken(token))
+        tokenPath = [token.path[0], ...token.path.slice(2)]
       setDeep(tokens, tokenPath, token.value)
     })
 
@@ -153,9 +196,12 @@ const formatTailwind = ({ dictionary }) => {
     } else if (category === 'spacing') {
       target = extend.spacing
       tokenPath = [second, ...rest]
-    } else if (category === 'radius') {
+    } else if (category === 'brand' && second === AXES.brand) {
+      target = extend.colors
+      tokenPath = ['brand', ...rest]
+    } else if (category === 'shape' && second === AXES.shape) {
       target = extend.borderRadius
-      tokenPath = [second, ...rest]
+      tokenPath = rest.slice(1)
     } else if (category === 'shadow') {
       target = extend.boxShadow
       tokenPath = [second, ...rest]
