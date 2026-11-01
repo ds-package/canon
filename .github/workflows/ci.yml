@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Validate docs
+      - name: Validate and build docs
         run: pnpm test:docs
 
       - name: Build and package smoke test
