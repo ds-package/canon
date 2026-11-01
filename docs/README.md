@@ -14,6 +14,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 | [workflow.md](./workflow.md) | Figma contributing 절차 | Figma MCP 제약과 실제 마이그레이션에서 검증한 순서를 기록한다. |
 | [decisions/interaction-foundation.md](./decisions/interaction-foundation.md) | React Aria Components 채택 결정 | interaction foundation의 이유, 책임 경계, 재검토 조건의 정본이다. |
 | [decisions/docs-platform.md](./decisions/docs-platform.md) | 자체 docs web 채택 결정 | Next.js shell, document index, search와 playground의 현재 경계를 기록한다. |
+| [dialog.md](./dialog.md) | Dialog anatomy, behavior, playground와 Figma mapping | TypeScript public interface가 props의 정본이고 Figma `Modal`은 시각 구조의 정본이다. |
 | [guides/README.md](./guides/README.md) | 컴포넌트 선택 가이드의 범위와 작성 기준 | 실제 선택 가이드는 아직 없다. 확인되지 않은 선택을 Canon 규칙으로 만들지 않는다. |
 | [references.md](./references.md) | 외부 시스템을 참고한 근거 | 가져온 것과 가져오지 않은 것을 구분하는 증거다. Canon 규칙 자체의 정본은 아니다. |
 | [tools/](./tools/) | 문서를 실제 값과 Figma에 연결하는 도구 | 생성된 결과가 아니라 스크립트와 플러그인 소스가 정본이다. |
