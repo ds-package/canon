@@ -5,6 +5,12 @@ import { fileURLToPath } from 'node:url'
 const REQUIRED_DECISION_FIELDS = ['id', 'status', 'verified']
 const DECISION_STATUSES = new Set(['proposed', 'adopted', 'superseded', 'deprecated'])
 const ROUTE_DOCUMENTS = ['DESIGN.md', 'docs/README.md']
+const REQUIRED_DESIGN_ROUTES = [
+  ['token naming', '컬러 토큰의 이름', './docs/color.md'],
+  ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],
+  ['interaction decision', 'interaction foundation', './docs/decisions/interaction-foundation.md'],
+  ['component selection', '제품 상황에 맞는 컴포넌트를 고른다', './docs/guides/README.md'],
+]
 
 const displayPath = (root, file) => path.relative(root, file).split(path.sep).join('/')
 
@@ -48,7 +54,19 @@ async function validateRouteLinks(root, errors) {
       continue
     }
 
-    for (const rawLink of localLinks(source)) {
+    const links = localLinks(source)
+    if (relativeSource === 'DESIGN.md') {
+      const lines = source.split(/\r?\n/)
+      for (const [name, question, target] of REQUIRED_DESIGN_ROUTES) {
+        const paired = lines.some((line) => line.includes(question) && localLinks(line).includes(target))
+        if (!paired) errors.push(`DESIGN.md: missing ${name} route ${target}`)
+      }
+      if (!source.includes('추정하지 않고 미확인으로 남긴다')) {
+        errors.push('DESIGN.md: missing unconfirmed-question fallback')
+      }
+    }
+
+    for (const rawLink of links) {
       const cleanLink = rawLink.split(/[?#]/, 1)[0]
       if (!cleanLink) continue
       let target

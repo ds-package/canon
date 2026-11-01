@@ -6,20 +6,36 @@ import test from 'node:test'
 
 import { validateDocs } from './validate.mjs'
 
+const REQUIRED_DESIGN = [
+  '컬러 토큰의 이름을 정한다 [Color](./docs/color.md)',
+  'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/workflow.md)',
+  'interaction foundation을 확인한다 [Interaction](./docs/decisions/interaction-foundation.md)',
+  '제품 상황에 맞는 컴포넌트를 고른다 [Selection](./docs/guides/README.md)',
+  '문서화되지 않은 질문은 추정하지 않고 미확인으로 남긴다.',
+].join('\n')
+
 async function fixture(t) {
   const root = await mkdtemp(path.join(tmpdir(), 'canon-docs-'))
   t.after(() => rm(root, { recursive: true, force: true }))
   await mkdir(path.join(root, 'docs/decisions'), { recursive: true })
+  await mkdir(path.join(root, 'docs/guides'), { recursive: true })
+  await writeFile(path.join(root, 'docs/color.md'), '# Color\n')
+  await writeFile(path.join(root, 'docs/workflow.md'), '# Workflow\n')
+  await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n')
+  await writeFile(
+    path.join(root, 'docs/decisions/interaction-foundation.md'),
+    '---\nid: interaction-foundation\nstatus: adopted\nverified: 2026-11-01\n---\n# Interaction\n',
+  )
   return root
 }
 
 test('accepts reachable routes and adopted decision metadata', async (t) => {
   const root = await fixture(t)
-  await writeFile(path.join(root, 'DESIGN.md'), '[Docs](./docs/README.md)\n[Decision](./docs/decisions/interaction.md)')
+  await writeFile(path.join(root, 'DESIGN.md'), `${REQUIRED_DESIGN}\n[Docs](./docs/README.md)`)
   await writeFile(path.join(root, 'docs/README.md'), '[Design route](../DESIGN.md)')
   await writeFile(
     path.join(root, 'docs/decisions/interaction.md'),
-    '---\nid: interaction-foundation\nstatus: adopted\nverified: 2026-11-01\n---\n# Interaction foundation\n',
+    '---\nid: other-interaction\nstatus: adopted\nverified: 2026-11-01\n---\n# Interaction foundation\n',
   )
 
   assert.deepEqual(await validateDocs(root), [])
@@ -27,7 +43,7 @@ test('accepts reachable routes and adopted decision metadata', async (t) => {
 
 test('reports broken routes, missing metadata, and duplicate decision ids', async (t) => {
   const root = await fixture(t)
-  await writeFile(path.join(root, 'DESIGN.md'), '[Missing](./docs/missing.md)')
+  await writeFile(path.join(root, 'DESIGN.md'), `${REQUIRED_DESIGN}\n[Missing](./docs/missing.md)`)
   await writeFile(path.join(root, 'docs/README.md'), '[External](https://example.com)')
   await writeFile(
     path.join(root, 'docs/decisions/first.md'),
@@ -55,7 +71,7 @@ test('rejects local links outside the repository even when targets exist', async
   await writeFile(outside, '# Outside\n')
   await writeFile(
     path.join(root, 'DESIGN.md'),
-    `[Parent](../${path.basename(outside)})\n[Absolute](<${outside}>)`,
+    `${REQUIRED_DESIGN}\n[Parent](../${path.basename(outside)})\n[Absolute](<${outside}>)`,
   )
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
 
@@ -67,11 +83,11 @@ test('rejects local links outside the repository even when targets exist', async
 
 test('rejects invalid decision dates', async (t) => {
   const root = await fixture(t)
-  await writeFile(path.join(root, 'DESIGN.md'), '# Design\n')
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
   await writeFile(
     path.join(root, 'docs/decisions/interaction.md'),
-    '---\nid: interaction-foundation\nstatus: adopted\nverified: 2026/11/01\n---\n# Interaction\n',
+    '---\nid: invalid-date\nstatus: adopted\nverified: 2026/11/01\n---\n# Interaction\n',
   )
 
   assert.deepEqual(await validateDocs(root), [
@@ -87,5 +103,39 @@ test('reports missing route documents and decisions directory', async (t) => {
     'DESIGN.md: missing route document',
     'docs/README.md: missing route document',
     'docs/decisions: missing directory',
+  ])
+})
+
+test('requires the five Canon design routing seams', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), '# Design\n')
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+
+  assert.deepEqual(await validateDocs(root), [
+    'DESIGN.md: missing token naming route ./docs/color.md',
+    'DESIGN.md: missing Figma migration route ./docs/workflow.md',
+    'DESIGN.md: missing interaction decision route ./docs/decisions/interaction-foundation.md',
+    'DESIGN.md: missing component selection route ./docs/guides/README.md',
+    'DESIGN.md: missing unconfirmed-question fallback',
+  ])
+})
+
+test('requires each design question and target on the same line', async (t) => {
+  const root = await fixture(t)
+  await writeFile(
+    path.join(root, 'DESIGN.md'),
+    [
+      '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/workflow.md) |',
+      '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/color.md) |',
+      '| interaction foundation을 확인한다 | [Interaction](./docs/decisions/interaction-foundation.md) |',
+      '| 제품 상황에 맞는 컴포넌트를 고른다 | [Selection](./docs/guides/README.md) |',
+      '문서화되지 않은 질문은 추정하지 않고 미확인으로 남긴다.',
+    ].join('\n'),
+  )
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+
+  assert.deepEqual(await validateDocs(root), [
+    'DESIGN.md: missing token naming route ./docs/color.md',
+    'DESIGN.md: missing Figma migration route ./docs/workflow.md',
   ])
 })
