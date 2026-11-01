@@ -1,6 +1,6 @@
 {
   "name": "@canon/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Canon Design System CLI — init and eject design tokens",
   "license": "MIT",
   "type": "module",
