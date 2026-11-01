@@ -8,6 +8,7 @@
     "test": "node --test lib/docs.test.mjs"
   },
   "dependencies": {
+    "@canon/react": "workspace:*",
     "@canon/tokens": "workspace:*",
     "next": "16.4.3",
     "react": "19.3.1",

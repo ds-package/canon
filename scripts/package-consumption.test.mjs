@@ -21,14 +21,18 @@ test('packed packages work from a consumer project', async (t) => {
   await mkdir(consumerDir)
   run('pnpm', ['--filter', '@canon/tokens', 'pack', '--pack-destination', packDir], repoRoot)
   run('pnpm', ['--filter', '@canon/cli', 'pack', '--pack-destination', packDir], repoRoot)
+  run('pnpm', ['--filter', '@canon/react', 'pack', '--pack-destination', packDir], repoRoot)
 
   const archives = await readdir(packDir)
   const tokenArchiveName = archives.find((name) => name.startsWith('canon-tokens-'))
   const cliArchiveName = archives.find((name) => name.startsWith('canon-cli-'))
+  const reactArchiveName = archives.find((name) => name.startsWith('canon-react-'))
   assert.ok(tokenArchiveName)
   assert.ok(cliArchiveName)
+  assert.ok(reactArchiveName)
   const tokenArchive = path.join(packDir, tokenArchiveName)
   const cliArchive = path.join(packDir, cliArchiveName)
+  const reactArchive = path.join(packDir, reactArchiveName)
 
   await writeFile(
     path.join(consumerDir, 'package.json'),
@@ -37,7 +41,10 @@ test('packed packages work from a consumer project', async (t) => {
       type: 'module',
       dependencies: {
         '@canon/cli': `file:${cliArchive}`,
+        '@canon/react': `file:${reactArchive}`,
         '@canon/tokens': `file:${tokenArchive}`,
+        react: '19.3.1',
+        'react-dom': '19.3.1',
       },
     }),
   )
@@ -56,12 +63,39 @@ test('packed packages work from a consumer project', async (t) => {
     'var(--semantic-status-informative)',
   )
 
+  assert.equal(
+    run('node', ['--input-type=module', '-e', "import { Dialog } from '@canon/react'; process.stdout.write(Dialog.name)"], consumerDir),
+    'Dialog',
+  )
+  assert.equal(
+    run('node', ['-e', "process.stdout.write(require('@canon/react').Dialog.name)"], consumerDir),
+    'Dialog',
+  )
+
+  const renderedDialog = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Dialog, DialogDescription, DialogTitle, DialogTrigger } from '@canon/react'; process.stdout.write(renderToString(React.createElement(DialogTrigger, null, React.createElement('button', null, 'Open'), React.createElement(Dialog, null, React.createElement(DialogTitle, null, 'Title'), React.createElement(DialogDescription, null, 'Description')))));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedDialog, />Open<\/button>/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
     consumerDir,
   )
   assert.match(await readFile(cssPath, 'utf8'), /--semantic-status-informative:/)
+
+  const reactCssPath = run(
+    'node',
+    ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/react/styles.css'))"],
+    consumerDir,
+  )
+  assert.match(await readFile(reactCssPath, 'utf8'), /--semantic-overlay-scrim/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

@@ -1,4 +1,5 @@
 @import '@canon/tokens/css';
+@import '@canon/react/styles.css';
 
 :root {
   color-scheme: light dark;
@@ -34,6 +35,14 @@ a:focus-visible, input:focus-visible { outline: 2px solid var(--semantic-border-
 .search-results { position: absolute; top: calc(100% + 8px); width: 100%; display: grid; padding: 8px; border: 1px solid var(--semantic-border-default); border-radius: 8px; background: var(--semantic-surface-overlay); box-shadow: 0 12px 32px rgb(0 0 0 / 14%); }
 .search-results a, .search-results span { padding: 8px; color: var(--semantic-text-primary); }
 .search-results a:hover { background: var(--semantic-overlay-hover); text-decoration: none; }
+.playground { max-width: 840px; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--semantic-border-default); }
+.playground-layout { display: grid; grid-template-columns: minmax(180px, 240px) minmax(0, 1fr); gap: 24px; }
+.playground-controls { display: grid; align-content: start; gap: 12px; padding: 16px; border: 1px solid var(--semantic-border-default); border-radius: var(--radius-lg); background: var(--semantic-surface-muted); }
+.playground-controls label { display: flex; align-items: center; gap: 8px; }
+.playground-actions { display: flex; gap: 8px; margin-top: 4px; }
+.playground-preview { display: grid; min-height: 240px; place-items: center; padding: 24px; border: 1px solid var(--semantic-border-default); border-radius: var(--radius-lg); }
+.playground button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--semantic-border-default); border-radius: var(--radius-md); background: var(--semantic-surface-default); color: var(--semantic-text-primary); cursor: pointer; }
+.playground-code { margin-top: 16px; }
 
 @media (max-width: 760px) {
   .docs-shell { display: block; }
@@ -44,4 +53,5 @@ a:focus-visible, input:focus-visible { outline: 2px solid var(--semantic-border-
   .sidebar nav a { white-space: nowrap; }
   .content { padding: 32px 20px 64px; }
   .markdown h1 { font-size: 30px; }
+  .playground-layout { grid-template-columns: 1fr; }
 }

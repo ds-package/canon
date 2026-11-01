@@ -1,0 +1,104 @@
+.canon-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-6);
+  background: var(--semantic-overlay-scrim);
+}
+
+.canon-dialog-modal {
+  width: min(448px, 100%);
+  max-height: min(80vh, var(--visual-viewport-height, 80vh));
+  border-radius: var(--radius-md);
+  background: var(--semantic-surface-default);
+  box-shadow: var(--shadow-xl);
+  color: var(--semantic-text-primary);
+  overflow: auto;
+}
+
+.canon-dialog {
+  position: relative;
+  outline: none;
+}
+
+.canon-dialog-title {
+  margin: 0;
+  padding: var(--spacing-4) var(--spacing-6) 0;
+  font-family: var(--typography-label-18-strong-font-family);
+  font-size: var(--typography-label-18-strong-font-size);
+  font-weight: var(--typography-label-18-strong-font-weight);
+  letter-spacing: var(--typography-label-18-strong-letter-spacing);
+  line-height: var(--typography-label-18-strong-line-height);
+}
+
+.canon-dialog:has(> .canon-dialog-close) .canon-dialog-title {
+  padding-right: calc(var(--spacing-8) + var(--spacing-6));
+}
+
+.canon-dialog-description,
+.canon-dialog-body {
+  display: block;
+  padding: var(--spacing-2) var(--spacing-6);
+}
+
+.canon-dialog-description {
+  font-family: var(--typography-body-16-font-family);
+  font-size: var(--typography-body-16-font-size);
+  font-weight: var(--typography-body-16-font-weight);
+  letter-spacing: var(--typography-body-16-letter-spacing);
+  line-height: var(--typography-body-16-line-height);
+}
+
+.canon-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4) var(--spacing-6);
+}
+
+.canon-dialog-close {
+  min-height: var(--spacing-8);
+  padding: 0 var(--spacing-3);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-md);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  cursor: pointer;
+}
+
+.canon-dialog > .canon-dialog-close {
+  position: absolute;
+  top: var(--spacing-2);
+  right: var(--spacing-3);
+  display: grid;
+  width: var(--spacing-8);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  place-items: center;
+}
+
+.canon-dialog-overlay[data-entering] {
+  animation: canon-dialog-fade 160ms ease-out;
+}
+
+.canon-dialog-modal[data-entering] {
+  animation: canon-dialog-enter 160ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canon-dialog-overlay,
+  .canon-dialog-modal {
+    animation: none;
+  }
+}
+
+@keyframes canon-dialog-fade {
+  from { opacity: 0; }
+}
+
+@keyframes canon-dialog-enter {
+  from { transform: translateY(var(--spacing-2)); }
+}
