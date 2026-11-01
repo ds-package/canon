@@ -5,20 +5,20 @@
   "description": "Canon Design System monorepo",
   "scripts": {
     "build": "pnpm -r build",
-    "test:package": "pnpm build && node --test scripts/package-consumption.test.mjs",
+    "test:package": "pnpm --filter './packages/*' build && node --test scripts/package-consumption.test.mjs",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
-    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs",
+    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm --filter './packages/*' build && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "typescript": "^5.4.0"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.9.0",
     "pnpm": ">=9.0.0"
   },
   "pnpm": {

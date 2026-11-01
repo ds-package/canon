@@ -9,8 +9,10 @@ const REQUIRED_DESIGN_ROUTES = [
   ['token naming', '컬러 토큰의 이름', './docs/color.md'],
   ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],
   ['interaction decision', 'interaction foundation', './docs/decisions/interaction-foundation.md'],
+  ['docs platform decision', 'docs web, search, playground', './docs/decisions/docs-platform.md'],
   ['component selection', '제품 상황에 맞는 컴포넌트를 고른다', './docs/guides/README.md'],
 ]
+const GENERATED_DOCS_APP_DIRS = new Set(['node_modules', '.next', 'out'])
 
 const displayPath = (root, file) => path.relative(root, file).split(path.sep).join('/')
 
@@ -118,10 +120,34 @@ async function validateDecisions(root, errors) {
   }
 }
 
+async function validateDocsApp(root, errors) {
+  async function scan(directory) {
+    let entries
+    try {
+      entries = await readdir(directory, { withFileTypes: true })
+    } catch (error) {
+      if (error.code === 'ENOENT') return
+      throw error
+    }
+
+    for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
+      if (entry.isDirectory()) {
+        if (!GENERATED_DOCS_APP_DIRS.has(entry.name)) await scan(path.join(directory, entry.name))
+      } else if (/\.mdx?$/.test(entry.name)) {
+        const file = path.join(directory, entry.name)
+        errors.push(`${displayPath(root, file)}: authored docs prose must live outside apps/docs`)
+      }
+    }
+  }
+
+  await scan(path.join(root, 'apps/docs'))
+}
+
 export async function validateDocs(root) {
   const errors = []
   await validateRouteLinks(root, errors)
   await validateDecisions(root, errors)
+  await validateDocsApp(root, errors)
   return errors
 }
 

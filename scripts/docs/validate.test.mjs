@@ -10,6 +10,7 @@ const REQUIRED_DESIGN = [
   '컬러 토큰의 이름을 정한다 [Color](./docs/color.md)',
   'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/workflow.md)',
   'interaction foundation을 확인한다 [Interaction](./docs/decisions/interaction-foundation.md)',
+  'docs web, search, playground의 구조를 정한다 [Docs platform](./docs/decisions/docs-platform.md)',
   '제품 상황에 맞는 컴포넌트를 고른다 [Selection](./docs/guides/README.md)',
   '문서화되지 않은 질문은 추정하지 않고 미확인으로 남긴다.',
 ].join('\n')
@@ -25,6 +26,10 @@ async function fixture(t) {
   await writeFile(
     path.join(root, 'docs/decisions/interaction-foundation.md'),
     '---\nid: interaction-foundation\nstatus: adopted\nverified: 2026-11-01\n---\n# Interaction\n',
+  )
+  await writeFile(
+    path.join(root, 'docs/decisions/docs-platform.md'),
+    '---\nid: docs-platform\nstatus: adopted\nverified: 2026-11-01\n---\n# Docs platform\n',
   )
   return root
 }
@@ -106,7 +111,7 @@ test('reports missing route documents and decisions directory', async (t) => {
   ])
 })
 
-test('requires the five Canon design routing seams', async (t) => {
+test('requires the six Canon design routing seams', async (t) => {
   const root = await fixture(t)
   await writeFile(path.join(root, 'DESIGN.md'), '# Design\n')
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
@@ -115,6 +120,7 @@ test('requires the five Canon design routing seams', async (t) => {
     'DESIGN.md: missing token naming route ./docs/color.md',
     'DESIGN.md: missing Figma migration route ./docs/workflow.md',
     'DESIGN.md: missing interaction decision route ./docs/decisions/interaction-foundation.md',
+    'DESIGN.md: missing docs platform decision route ./docs/decisions/docs-platform.md',
     'DESIGN.md: missing component selection route ./docs/guides/README.md',
     'DESIGN.md: missing unconfirmed-question fallback',
   ])
@@ -128,6 +134,7 @@ test('requires each design question and target on the same line', async (t) => {
       '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/workflow.md) |',
       '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/color.md) |',
       '| interaction foundation을 확인한다 | [Interaction](./docs/decisions/interaction-foundation.md) |',
+      '| docs web, search, playground의 구조를 정한다 | [Docs platform](./docs/decisions/docs-platform.md) |',
       '| 제품 상황에 맞는 컴포넌트를 고른다 | [Selection](./docs/guides/README.md) |',
       '문서화되지 않은 질문은 추정하지 않고 미확인으로 남긴다.',
     ].join('\n'),
@@ -137,5 +144,25 @@ test('requires each design question and target on the same line', async (t) => {
   assert.deepEqual(await validateDocs(root), [
     'DESIGN.md: missing token naming route ./docs/color.md',
     'DESIGN.md: missing Figma migration route ./docs/workflow.md',
+  ])
+})
+
+test('rejects authored prose inside the docs app and ignores generated directories', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'apps/docs/content'), { recursive: true })
+  await mkdir(path.join(root, 'apps/docs/node_modules/package'), { recursive: true })
+  await mkdir(path.join(root, 'apps/docs/.next'), { recursive: true })
+  await mkdir(path.join(root, 'apps/docs/out'), { recursive: true })
+  await writeFile(path.join(root, 'apps/docs/content/overview.md'), '# Overview\n')
+  await writeFile(path.join(root, 'apps/docs/content/dialog.mdx'), '# Dialog\n')
+  await writeFile(path.join(root, 'apps/docs/node_modules/package/README.md'), '# Package\n')
+  await writeFile(path.join(root, 'apps/docs/.next/generated.md'), '# Generated\n')
+  await writeFile(path.join(root, 'apps/docs/out/exported.mdx'), '# Exported\n')
+
+  assert.deepEqual(await validateDocs(root), [
+    'apps/docs/content/dialog.mdx: authored docs prose must live outside apps/docs',
+    'apps/docs/content/overview.md: authored docs prose must live outside apps/docs',
   ])
 })
