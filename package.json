@@ -8,6 +8,7 @@
     "test:package": "pnpm build && node --test scripts/package-consumption.test.mjs",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
+    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish"
