@@ -1,22 +1,22 @@
 ---
-verified: 2026-11-01
+verified: 2026-11-02
 ---
 # 컬러
 
-Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 쓰임새 이름과 라이트/다크 값을 가진다. 컴포넌트는 `semantic`만 쓴다.
+Figma 컬러 변수는 `primitive`, `tint`, `semantic` 세 층이다. `primitive`는 원시 색, `tint`는 cool/warm 중립색, `semantic`은 쓰임새 이름과 라이트/다크 값을 가진다. 컴포넌트는 `semantic`만 쓴다.
 
 ## 1. 프리미티브 램프
 
 ### 구조
 
 - 색은 `red`, `orange`, `yellow`, `green`, `teal`, `cyan`, `blue`, `indigo`, `purple`, `pink` 10개다. 단계는 `50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000`이다.
-- `gray`와 `warm`은 중립색이고 별도 램프다. 다크 배경용으로 `gray/1100`(`#18191b`)을 하나 더 둔다.
+- `gray`와 `warm`은 중립색이고 별도 램프다. 다크 배경용으로 `gray/1100`(`#1a1a1a`)을 하나 더 둔다.
 - 각 색에 알파 토큰 `alpha-100`, `alpha-200`, `alpha-300`이 있다. 값은 해당 색 `600`에 불투명도 8%, 16%, 24%를 얹은 것이다.
 - `amber`는 두지 않는다. orange와 yellow 사이가 14~17도밖에 안 떨어져서 구분이 안 됐다.
 
 ### 만드는 규칙
 
-램프는 [tools/ramps.py](./tools/ramps.py)로 만든다. 값을 바꾸고 싶으면 이 스크립트의 기준점을 고치고 다시 실행한다.
+색상 램프는 [tools/ramps.py](./tools/ramps.py)로 만든다. gray와 warm은 Figma에서 조정한 값을 코드에 직접 동기화한다.
 
 1. **색마다 500 기준점(명도 L, 채도 C, hue H)을 따로 잡는다.** 모든 색에 같은 명도 곡선을 쓰지 않는다.
    - 이유: 같은 명도 곡선에서는 red가 살구색이 되고, yellow가 올리브가 되고, indigo가 연보라가 된다. 색마다 "그 색으로 읽히는 명도"가 다르다.
@@ -42,96 +42,98 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 
 전체 값은 `python3 docs/tools/ramps.py --table`로 본다.
 
-## 2. 시멘틱 토큰
+## 2. Tint 토큰
+
+`tint`는 light 모드의 중립색만 cool/warm으로 교체한다. 텍스트와 아이콘은 색조에 따라 움직이지 않는다.
+
+| 토큰 | cool | warm |
+| --- | --- | --- |
+| `background/low` | gray/50 | warm/50 |
+| `surface/default`, `raised`, `overlay` | white | warm/50 |
+| `surface/tinted` | gray/100 | warm/100 |
+| `border/default` | gray/200 | warm/200 |
+| `border/emphasis` | gray/400 | warm/400 |
+| `border/disabled` | gray/100 | warm/100 |
+| `control/neutral`, `disabled` | gray/50 | warm/100 |
+
+## 3. 시멘틱 토큰
 
 ### 그룹
 
 | 그룹 | 토큰 | 쓰임 |
 | --- | --- | --- |
-| `background` | `base`, `inverse` | 맨 뒤 바탕. `base`는 페이지 바탕, `inverse`는 반전 바탕 |
-| `surface` | `default`, `raised`, `overlay`, `muted`, `informative`, `positive`, `notice`, `negative`, `accent` | 배경 위에 얹는 면. `default`는 기본 면, `raised`는 바닥 위로 한 단계 떠 있는 면이고 Card의 `elevated` variant가 쓴다, `overlay`는 가장 위에 뜨는 팝오버와 모달, `muted`는 옅은 면, 나머지는 상태 콜아웃 면 |
-| `control` | `neutral`, `accent`, `informative`, `positive`, `notice`, `negative`, `disabled` | 배경과 면 위에 놓는 컨트롤 UI의 채움. 색마다 `solid`, `solid-hover`, `solid-pressed`, `on-solid`를 가지고 `neutral`만 `subtle`을 더 가진다 |
-| `text` | 기본 역할, `accent` | 글자. `placeholder`는 입력 안내 문구, `helper`는 입력 아래 도움말과 캡션 |
-| `icon` | 기본 역할 | 아이콘 |
-| `status` | `informative`, `positive`, `notice`, `negative` | 글자와 아이콘이 공유하는 상태·의도 색 |
-| `border` | 기본 역할, `selected*`, `accent`, `status-*`, `status-*-subtle` | 테두리. 공용 상태색과 값이나 역할이 달라서 stroke 대상에 예외를 둔다 |
-| `overlay` | `hover`, `pressed`, `scrim` | 반투명 상태 오버레이와 딤 |
-| `static` | `white`, `black` | 모드와 상관없이 고정되는 흰색과 검정 |
-
-위에서 아래로 쌓인다: `background` 위에 `surface`, 그 위에 `control`. 글자와 아이콘의 상태색은 `status/{의미}`를 함께 쓴다. 대상별 값이나 역할이 다를 때만 대상 그룹에 역할을 붙인다. 현재 테두리는 `border/status-{의미}`와 `border/status-{의미}-subtle`이 그 예외다.
+| `background` | `default`, `low`, `inverse` | 페이지 바탕, 한 단계 낮은 바탕, 반전 바탕 |
+| `surface` | `default`, `raised`, `overlay`, `tinted` | 배경 위에 얹는 면의 높이와 옅은 강조 |
+| `text` | `default`, `low`, `lowest`, 역할 토큰 | 정보 위계와 placeholder, helper, disabled, inverse, link, on-status |
+| `icon` | `default`, `low`, `disabled`, `inverse` | 독립 아이콘의 위계 |
+| `border` | `default`, `emphasis`, `focus`, `disabled` | 테두리 역할 |
+| `control` | `neutral`, `inverse`, `accent`, `disabled`, `selected*` | 컨트롤 채움과 선택 stroke |
+| `status` | 네 intent의 `low`, `default`, `emphasis` | 적용 대상과 무관한 상태색 강도 |
+| `overlay` | `hover`, `pressed`, `hover-inverse`, `pressed-inverse`, `scrim` | 상호작용 오버레이와 딤 |
+| `static` | `white`, `black` | 모드와 상관없이 고정되는 색 |
 
 ### 규칙
 
-1. **brand는 별도 축이다.** `control/accent`, `surface/accent`, `text/accent`, `text/link`, `border/accent`, `border/focus`가 brand 축을 따르고, 기본값은 blue다. 정보 색은 `status/informative`, `border/status-informative`, `control/informative`로 따로 두어, brand를 바꿔도 정보 색이 같이 움직이지 않는다.
-2. **hover와 pressed는 두 가지로 처리한다.**
-   - 채워진 강조(`control/neutral/solid`, `control/*/solid`)는 전용 토큰을 쓴다(`solid-hover`, `solid-pressed`).
-   - 투명하거나 옅은 면(아웃라인 버튼, 행, 메뉴 항목)은 `overlay/hover`, `overlay/pressed`를 얹는다. 회색 solid 버튼처럼 기본 면이 있는 경우에는 fill을 두 겹(`control/disabled` 또는 `surface/muted` + `overlay`)으로 쓴다.
-   - 이유: 오버레이는 어떤 바탕 위에서도 동작해서 토큰 수를 줄이고, 선명한 강조에는 색 이동이 필요하다.
-3. **solid 위 글자는 `on-solid`다.** `control/notice/on-solid`만 어두운 글자(`gray/1000`)이고 나머지는 흰색이다. 노란 바탕에 흰 글자는 대비가 부족하다.
-4. **disabled는 항목이 아니라 의미로 고른다.** 글자는 `text/disabled`, 아이콘은 `icon/disabled`, 테두리는 `border/disabled`, 채움은 `control/disabled`, 면은 `surface/muted`로 간다. 색조를 유지한 흐린 색을 만들지 않는다.
-5. **같은 값과 역할이면 `status/*`를 공유한다.** 상태 텍스트와 아이콘은 같은 토큰을 쓴다. 대상에 따라 값이나 역할이 실제로 달라질 때만 `text/status-*`, `icon/status-*`, `border/status-*`처럼 대상 그룹에 별도 토큰을 만든다.
+1. 이름의 첫 단계는 적용 대상을 쓴다. 상태색만 대상과 무관하게 `status/{intent}/{strength}`를 공유한다.
+2. `status/*/low`는 상태 배경, `default`는 일반 상태색 또는 solid fill, `emphasis`는 텍스트, 아이콘, 테두리와 강한 배경에 쓴다.
+3. 상태색 위 흰 글자는 `text/on-status`를 쓴다. notice처럼 흰 글자의 대비가 부족하면 컴포넌트에서 `text/default`를 선택한다.
+4. hover와 pressed는 기본 fill 위에 `overlay/*`를 얹는다. 반전 fill에는 `overlay/*-inverse`를 쓴다. 컴포넌트별 hover 색 토큰은 만들지 않는다.
+5. disabled는 대상별 토큰을 고른다. 글자는 `text/disabled`, 아이콘은 `icon/disabled`, 테두리는 `border/disabled`, 채움은 `control/disabled`다.
+6. shape와 outline, solid, ghost는 컬러 토큰 이름에 넣지 않고 컴포넌트 variant에서 조합한다.
 
 ### 값 (라이트 / 다크)
 
 | 토큰 | 라이트 | 다크 |
 | --- | --- | --- |
-| `background/base` | gray/50 | gray/1100 |
-| `background/inverse` | gray/1000 | gray/50 |
-| `surface/default` | white | gray/1000 |
-| `surface/raised` | white | gray/950 |
-| `surface/overlay` | white | gray/900 |
-| `surface/muted` | gray/100 | gray/950 |
-| `text/primary` | gray/1000 | gray/50 |
-| `text/secondary` | gray/800 | gray/400 |
-| `text/tertiary` | gray/600 | gray/600 |
+| `background/default` | white | gray/1000 |
+| `background/low` | tint/background/low | gray/1100 |
+| `background/inverse` | gray/1100 | white |
+| `surface/default` | tint/surface/default | gray/1000 |
+| `surface/raised` | tint/surface/raised | gray/950 |
+| `surface/overlay` | tint/surface/overlay | gray/900 |
+| `surface/tinted` | tint/surface/tinted | gray/950 |
+| `text/default` | gray/1000 | white |
+| `text/low` | gray/800 | gray/400 |
+| `text/lowest` | gray/700 | gray/600 |
 | `text/placeholder` | gray/700 | gray/600 |
 | `text/helper` | gray/700 | gray/500 |
-| `text/disabled` | gray/400 | gray/800 |
+| `text/disabled` | gray/500 | gray/800 |
 | `text/inverse` | white | gray/1000 |
-| `text/link` | blue/600 | blue/400 |
-| `text/accent` | brand/800 | brand/300 |
-| `icon/primary` | gray/900 | gray/100 |
-| `icon/secondary` | gray/600 | gray/500 |
-| `icon/disabled` | gray/400 | gray/800 |
-| `icon/inverse` | white | gray/1000 |
-| `border/default` | gray/200 | gray/950 |
-| `border/emphasis` | gray/400 | gray/800 |
-| `border/focus` | blue/600 | blue/400 |
-| `border/disabled` | gray/100 | gray/1000 |
-| `border/selected` | gray/1000 | gray/50 |
-| `border/selected-hover` | gray/950 | gray/100 |
-| `border/selected-pressed` | gray/950 | gray/100 |
-| `border/accent` | brand/200 | brand/800 |
-| `control/disabled` | gray/100 | gray/950 |
-| `control/neutral/solid` | gray/1000 | gray/50 |
-| `control/neutral/solid-hover` | gray/950 | gray/100 |
-| `control/neutral/solid-pressed` | gray/950 | gray/100 |
-| `control/neutral/subtle` | gray/100 | gray/950 |
-| `control/neutral/on-solid` | white | gray/1000 |
-| `overlay/hover` | blackAlpha/100 | whiteAlpha/100 |
-| `overlay/pressed` | blackAlpha/300 | whiteAlpha/300 |
+| `text/link` | brand/600 | brand/400 |
+| `text/on-status` | white | white |
+| `icon/default` | gray/1000 | gray/100 |
+| `icon/low` | gray/800 | gray/500 |
+| `icon/disabled` | gray/500 | gray/800 |
+| `icon/inverse` | white | black |
+| `border/default` | tint/border/default | gray/950 |
+| `border/emphasis` | tint/border/emphasis | gray/800 |
+| `border/focus` | brand/600 | brand/400 |
+| `border/disabled` | tint/border/disabled | gray/1000 |
+| `control/neutral` | tint/control/neutral | gray/950 |
+| `control/inverse` | gray/1100 | white |
+| `control/accent` | brand/600 | brand/600 |
+| `control/disabled` | tint/control/disabled | gray/1000 |
+| `control/selected` | gray/1000 | gray/50 |
+| `control/selected-hover`, `selected-pressed` | gray/950 | gray/100 |
+| `overlay/hover`, `pressed` | blackAlpha/50 | whiteAlpha/50 |
+| `overlay/hover-inverse`, `pressed-inverse` | whiteAlpha/50 | blackAlpha/50 |
 | `overlay/scrim` | blackAlpha/500 | blackAlpha/700 |
 
-`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 intent를 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
+네 intent는 informative blue, positive green, notice yellow, negative red다.
 
-| 키 | 라이트 | 다크 |
+| strength | 라이트 | 다크 |
 | --- | --- | --- |
-| `control/{c}/solid` | blue/600, green/700, yellow/500, red/600 | 라이트와 같음 |
-| `control/{c}/solid-hover` | 한 단계 진하게(700, 800, 600, 700) | 한 단계 밝게(500, 600, 400, 500) |
-| `control/{c}/solid-pressed` | 두 단계 진하게(800, 900, 700, 800) | 두 단계 밝게(400, 500, 300, 400) |
-| `surface/{c}` | 50 | 950 |
-| `status/{c}` | 800 (yellow는 900) | 300 |
-| `border/status-{c}` | blue/600, green/700, yellow/900, red/600 | blue/600, green/700, yellow/300, red/600 |
-| `border/status-{c}-subtle` | 200 (yellow는 300) | 800 |
-| `control/{c}/on-solid` | white (notice는 gray/1000) | 라이트와 같음 |
+| `low` | 각 색 50 | 각 색 950 |
+| `default` | blue/600, green/700, yellow/500, red/600 | 라이트와 같음 |
+| `emphasis` | blue/800, green/800, yellow/900, red/800 | 각 색 300 |
 
-## 3. 컴포넌트 바인딩
+## 4. 컴포넌트 바인딩
 
 - fill, stroke, 텍스트 모두 `semantic` 토큰으로 바인딩한다.
 - 투명도는 토큰이 가진다. paint의 opacity는 1로 둔다.
 - 인스턴스 안에서 덮어쓴 색(오버라이드)도 같은 규칙이다. 인스턴스 내부까지 확인하지 않으면 옛 변수가 남는다([workflow.md](./workflow.md)).
 
-## 4. 변수 이름 규칙
+## 5. 변수 이름 규칙
 
 - 변수 이름에 `.`을 쓸 수 없다. 소수는 `_`로 쓴다(`line-height/4_5`).
-- 의미색 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.
+- 의미색 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 역할에 따라 `status/notice/low`, `default`, `emphasis`를 쓴다.

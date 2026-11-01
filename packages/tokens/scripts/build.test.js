@@ -3,61 +3,88 @@ import { readFile } from 'node:fs/promises'
 import test from 'node:test'
 
 const css = await readFile(new URL('../dist/css/variables.css', import.meta.url), 'utf8')
-const previewHtml = await readFile(new URL('../preview/index.html', import.meta.url), 'utf8')
-const previewCss = await readFile(new URL('../preview/styles.css', import.meta.url), 'utf8')
-const { tokens } = await import('../dist/index.mjs')
 
-test('status colors are shared unless an application target needs a distinct value', () => {
+test('exports the canonical neutral ramps', () => {
+  const ramps = {
+    gray: {
+      50: '#f5f5f5', 100: '#efefef', 200: '#e7e7e7', 300: '#dcdcdc',
+      400: '#cbcbcb', 500: '#b7b7b7', 600: '#a1a1a1', 700: '#767676',
+      800: '#717171', 900: '#595959', 950: '#434343', 1000: '#2d2d2d', 1100: '#1a1a1a',
+    },
+    warm: {
+      50: '#f7f5f1', 100: '#f3efe8', 200: '#eee7da', 300: '#e2d9cf',
+      400: '#d6ccc2', 500: '#c4b8ae', 600: '#afa198', 700: '#978980',
+      800: '#7d7068', 900: '#645851', 950: '#4f453f', 1000: '#39312c',
+    },
+  }
+
+  for (const [ramp, steps] of Object.entries(ramps)) {
+    for (const [step, value] of Object.entries(steps)) {
+      assert.match(css, new RegExp(`--color-${ramp}-${step}: ${value};`))
+    }
+  }
+})
+
+test('exports only the target-centered tint contract', () => {
   for (const name of [
-    'text-accent',
-    'status-informative',
-    'status-positive',
-    'border-status-negative',
-    'border-status-notice-subtle',
-    'border-selected-pressed',
+    'background-low',
+    'surface-default', 'surface-raised', 'surface-overlay', 'surface-tinted',
+    'border-default', 'border-emphasis', 'border-disabled',
+    'control-neutral', 'control-disabled',
+  ]) {
+    assert.match(css, new RegExp(`--tint-${name}:`))
+  }
+
+  assert.match(css, /--tint-background-low: var\(--color-gray-50\);/)
+  assert.match(css, /--tint-surface-tinted: var\(--color-gray-100\);/)
+  assert.match(css, /--tint-control-neutral: var\(--color-gray-50\);/)
+  assert.match(css, /--tint-background-low: var\(--color-warm-50\);/)
+  assert.match(css, /--tint-surface-tinted: var\(--color-warm-100\);/)
+  assert.match(css, /--tint-control-neutral: var\(--color-warm-100\);/)
+  assert.doesNotMatch(css, /--tint-(?:text|icon)-/)
+  assert.doesNotMatch(css, /--tint-(?:background-base|surface-muted|control-neutral-subtle):/)
+})
+
+test('exports target-centered semantics without component state families', () => {
+  for (const name of [
+    'background-default', 'background-low', 'background-inverse',
+    'surface-default', 'surface-raised', 'surface-overlay', 'surface-tinted',
+    'text-default', 'text-low', 'text-lowest', 'text-on-status',
+    'icon-default', 'icon-low',
+    'border-default', 'border-emphasis', 'border-focus', 'border-disabled',
+    'control-neutral', 'control-inverse', 'control-accent', 'control-disabled',
+    'control-selected', 'control-selected-hover', 'control-selected-pressed',
+    'overlay-hover', 'overlay-pressed', 'overlay-hover-inverse', 'overlay-pressed-inverse',
   ]) {
     assert.match(css, new RegExp(`--semantic-${name}:`))
   }
 
-  assert.equal(tokens.semantic.status.informative, 'var(--semantic-status-informative)')
-  assert.equal(tokens.semantic.status.positive, 'var(--semantic-status-positive)')
-  assert.equal(tokens.semantic.border.statusNegative, 'var(--semantic-border-status-negative)')
-  assert.equal(tokens.semantic.text.informative, undefined)
-  assert.equal(tokens.semantic.icon.positive, undefined)
-  assert.equal(tokens.semantic.border.negative, undefined)
-  assert.equal(tokens.semantic.accent, undefined)
-  assert.equal(tokens.semantic.control.neutral.text, undefined)
-  assert.equal(tokens.semantic.control.neutral.border, undefined)
+  for (const intent of ['informative', 'positive', 'notice', 'negative']) {
+    for (const strength of ['low', 'default', 'emphasis']) {
+      assert.match(css, new RegExp(`--semantic-status-${intent}-${strength}:`))
+    }
+  }
 
-  assert.doesNotMatch(css, /--semantic-(?:text|icon)-(?:informative|positive|notice|negative):/)
-  assert.doesNotMatch(css, /--semantic-border-(?:informative|positive|notice|negative)(?:-subtle)?:/)
-  assert.doesNotMatch(css, /--semantic-accent-/)
-  assert.doesNotMatch(css, /--semantic-control-neutral-(?:text|border):/)
-  assert.doesNotMatch(css, /--tint-control-neutral-border:/)
-
-  assert.match(css, /--semantic-status-informative: var\(--color-blue-800\);/)
-  assert.match(css, /--semantic-status-informative: var\(--color-blue-300\);/)
-  assert.match(css, /--semantic-border-status-notice: var\(--color-yellow-900\);/)
-  assert.match(css, /--semantic-border-status-notice: var\(--color-yellow-300\);/)
-  assert.match(css, /--semantic-border-status-negative-subtle: var\(--color-red-200\);/)
-  assert.match(css, /--semantic-border-status-negative-subtle: var\(--color-red-800\);/)
-  assert.match(css, /--semantic-border-selected-pressed: var\(--color-gray-950\);/)
-  assert.match(css, /--semantic-border-selected-pressed: var\(--color-gray-100\);/)
-  assert.match(css, /--semantic-control-neutral-solid-pressed: var\(--color-gray-950\);/)
-  assert.match(css, /--semantic-control-neutral-solid-pressed: var\(--color-gray-100\);/)
+  assert.match(css, /--semantic-status-negative-low: var\(--color-red-50\);/)
+  assert.match(css, /--semantic-status-negative-default: var\(--color-red-600\);/)
+  assert.match(css, /--semantic-status-negative-emphasis: var\(--color-red-800\);/)
+  assert.match(css, /--semantic-status-negative-low: var\(--color-red-950\);/)
+  assert.match(css, /--semantic-status-negative-emphasis: var\(--color-red-300\);/)
+  assert.match(css, /--semantic-overlay-hover: var\(--color-black-alpha-50\);/)
+  assert.match(css, /--semantic-overlay-pressed: var\(--color-black-alpha-50\);/)
+  assert.match(css, /--semantic-overlay-hover-inverse: var\(--color-white-alpha-50\);/)
+  assert.match(css, /--semantic-overlay-pressed-inverse: var\(--color-white-alpha-50\);/)
+  assert.doesNotMatch(css, /--semantic-(?:background-base|surface-muted|text-primary|text-secondary|text-tertiary|icon-primary|icon-secondary):/)
+  assert.doesNotMatch(css, /--semantic-(?:surface|border)-(?:informative|positive|notice|negative)/)
+  assert.doesNotMatch(css, /--semantic-control-[\w-]+-(?:solid|solid-hover|solid-pressed|on-solid|subtle):/)
 })
 
-test('preview shows shared status colors and target-specific exceptions', () => {
-  const preview = `${previewHtml}\n${previewCss}`
+test('exports the shared size scale and icon size aliases', () => {
+  for (const size of [10, 11, 12, 13, 14, 16, 18, 20, 24, 32, 40, 48, 56]) {
+    assert.match(css, new RegExp(`--size-${size}: ${size}px;`))
+  }
 
-  assert.doesNotMatch(preview, /--semantic-(?:text|icon)-(?:informative|positive|notice|negative)/)
-  assert.doesNotMatch(preview, /--semantic-border-(?:informative|positive|notice|negative)(?:-subtle)?/)
-  assert.doesNotMatch(preview, /--semantic-control-neutral-(?:text|border)/)
-
-  assert.match(previewHtml, /text: \[[^\]]*'accent'/)
-  assert.match(previewHtml, /status: \[[^\]]*'informative'/)
-  assert.match(previewHtml, /border: \[[^\]]*'selected-pressed'/)
-  assert.match(previewHtml, /border: \[[^\]]*'status-informative-subtle'/)
-  assert.match(previewCss, /--semantic-status-informative/)
-  assert.match(previewCss, /--semantic-border-status-informative-subtle/)
+  for (const size of [10, 11, 12, 13, 14, 16, 18, 20, 24, 32, 56]) {
+    assert.match(css, new RegExp(`--icon-size-${size}: var\\(--size-${size}\\);`))
+  }
 })

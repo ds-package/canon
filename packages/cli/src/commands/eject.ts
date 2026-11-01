@@ -5,10 +5,12 @@ import pc from 'picocolors'
 
 const TOKEN_FILES = [
   'color.json',
+  'icon.json',
   'semantic.json',
   'tint.json',
   'brand.json',
   'shape.json',
+  'size.json',
   'spacing.json',
   'typography.json',
   'shadow.json',

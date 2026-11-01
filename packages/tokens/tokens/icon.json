@@ -1,0 +1,18 @@
+{
+  "icon": {
+    "size": {
+      "$type": "dimension",
+      "10": { "$value": "{size.10}" },
+      "11": { "$value": "{size.11}" },
+      "12": { "$value": "{size.12}" },
+      "13": { "$value": "{size.13}" },
+      "14": { "$value": "{size.14}" },
+      "16": { "$value": "{size.16}" },
+      "18": { "$value": "{size.18}" },
+      "20": { "$value": "{size.20}" },
+      "24": { "$value": "{size.24}" },
+      "32": { "$value": "{size.32}" },
+      "56": { "$value": "{size.56}" }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 ---
-verified: 2026-11-01
+verified: 2026-11-02
 ---
 # Canon 제작 가이드
 
@@ -19,7 +19,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 
 1. **Figma가 설계 정본이다.** `packages/tokens`는 Figma를 따라가며, 아래 동기화 상태를 함께 관리한다.
 2. **컴포넌트는 시멘틱 토큰만 바인딩한다.** 프리미티브(`color/gray/200`)를 컴포넌트에 직접 연결하지 않는다. 직접 연결하면 다크 모드가 안 된다.
-3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `control/informative/solid`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
+3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `status/informative/default`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
 4. **참고는 선별한다.** 다른 시스템의 규칙은 근거가 코드나 표준에 있는 것만 가져오고, 통째로 따르지 않는다. 기준은 [references.md](./references.md)에 있다.
 5. **바꿀 때는 추가, 재바인딩, 검증, 삭제 순서로 한다.** 옛것을 먼저 지우지 않는다. 자세한 절차는 [workflow.md](./workflow.md)에 있다.
 
@@ -29,10 +29,11 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 
 | 영역 | 동기화 결과 |
 | --- | --- |
-| 시멘틱 컬러 | `semantic` 컬러를 적용 대상 중심의 `background`, `surface`, `control`, `text`, `icon`, `border`, `status`, `overlay`, `static` 구조로 제공한다. `status/*`는 글자·아이콘이 함께 쓰는 의미색이고, 대상별 값이나 역할이 다를 때만 `border/status-*`처럼 대상 그룹에 예외를 둔다. light와 dark가 같은 CSS 변수명을 공유한다. |
+| 시멘틱 컬러 | `semantic` 컬러를 적용 대상 중심의 `background`, `surface`, `control`, `text`, `icon`, `border`, `status`, `overlay`, `static` 구조로 제공한다. `status/{intent}/{low\|default\|emphasis}`는 대상과 무관하게 공유한다. light와 dark가 같은 CSS 변수명을 공유한다. |
 | 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha를 제공한다. 10색 값은 `ramps.py` 출력과 같다. |
 | 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
 | 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. |
+| 크기 | `size/*`와 이를 참조하는 `icon/size/*`를 코드와 Figma에서 함께 제공한다. |
 | 코드 전용 토큰 | spacing, radius, shadow는 이번 Figma 동기화 범위가 아니어서 기존 값을 유지한다. |
 
 다크 모드는 `[data-theme="dark"]`에서 명시적으로 적용하고, 테마 속성이 없으면 `prefers-color-scheme: dark`를 따른다. `data-theme="light"`는 시스템 다크보다 우선한다.
@@ -43,10 +44,10 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규�
 
 | 옛 그룹 | 새 토큰 |
 | --- | --- |
-| `color/bg/strong*` | `control/neutral/solid`, `control/neutral/solid-hover`, `control/neutral/solid-pressed` |
-| `color/bg/base`, `base-hover`, `faint`, `disabled` | `surface/default`, `overlay/hover`, `surface/muted`, `control/disabled` |
-| `color/bg/brand`, `danger`, `success`, `info` | `control/informative`, `control/negative`, `control/positive`의 `solid`와 `surface/*` 상태 면 |
-| `color/text/strong`, `base`, `faint`, `disabled` | `text/primary`, `text/secondary`, `text/tertiary`, `text/disabled` |
-| `color/text/brand`, `danger`, `success` | `text/link`, `text/accent` 또는 해당 `status/*` 의미색 |
+| `color/bg/strong*` | `control/inverse`와 `overlay/*-inverse` 조합 |
+| `color/bg/base`, `base-hover`, `faint`, `disabled` | `surface/default`, `overlay/hover`, `surface/tinted`, `control/disabled` |
+| `color/bg/brand`, `danger`, `success`, `info` | `control/accent` 또는 해당 `status/*/default`, 상태 면은 `status/*/low` |
+| `color/text/strong`, `base`, `faint`, `disabled` | `text/default`, `text/low`, `text/lowest`, `text/disabled` |
+| `color/text/brand`, `danger`, `success` | `text/link` 또는 해당 `status/*/emphasis` |
 | `color/border/base*`, `faint`, `disabled` | `border/default`, `border/emphasis`, `border/disabled` |
-| `color/border/danger*` | `border/status-negative`, `border/status-negative-subtle` 또는 상태 오버레이 |
+| `color/border/danger*` | `status/negative/default` 또는 `status/negative/emphasis` |
