@@ -12,7 +12,7 @@ export function DocsShell({ children, documents }) {
       </header>
       <aside className="sidebar" aria-label="문서 탐색">
         <nav>
-          {documents.map((document) => (
+          {documents.filter((document) => document.route !== '/docs/references').map((document) => (
             <Link key={document.route} href={document.route}>{document.title}</Link>
           ))}
         </nav>
