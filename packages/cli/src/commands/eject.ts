@@ -28,9 +28,9 @@ export async function eject(_args: string[]) {
   // @canon/tokens 패키지에서 토큰 파일 찾기
   let tokensSourceDir: string
   try {
-    const require = createRequire(import.meta.url)
-    const pkgPath = require.resolve('@canon/tokens/package.json')
-    tokensSourceDir = path.join(path.dirname(pkgPath), 'tokens')
+    const require = createRequire(path.join(cwd, 'package.json'))
+    const entryPath = require.resolve('@canon/tokens')
+    tokensSourceDir = path.join(path.dirname(entryPath), '..', 'tokens')
   } catch {
     console.error(`  ${pc.red('✗')} @canon/tokens 패키지를 찾을 수 없습니다.`)
     console.error(`  ${pc.dim('먼저 설치하세요: pnpm add @canon/tokens')}`)

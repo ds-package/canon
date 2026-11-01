@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
+      - name: Build and package smoke test
+        run: pnpm test:package
 
       - name: Type Check
         run: pnpm -r exec tsc --noEmit

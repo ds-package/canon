@@ -5,6 +5,7 @@
   "description": "Canon Design System monorepo",
   "scripts": {
     "build": "pnpm -r build",
+    "test:package": "pnpm build && node --test scripts/package-consumption.test.mjs",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
     "changeset": "changeset",
