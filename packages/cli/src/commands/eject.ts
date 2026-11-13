@@ -1,102 +1,78 @@
-import { promises as fs } from 'fs'
+import { constants, promises as fs } from 'fs'
 import path from 'path'
 import { createRequire } from 'module'
 import pc from 'picocolors'
 
-const TOKEN_FILES = [
-  'color.json',
-  'semantic.json',
-  'tint.json',
-  'brand.json',
-  'shape.json',
-  'spacing.json',
-  'typography.json',
-  'shadow.json',
-]
+const BUILD_CONTENT = `import { buildTokens } from '@canon/tokens/build'
+import StyleDictionary from 'style-dictionary'
+import { copyFile, mkdir } from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+
+const local = (relative) => fileURLToPath(new URL(relative, import.meta.url))
+
+// Build outputs stay in canon/dist; only the stylesheet is copied into the app source.
+await buildTokens({ source: local('./tokens/**/*.json'), outDir: local('./dist/'), StyleDictionary })
+await mkdir(local('../src/styles/'), { recursive: true })
+await copyFile(local('./dist/css/variables.css'), local('../src/styles/canon-variables.css'))
+`
 
 export async function eject(_args: string[]) {
   const cwd = process.cwd()
   const targetDir = path.join(cwd, 'canon/tokens')
-
   console.log(pc.bold(pc.cyan('\n  Canon Design System — Eject\n')))
-  console.log(`  토큰 파일을 프로젝트로 복사합니다.`)
-  console.log(`  ${pc.dim('eject 후에는 @canon/tokens 업데이트가 자동 반영되지 않습니다.')}\n`)
 
-  // 대상 디렉토리 생성
-  await fs.mkdir(targetDir, { recursive: true })
-
-  // @canon/tokens 패키지에서 토큰 파일 찾기
   let tokensSourceDir: string
   try {
+    // npx installs the CLI elsewhere; resolve the tokens installed by this project.
     const require = createRequire(path.join(cwd, 'package.json'))
-    const entryPath = require.resolve('@canon/tokens')
-    tokensSourceDir = path.join(path.dirname(entryPath), '..', 'tokens')
+    tokensSourceDir = path.dirname(require.resolve('@canon/tokens/tokens/color.json'))
   } catch {
-    console.error(`  ${pc.red('✗')} @canon/tokens 패키지를 찾을 수 없습니다.`)
-    console.error(`  ${pc.dim('먼저 설치하세요: pnpm add @canon/tokens')}`)
-    process.exit(1)
+    return fail('@canon/tokens가 설치되지 않았거나 현재 CLI와 호환되지 않습니다. pnpm add @canon/tokens@latest로 설치·업데이트하세요.')
   }
 
-  // 토큰 파일 복사
-  for (const file of TOKEN_FILES) {
-    const src = path.join(tokensSourceDir, file)
+  const files = (await fs.readdir(tokensSourceDir)).filter((file) => file.endsWith('.json'))
+  if (!files.length) return fail('@canon/tokens 원본 JSON 파일이 없습니다.')
+  const tokensPackage = JSON.parse(await fs.readFile(path.join(tokensSourceDir, '../package.json'), 'utf-8'))
+  const styleDictionary = `style-dictionary@${tokensPackage.peerDependencies['style-dictionary']}`
+  await fs.mkdir(targetDir, { recursive: true })
+
+  for (const file of files) {
     const dest = path.join(targetDir, file)
-
-    const destExists = await fileExists(dest)
-    if (destExists) {
-      console.log(`  ${pc.yellow('!')} ${pc.dim(`canon/tokens/${file}`)} 이미 존재합니다. 건너뜀.`)
-      continue
-    }
-
     try {
-      await fs.copyFile(src, dest)
-      console.log(`  ${pc.green('✓')} ${pc.dim(`canon/tokens/${file}`)} 복사`)
-    } catch {
-      console.log(`  ${pc.yellow('!')} ${pc.dim(file)} 소스를 찾을 수 없습니다. 건너뜀.`)
+      await fs.copyFile(path.join(tokensSourceDir, file), dest, constants.COPYFILE_EXCL)
+      console.log(`  ${pc.green('✓')} canon/tokens/${file} 복사`)
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
+      console.log(`  ${pc.yellow('!')} canon/tokens/${file} 이미 존재합니다. 건너뜀.`)
     }
   }
 
-  // Style Dictionary 설정 파일 생성
-  const sdConfigPath = path.join(cwd, 'style-dictionary.config.json')
-  const sdConfigExists = await fileExists(sdConfigPath)
-
-  if (!sdConfigExists) {
-    const sdConfig = {
-      source: ['canon/tokens/**/*.json'],
-      platforms: {
-        css: {
-          transformGroup: 'css',
-          buildPath: 'src/styles/',
-          files: [{ destination: 'canon-variables.css', format: 'css/variables' }],
-        },
-      },
-    }
-    await fs.writeFile(sdConfigPath, JSON.stringify(sdConfig, null, 2), 'utf-8')
-    console.log(`  ${pc.green('✓')} ${pc.dim('style-dictionary.config.json')} 생성`)
+  try {
+    await fs.writeFile(path.join(cwd, 'canon/build.mjs'), BUILD_CONTENT, { flag: 'wx' })
+    console.log(`  ${pc.green('✓')} canon/build.mjs 생성`)
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
+    console.log(`  ${pc.yellow('!')} canon/build.mjs 이미 존재합니다. 건너뜀.`)
   }
 
   console.log(`
   ${pc.bold('Eject 완료!')}
 
-  토큰 파일 위치: ${pc.cyan('canon/tokens/')}
-
-  ${pc.bold('다음 단계:')}
-
-  1. Style Dictionary 설치:
-     ${pc.dim('pnpm add -D style-dictionary')}
+  1. 빌드 도구 설치:
+     pnpm add -D '${styleDictionary}'
 
   2. 토큰 빌드:
-     ${pc.dim('npx style-dictionary build')}
+     node canon/build.mjs
 
-  3. ${pc.dim('canon/tokens/')} 안의 JSON 파일을 자유롭게 수정하세요.
+  3. canon/tokens/ 안의 JSON 파일을 수정하고 다시 빌드하세요.
+     CSS: src/styles/canon-variables.css (빌드 산출물: canon/dist/)
+     이 CSS를 프로젝트 엔트리에서 임포트하세요.
+     공유 빌드 도구를 사용하므로 @canon/tokens는 계속 설치해 두세요.
   `)
 }
 
-async function fileExists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath)
-    return true
-  } catch {
-    return false
-  }
+// Expected user-facing failures: message only, non-zero exit. Unexpected errors keep their stack.
+function fail(message: string) {
+  console.error(`  ${pc.red('✗')} ${message}`)
+  process.exitCode = 1
 }

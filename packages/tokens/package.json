@@ -11,16 +11,32 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./tokens/*.json": "./tokens/*.json",
+    "./build": "./scripts/build.js"
   },
   "files": [
-    "dist",
-    "tokens"
+    "dist/css",
+    "dist/tailwind",
+    "dist/index.mjs",
+    "dist/index.cjs",
+    "dist/index.d.ts",
+    "dist/index.d.cts",
+    "tokens",
+    "scripts/build.js"
   ],
   "scripts": {
     "build": "node scripts/build.js && tsup",
-    "dev": "node scripts/build.js --watch",
-    "test": "pnpm build && node --test scripts/build.test.js"
+    "dev": "tsup --watch src --watch tokens --watch scripts/build.js",
+    "test": "pnpm build && node --test scripts/*.test.js"
+  },
+  "peerDependencies": {
+    "style-dictionary": "^4.1.4"
+  },
+  "peerDependenciesMeta": {
+    "style-dictionary": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "style-dictionary": "^4.1.4",

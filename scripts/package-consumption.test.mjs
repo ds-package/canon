@@ -44,6 +44,7 @@ test('packed packages work from a consumer project', async (t) => {
         '@canon/react': `file:${reactArchive}`,
         '@canon/tokens': `file:${tokenArchive}`,
         react: '19.3.1',
+        'style-dictionary': '^4.1.4',
         'react-dom': '19.3.1',
       },
     }),
@@ -110,5 +111,6 @@ test('packed packages work from a consumer project', async (t) => {
     'typography.json',
   ])
   assert.match(await readFile(path.join(consumerDir, 'canon/tokens/semantic.json'), 'utf8'), /"status-informative"/)
-  assert.match(await readFile(path.join(consumerDir, 'style-dictionary.config.json'), 'utf8'), /canon\/tokens\/\*\*\/\*\.json/)
+  run('node', ['canon/build.mjs'], consumerDir)
+  assert.equal(await readFile(path.join(consumerDir, 'src/styles/canon-variables.css'), 'utf8'), await readFile(cssPath, 'utf8'))
 })

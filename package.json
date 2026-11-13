@@ -5,13 +5,16 @@
   "description": "Canon Design System monorepo",
   "scripts": {
     "build": "pnpm -r build",
-    "test:package": "pnpm --filter './packages/*' build && pnpm --filter @canon/react test && node --test scripts/package-consumption.test.mjs",
+    "test:package": "pnpm test",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
-    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build",
+    "test": "pnpm --filter './packages/*' build && pnpm --filter @canon/react test && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/type-styles/*.test.js scripts/*.test.js scripts/package-consumption.test.mjs",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "check": "pnpm test && pnpm test:docs && pnpm typecheck",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm --filter './packages/*' build && changeset publish"
+    "release": "pnpm check && changeset publish",
+    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

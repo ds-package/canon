@@ -43,28 +43,43 @@ const cssValue = (value) => {
   return String(value)
 }
 
-const declaration = (token) =>
-  `  ${cssName(token.path)}: ${cssValue(token.original.$value)};`
-
-const typographyDeclarations = (token) => {
+// [name, value] pairs, so duplicate checks never re-parse rendered CSS.
+const tokenDeclarations = (token) => {
+  if (token.path[0] !== 'typography') return [[cssName(token.path), cssValue(token.original.$value)]]
   const tokenPath = cssPath(token.path)
+  return Object.entries(token.original.$value).map(([property, value]) => [
+    `--${[...tokenPath, toKebab(property)].join('-')}`,
+    cssValue(value),
+  ])
+}
 
-  return Object.entries(token.original.$value).map(
-    ([property, value]) =>
-      `  --${[...tokenPath, toKebab(property)].join('-')}: ${cssValue(value)};`,
-  )
+const declarations = (tokens) => {
+  const names = new Set()
+  return tokens.flatMap(tokenDeclarations).map(([name, value]) => {
+    if (names.has(name)) throw new Error(`Duplicate CSS variable ${name} in one selector`)
+    names.add(name)
+    return `  ${name}: ${value};`
+  }).join('\n')
 }
 
 const setDeep = (target, pathSegments, value) => {
   let cursor = target
 
   pathSegments.forEach((segment, index) => {
-    if (index === pathSegments.length - 1) {
-      cursor[segment] = value
-      return
+    const last = index === pathSegments.length - 1
+    if (Object.hasOwn(cursor, segment)) {
+      if (last || typeof cursor[segment] !== 'object') {
+        throw new Error(`Duplicate Tailwind token ${pathSegments.join('.')}`)
+      }
+    } else {
+      // Plain assignment to "__proto__" would replace the prototype instead of adding a key.
+      Object.defineProperty(cursor, segment, {
+        value: last ? value : {},
+        enumerable: true,
+        writable: true,
+        configurable: true,
+      })
     }
-
-    cursor[segment] ??= {}
     cursor = cursor[segment]
   })
 }
@@ -93,10 +108,9 @@ const formatCss = ({ dictionary }) => {
 
     return modes.flatMap((mode) => [
       `[data-${axis}="${mode}"] {`,
-      dictionary.allTokens
-        .filter((token) => token.path[0] === axis && token.path[1] === mode)
-        .map(declaration)
-        .join('\n'),
+      declarations(dictionary.allTokens.filter(
+        (token) => token.path[0] === axis && token.path[1] === mode,
+      )),
       '}',
       '',
     ])
@@ -111,13 +125,13 @@ const formatCss = ({ dictionary }) => {
     (token) => token.path[0] === 'semantic' && token.path[1] === 'dark',
   )
 
-  const root = [
-    ...primitiveTokens.map(declaration),
-    ...typographyTokens.flatMap(typographyDeclarations),
-    ...defaultAxisTokens.map(declaration),
-    ...lightTokens.map(declaration),
-  ].join('\n')
-  const dark = darkTokens.map(declaration).join('\n')
+  const root = declarations([
+    ...primitiveTokens,
+    ...typographyTokens,
+    ...defaultAxisTokens,
+    ...lightTokens,
+  ])
+  const dark = declarations(darkTokens)
 
   return [
     '/* Canon Design System CSS Variables */',
@@ -137,34 +151,6 @@ const formatCss = ({ dictionary }) => {
     dark.replace(/^/gm, '  '),
     '  }',
     '}',
-    '',
-  ].join('\n')
-}
-
-const formatJavascript = ({ dictionary }) => {
-  const tokens = {}
-
-  dictionary.allTokens
-    .filter(
-      (token) =>
-        !(token.path[0] === 'semantic' && token.path[1] === 'dark') &&
-        !(isAxisToken(token) && !isDefaultAxisMode(token)),
-    )
-    .forEach((token) => {
-      let tokenPath = token.path
-      if (token.path[0] === 'shape') tokenPath = token.path.slice(2)
-      else if (token.path[0] === 'semantic' || isAxisToken(token))
-        tokenPath = [token.path[0], ...token.path.slice(2)]
-      setDeep(tokens, tokenPath, token.value)
-    })
-
-  return [
-    '/* Canon Design System tokens */',
-    '/* Auto-generated. Do not edit. */',
-    '',
-    `export const tokens = ${JSON.stringify(tokens, null, 2)}`,
-    '',
-    'export default tokens',
     '',
   ].join('\n')
 }
@@ -237,25 +223,33 @@ const formatTailwind = ({ dictionary }) => {
   ].join('\n')
 }
 
-const buildWithStyleDictionary = async (StyleDictionary) => {
+export const buildTokens = async ({
+  source = path.join(ROOT, 'tokens/**/*.json'),
+  outDir = path.join(ROOT, 'dist'),
+  StyleDictionary,
+} = {}) => {
+  StyleDictionary ??= (await import('style-dictionary')).default
+  // Keep internal names lossless; only the CSS formatter flattens public names.
+  StyleDictionary.registerTransform({
+    name: 'canon/full-path',
+    type: 'name',
+    transform: (token) => JSON.stringify(token.path),
+  })
   StyleDictionary.registerFormat({ name: 'canon/css-variables', format: formatCss })
-  StyleDictionary.registerFormat({ name: 'canon/javascript-esm', format: formatJavascript })
   StyleDictionary.registerFormat({ name: 'canon/tailwind-preset', format: formatTailwind })
 
   const sd = new StyleDictionary({
-    source: [path.join(ROOT, 'tokens/**/*.json')],
+    source: Array.isArray(source) ? source : [source],
     platforms: {
       css: {
-        buildPath: path.join(ROOT, 'dist/css/'),
+        transforms: ['canon/full-path'],
+        buildPath: path.join(outDir, 'css/'),
         files: [{ destination: 'variables.css', format: 'canon/css-variables' }],
       },
       tailwind: {
-        buildPath: path.join(ROOT, 'dist/tailwind/'),
+        transforms: ['canon/full-path'],
+        buildPath: path.join(outDir, 'tailwind/'),
         files: [{ destination: 'preset.js', format: 'canon/tailwind-preset' }],
-      },
-      js: {
-        buildPath: path.join(ROOT, 'dist/js/'),
-        files: [{ destination: 'tokens.js', format: 'canon/javascript-esm' }],
       },
     },
   })
@@ -263,7 +257,7 @@ const buildWithStyleDictionary = async (StyleDictionary) => {
   await sd.buildAllPlatforms()
 }
 
-const { default: StyleDictionary } = await import('style-dictionary')
-await buildWithStyleDictionary(StyleDictionary)
-
-console.log('\nCanon tokens built successfully')
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await buildTokens()
+  console.log('\nCanon tokens built successfully')
+}

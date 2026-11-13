@@ -36,9 +36,6 @@ const SPEC = [
   ['Caption/10', 10, 16, 'Regular', 0],
 ];
 
-// primitives to add when missing (existing line-height naming = px / 4)
-const NEED_SIZE = [13, 30, 36];
-const NEED_LH = [18, 22, 26, 72];
 // variable names cannot contain "." so 4.5 becomes 4_5
 const lhName = px => 'line-height/' + String(px / 4).replace('.', '_');
 
@@ -59,9 +56,6 @@ async function main() {
     byName[name] = v; report.addedVars.push(name);
     return v;
   };
-  for (const s of NEED_SIZE) ensure('font/size/' + s, s, ['FONT_SIZE']);
-  for (const l of NEED_LH) ensure(lhName(l), l, ['LINE_HEIGHT']);
-
   // load fonts first; abort early with a clear message if Pretendard Variable is missing
   const weights = [...new Set(SPEC.map(s => s[3]))];
   for (const w of weights) {
@@ -71,6 +65,11 @@ async function main() {
 
   const existing = await figma.getLocalTextStylesAsync();
   const styleByName = {}; for (const s of existing) styleByName[s.name] = s;
+
+  for (const [, size, lh] of SPEC) {
+    ensure('font/size/' + size, size, ['FONT_SIZE']);
+    ensure(lhName(lh), lh, ['LINE_HEIGHT']);
+  }
 
   for (const [name, size, lh, weight, ls] of SPEC) {
     try {

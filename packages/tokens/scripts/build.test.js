@@ -61,3 +61,23 @@ test('preview shows shared status colors and target-specific exceptions', () => 
   assert.match(previewCss, /--semantic-status-informative/)
   assert.match(previewCss, /--semantic-border-status-informative-subtle/)
 })
+
+test('every TypeScript token reference has a CSS declaration and every public default token has a reference', () => {
+  const references = new Set()
+  const collect = (value) => {
+    for (const child of Object.values(value)) {
+      if (typeof child === 'string') {
+        assert.match(child, /^var\(--[^)]+\)$/)
+        references.add(child.slice(4, -1))
+      } else collect(child)
+    }
+  }
+  collect(tokens)
+  const declared = new Set([...css.matchAll(/^\s*(--[^:]+):/gm)].map((match) => match[1]))
+  assert.deepEqual([...references].filter((name) => !declared.has(name)), [], 'TypeScript references without CSS')
+  const root = css.match(/:root \{([\s\S]*?)\n\}/)[1]
+  const publicDefaults = [...root.matchAll(/^\s*(--[^:]+):/gm)]
+    .map((match) => match[1])
+    .filter((name) => !name.startsWith('--tint-'))
+  assert.deepEqual(publicDefaults.filter((name) => !references.has(name)), [], 'CSS defaults missing from TypeScript')
+})
