@@ -21,7 +21,7 @@
     "test": "vitest run --environment jsdom"
   },
   "peerDependencies": {
-    "@canon/tokens": "^1.0.0",
+    "@canon/tokens": "^1.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

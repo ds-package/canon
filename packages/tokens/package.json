@@ -1,6 +1,6 @@
 {
   "name": "@canon/tokens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Canon Design System tokens: CSS Variables, JS, TypeScript, Tailwind preset",
   "license": "MIT",
   "type": "module",
