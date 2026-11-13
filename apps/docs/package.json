@@ -1,0 +1,22 @@
+{
+  "name": "@canon/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "test": "node --test lib/docs.test.mjs"
+  },
+  "dependencies": {
+    "@canon/react": "workspace:*",
+    "@canon/tokens": "workspace:*",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-markdown": "10.1.0",
+    "remark-gfm": "4.0.1"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

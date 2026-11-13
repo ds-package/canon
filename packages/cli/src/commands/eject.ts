@@ -27,7 +27,7 @@ export async function eject(_args: string[]) {
     const require = createRequire(path.join(cwd, 'package.json'))
     tokensSourceDir = path.dirname(require.resolve('@canon/tokens/tokens/color.json'))
   } catch {
-    return fail('@canon/tokens 패키지를 찾을 수 없습니다. 먼저 pnpm add @canon/tokens를 실행하세요.')
+    return fail('@canon/tokens가 설치되지 않았거나 현재 CLI와 호환되지 않습니다. pnpm add @canon/tokens@latest로 설치·업데이트하세요.')
   }
 
   const files = (await fs.readdir(tokensSourceDir)).filter((file) => file.endsWith('.json'))

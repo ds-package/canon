@@ -3,17 +3,27 @@ verified: 2026-11-01
 ---
 # Canon 제작 가이드
 
-Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 규칙이다. 규칙마다 한 줄 이유를 붙였다. 이유가 더는 맞지 않으면 규칙을 고친다.
+Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문서다. [DESIGN.md](../DESIGN.md)는 작업 질문을 해당 정본으로 연결하고, 이 문서는 각 문서의 현재 역할과 정본 경계를 기록한다.
 
-| 문서 | 다루는 것 |
-| --- | --- |
-| [color.md](./color.md) | 프리미티브 램프, 시멘틱 토큰 구조, 라이트/다크 값, 바인딩 규칙 |
-| [typography.md](./typography.md) | 역할 기반 텍스트 스타일 29개, 한글 우선 행간, 변수 바인딩 |
-| [components.md](./components.md) | 컴포넌트 프로퍼티 이름과 값, boolean과 variant 구분, 열린 결정 |
-| [icons.md](./icons.md) | Phosphor 채택 결정, 실측 규격, 크기와 weight 매핑, 사용 규칙 |
-| [workflow.md](./workflow.md) | Figma 작업 방식, 마이그레이션 순서, 도구의 제약과 함정 |
-| [references.md](./references.md) | 참고한 디자인 시스템과 가져온 것, 가져오지 않은 것 |
-| [tools/](./tools/) | 램프 생성기(`ramps.py`), 텍스트 스타일 생성 Figma 플러그인 |
+| 문서 | 현재 역할 | 정본 경계 |
+| --- | --- | --- |
+| [color.md](./color.md) | 컬러 foundation과 현재 토큰 계약 | Figma 변수는 설계 값과 이름의 정본이고 `packages/tokens`는 코드 배포 정본이다. 이 문서는 둘의 대응과 선택 규칙을 설명한다. |
+| [typography.md](./typography.md) | 타이포 foundation과 Figma 바인딩 규칙 | Figma 텍스트 스타일은 설계 정본이고 `packages/tokens`는 코드 토큰 정본이다. |
+| [components.md](./components.md) | Figma 컴포넌트 프로퍼티 규칙과 현재 상태의 스냅샷 | 현재 runtime 컴포넌트 패키지는 없다. 이 문서는 미래 React API의 정본이 아니다. |
+| [icons.md](./icons.md) | 아이콘 foundation, Phosphor 채택 결정, Figma 적용 현황 | Phosphor 원본과 Canon Figma 컴포넌트가 현재 근거다. 코드 icon package 계약은 아직 없다. |
+| [workflow.md](./workflow.md) | Figma contributing 절차 | Figma MCP 제약과 실제 마이그레이션에서 검증한 순서를 기록한다. |
+| [decisions/interaction-foundation.md](./decisions/interaction-foundation.md) | React Aria Components 채택 결정 | interaction foundation의 이유, 책임 경계, 재검토 조건의 정본이다. |
+| [decisions/docs-platform.md](./decisions/docs-platform.md) | 자체 docs web 채택 결정 | Next.js shell, document index, search와 playground의 현재 경계를 기록한다. |
+| [dialog.md](./dialog.md) | Dialog anatomy, behavior, playground와 Figma mapping | TypeScript public interface가 props의 정본이고 Figma `Modal`은 시각 구조의 정본이다. |
+| [guides/README.md](./guides/README.md) | 컴포넌트 선택 가이드의 범위와 작성 기준 | 실제 선택 가이드는 아직 없다. 확인되지 않은 선택을 Canon 규칙으로 만들지 않는다. |
+| [references.md](./references.md) | 외부 시스템을 참고한 근거 | 가져온 것과 가져오지 않은 것을 구분하는 증거다. Canon 규칙 자체의 정본은 아니다. |
+| [tools/](./tools/) | 문서를 실제 값과 Figma에 연결하는 도구 | 생성된 결과가 아니라 스크립트와 플러그인 소스가 정본이다. |
+
+현재 문서는 foundation, 규칙, 현황이 일부 섞여 있다. 기존 URL을 보존하기 위해 지금은 이동하지 않는다. runtime 컴포넌트와 실제 선택 근거가 생기면 package-local rules와 component guide로 필요한 내용만 분리한다.
+
+문서의 `verified`는 본문을 실제 Figma, 코드, 공식 원천과 다시 대조한 날짜다. 일부만 바꿨다면 전체 문서의 `verified`를 갱신하지 않는다.
+
+`pnpm test:docs`는 `DESIGN.md`와 이 index의 로컬 링크, decision metadata와 ID 중복을 검사한다. CI도 같은 명령을 실행한다.
 
 ## 원칙
 

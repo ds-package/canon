@@ -5,21 +5,23 @@
   "description": "Canon Design System monorepo",
   "scripts": {
     "build": "pnpm -r build",
+    "test:package": "pnpm test",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
-    "test": "pnpm build && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/type-styles/*.test.js scripts/*.test.js",
+    "test": "pnpm --filter './packages/*' build && pnpm --filter @canon/react test && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/type-styles/*.test.js scripts/*.test.js scripts/package-consumption.test.mjs",
     "typecheck": "pnpm -r exec tsc --noEmit",
-    "check": "pnpm test && pnpm typecheck",
+    "check": "pnpm test && pnpm test:docs && pnpm typecheck",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm check && changeset publish"
+    "release": "pnpm check && changeset publish",
+    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "typescript": "^5.4.0"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.9.0",
     "pnpm": ">=9.0.0"
   },
   "pnpm": {

@@ -137,8 +137,19 @@ test('packed commands exit unsuccessfully when source resolution, copying, or to
   await mkdir(missing)
   assert.throws(() => run(process.execPath, [cli, 'eject'], missing), (error) => {
     assert.equal(error.status, 1)
-    assert.match(error.stderr, /@canon\/tokens 패키지를 찾을 수 없습니다/)
+    assert.match(error.stderr, /@canon\/tokens가 설치되지 않았거나 현재 CLI와 호환되지 않습니다/)
     assert.doesNotMatch(error.stderr, /^\s+at /m, 'expected CLI errors print the message without a stack')
+    return true
+  })
+  const legacy = path.join(temp, 'legacy-consumer')
+  await mkdir(path.join(legacy, 'node_modules/@canon/tokens'), { recursive: true })
+  await writeFile(path.join(legacy, 'node_modules/@canon/tokens/package.json'), JSON.stringify({
+    name: '@canon/tokens', version: '1.0.0', exports: { '.': './dist/index.mjs' },
+  }))
+  assert.throws(() => run(process.execPath, [cli, 'eject'], legacy), (error) => {
+    assert.equal(error.status, 1)
+    assert.match(error.stderr, /호환되지 않습니다/)
+    assert.match(error.stderr, /pnpm add @canon\/tokens@latest/)
     return true
   })
   await writeFile(path.join(consumer, 'canon'), 'blocks token directory creation')
