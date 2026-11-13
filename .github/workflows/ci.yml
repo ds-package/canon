@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build & Type Check
+    name: Build, Test & Type Check
     runs-on: ubuntu-latest
 
     steps:
@@ -29,8 +29,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
-
-      - name: Type Check
-        run: pnpm -r exec tsc --noEmit
+      - name: Verify packages and consumers
+        run: pnpm check

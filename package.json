@@ -7,9 +7,12 @@
     "build": "pnpm -r build",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
+    "test": "pnpm build && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/type-styles/*.test.js scripts/*.test.js",
+    "typecheck": "pnpm -r exec tsc --noEmit",
+    "check": "pnpm test && pnpm typecheck",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm check && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

@@ -8,15 +8,9 @@ const CSS_CONTENT = `/* Canon Design System */
 /* 여기서 CSS Variables를 오버라이드하세요 */
 :root {
   /* 예시: 브랜드 컬러 변경
-  --color-primary-500: #your-color;
-  --color-primary-600: #your-color;
+  --brand-500: #3b82f6;
+  --brand-600: #2563eb;
   */
-}
-`
-
-const CONFIG_CONTENT = `{
-  "$schema": "https://canon.design/schema/config.json",
-  "version": "0.1.0"
 }
 `
 
@@ -26,26 +20,13 @@ export async function init(_args: string[]) {
   console.log(pc.bold(pc.cyan('\n  Canon Design System\n')))
   console.log(`  프로젝트 초기화 중... ${pc.dim(cwd)}\n`)
 
-  // canon.config.json 생성
-  const configPath = path.join(cwd, 'canon.config.json')
-  const configExists = await fileExists(configPath)
-
-  if (configExists) {
-    console.log(`  ${pc.yellow('!')} ${pc.dim('canon.config.json')} 이미 존재합니다. 건너뜀.`)
-  } else {
-    await fs.writeFile(configPath, CONFIG_CONTENT, 'utf-8')
-    console.log(`  ${pc.green('✓')} ${pc.dim('canon.config.json')} 생성`)
-  }
-
-  // canon.css 생성
   const cssPath = path.join(cwd, 'canon.css')
-  const cssExists = await fileExists(cssPath)
-
-  if (cssExists) {
-    console.log(`  ${pc.yellow('!')} ${pc.dim('canon.css')} 이미 존재합니다. 건너뜀.`)
-  } else {
-    await fs.writeFile(cssPath, CSS_CONTENT, 'utf-8')
+  try {
+    await fs.writeFile(cssPath, CSS_CONTENT, { flag: 'wx' })
     console.log(`  ${pc.green('✓')} ${pc.dim('canon.css')} 생성`)
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error
+    console.log(`  ${pc.yellow('!')} ${pc.dim('canon.css')} 이미 존재합니다. 건너뜀.`)
   }
 
   console.log(`
@@ -61,13 +42,4 @@ export async function init(_args: string[]) {
 
   ${pc.dim('완전한 커스텀이 필요하면: npx @canon/cli eject')}
   `)
-}
-
-async function fileExists(filePath: string): Promise<boolean> {
-  try {
-    await fs.access(filePath)
-    return true
-  } catch {
-    return false
-  }
 }

@@ -54,8 +54,8 @@
         </div>
       </div>
       <p class="sample-note">현재 코드 기준 미리보기예요. Dark에서는 현재 코드상 Cool과 Warm이 같은 중립색을 사용해요.</p>
-      <h3 class="comparison-heading">Figma와 코드의 차이</h3>
-      <p class="preview-subtitle">확인된 참조값의 일부를 비교해요. 어느 쪽이 정답인지는 아직 정하지 않았어요.</p>
+      <h3 class="comparison-heading">Figma 기록과 현재 코드</h3>
+      <p class="preview-subtitle"><code>docs/color.md · 2026-11-01</code>에 기록된 Figma 참조 이름과 현재 코드의 계산된 색을 비교해요. 기록에는 색조별 값이 없으며, 현재 Figma 원문은 미확인이에요.</p>
       <div class="comparison-grid" id="color-comparison"></div>
     </section>
 
@@ -251,29 +251,33 @@
     function renderComparison() {
       const dark = document.documentElement.dataset.theme === 'dark' ||
         (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches)
-      const warm = document.documentElement.dataset.tint === 'warm'
+      // Historical aliases from docs/color.md (2026-11-01), not a live Figma read.
       const comparisons = [
-        ...(!dark ? [{ label: `tint/background/base · ${warm ? 'warm' : 'cool'}`, figma: 'white', code: warm ? 'warm-200' : 'gray-50' }] : []),
-        { label: 'control/disabled', figma: dark ? 'gray-1000' : 'gray-50', code: dark ? 'gray-950' : 'gray-100' },
-        { label: 'overlay/pressed', figma: dark ? 'white-alpha-100' : 'black-alpha-100', code: dark ? 'white-alpha-300' : 'black-alpha-300' },
+        { label: 'background/base', figma: dark ? 'gray/1100' : 'gray/50' },
+        { label: 'control/disabled', figma: dark ? 'gray/950' : 'gray/100' },
+        { label: 'overlay/pressed', figma: dark ? 'whiteAlpha/300' : 'blackAlpha/300' },
       ]
       const grid = document.getElementById('color-comparison')
       grid.replaceChildren()
-      comparisons.forEach(({label, figma, code}) => {
+      comparisons.forEach(({label, figma}) => {
         const card = document.createElement('article')
         card.className = 'comparison-card'
         const title = document.createElement('code')
         title.textContent = label
         card.append(title)
-        ;[['Figma', figma], ['코드', code]].forEach(([source, color]) => {
+        const variable = `--semantic-${label.replaceAll('/', '-')}`
+        ;[['Figma (2026-11-01)', figma], ['코드', variableValue(variable)]].forEach(([source, value]) => {
           const row = document.createElement('div')
           row.className = 'comparison-row'
-          const swatch = document.createElement('span')
-          swatch.className = 'comparison-swatch'
-          swatch.style.backgroundColor = `var(--color-${color})`
+          if (source === '코드') {
+            const swatch = document.createElement('span')
+            swatch.className = 'comparison-swatch'
+            swatch.style.backgroundColor = `var(${variable})`
+            row.append(swatch)
+          }
           const text = document.createElement('span')
-          text.textContent = `${source} · ${color}`
-          row.append(swatch, text)
+          text.textContent = `${source} · ${value}`
+          row.append(text)
           card.append(row)
         })
         grid.append(card)
