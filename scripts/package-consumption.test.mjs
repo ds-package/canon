@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, NumberField, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${NumberField.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,NumberField,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, NumberField, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${NumberField.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,NumberField,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
 
   const renderedButton = run(
@@ -182,6 +182,21 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(renderedRadioGroup, /form="settings"/)
   assert.match(renderedRadioGroup, /checked=""/)
 
+  const renderedNumberField = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { NumberField } from '@canon/react'; process.stdout.write(renderToString(React.createElement(NumberField, {label: 'Quantity', form: 'order', name: 'quantity', defaultValue: 2, minValue: 1, maxValue: 5})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedNumberField, /class="canon-number-field"/)
+  assert.match(renderedNumberField, /name="quantity"/)
+  assert.match(renderedNumberField, /form="order"/)
+  assert.match(renderedNumberField, /aria-roledescription="Number field"/)
+  assert.match(renderedNumberField, /<input type="hidden" form="order" name="quantity" value="2"\/>/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -216,6 +231,7 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(reactCss, /\.canon-checkbox-control/)
   assert.match(reactCss, /\.canon-switch-control/)
   assert.match(reactCss, /\.canon-radio-option-control/)
+  assert.match(reactCss, /\.canon-number-field-group/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

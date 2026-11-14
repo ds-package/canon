@@ -62,6 +62,13 @@ export type {
   TextAreaSize,
 } from './TextArea'
 
+export { NumberField } from './NumberField'
+
+export type {
+  NumberFieldProps,
+  NumberFieldSize,
+} from './NumberField'
+
 export type {
   DialogCloseProps,
   DialogProps,

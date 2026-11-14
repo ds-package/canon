@@ -4,6 +4,7 @@ import { ButtonPlayground } from '../../../components/ButtonPlayground.jsx'
 import { CheckboxPlayground } from '../../../components/CheckboxPlayground.jsx'
 import { MarkdownPage } from '../../../components/MarkdownPage.jsx'
 import { DialogPlayground } from '../../../components/DialogPlayground.jsx'
+import { NumberFieldPlayground } from '../../../components/NumberFieldPlayground.jsx'
 import { RadioGroupPlayground } from '../../../components/RadioGroupPlayground.jsx'
 import { SelectPlayground } from '../../../components/SelectPlayground.jsx'
 import { SwitchPlayground } from '../../../components/SwitchPlayground.jsx'
@@ -15,6 +16,7 @@ const playgrounds = {
   '/docs/button': ButtonPlayground,
   '/docs/checkbox': CheckboxPlayground,
   '/docs/dialog': DialogPlayground,
+  '/docs/number-field': NumberFieldPlayground,
   '/docs/radio-group': RadioGroupPlayground,
   '/docs/select': SelectPlayground,
   '/docs/switch': SwitchPlayground,

@@ -7,6 +7,7 @@ import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button
 import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
 import { getRadioGroupPlaygroundModel, initialRadioGroupPlaygroundState } from './radio-group-playground.mjs'
+import { getNumberFieldPlaygroundModel, initialNumberFieldPlaygroundState } from './number-field-playground.mjs'
 import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
 import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
@@ -149,6 +150,48 @@ test('RadioGroup playground preview settings and copied JSX share the Canon publ
   assert.equal(constrained.componentProps.errorMessage, 'Choose a plan.')
   assert.match(constrained.jsx, /orientation="horizontal" disabled required invalid readOnly/)
   assert.doesNotMatch(constrained.jsx, /defaultValue=/)
+  assert.equal(constrained.theme, 'dark')
+})
+
+test('NumberField playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getNumberFieldPlaygroundModel(initialNumberFieldPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    label: 'Budget',
+    name: 'budget',
+    size: 'md',
+    defaultValue: 1000,
+    minValue: 0,
+    maxValue: 10000,
+    step: 100,
+    formatOptions: { style: 'currency', currency: 'USD' },
+    disabled: false,
+    required: false,
+    invalid: false,
+    readOnly: false,
+    description: 'Enter the approved amount.',
+  })
+  assert.match(model.jsx, /<NumberField label="Budget" name="budget" size="md"/)
+  assert.match(model.jsx, /defaultValue=\{1000\} minValue=\{0\} maxValue=\{10000\} step=\{100\}/)
+  assert.match(model.jsx, /formatOptions=\{\{ style: 'currency', currency: 'USD' \}\}/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const constrained = getNumberFieldPlaygroundModel({
+    ...initialNumberFieldPlaygroundState,
+    size: 'lg',
+    defaultValue: null,
+    minValue: -10,
+    maxValue: 10,
+    step: 0.5,
+    disabled: true,
+    required: true,
+    invalid: true,
+    readOnly: true,
+    dark: true,
+  })
+  assert.equal(constrained.componentProps.errorMessage, 'Enter a number in the allowed range.')
+  assert.match(constrained.jsx, /size="lg" defaultValue=\{null\}/)
+  assert.match(constrained.jsx, /minValue=\{-10\} maxValue=\{10\} step=\{0.5\}/)
+  assert.match(constrained.jsx, /disabled required invalid readOnly/)
   assert.equal(constrained.theme, 'dark')
 })
 

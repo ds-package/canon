@@ -57,6 +57,7 @@ a:focus-visible, input:focus-visible { outline: 2px solid var(--semantic-border-
 .playground-switch-stage { min-height: 280px; }
 .playground-text-field-stage { min-height: 320px; }
 .playground-text-area-stage { min-height: 360px; }
+.playground-number-field-stage { min-height: 320px; }
 .playground-code { margin-top: 16px; }
 
 @media (max-width: 760px) {

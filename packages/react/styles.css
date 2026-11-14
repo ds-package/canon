@@ -176,6 +176,7 @@
 .canon-select,
 .canon-text-field,
 .canon-text-area,
+.canon-number-field,
 .canon-checkbox {
   display: grid;
   gap: var(--spacing-1);
@@ -184,7 +185,8 @@
 
 .canon-select-label,
 .canon-text-field-label,
-.canon-text-area-label {
+.canon-text-area-label,
+.canon-number-field-label {
   font-family: var(--typography-label-14-strong-font-family);
   font-size: var(--typography-label-14-strong-font-size);
   font-weight: var(--typography-label-14-strong-font-weight);
@@ -469,6 +471,133 @@
 }
 
 .canon-text-area[data-readonly] .canon-text-area-input {
+  background: var(--semantic-surface-muted);
+}
+
+.canon-number-field-group {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  overflow: hidden;
+}
+
+.canon-number-field-group[data-size="sm"] {
+  height: var(--spacing-8);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-number-field-group[data-size="md"] {
+  height: var(--spacing-10);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-number-field-group[data-size="lg"] {
+  height: var(--spacing-12);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-number-field-group[data-hovered] {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-number-field-group[data-focus-within] {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-number-field-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--spacing-2);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  outline: none;
+}
+
+.canon-number-field-stepper {
+  display: grid;
+  flex: none;
+  width: var(--spacing-8);
+  border: 0;
+  background: transparent;
+  color: var(--semantic-icon-secondary);
+  cursor: pointer;
+  place-items: center;
+}
+
+.canon-number-field-stepper > svg {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+}
+
+.canon-number-field-stepper[data-hovered] {
+  background: var(--semantic-overlay-hover);
+}
+
+.canon-number-field-stepper[data-pressed] {
+  background: var(--semantic-overlay-pressed);
+}
+
+.canon-number-field-stepper[data-focus-visible] {
+  box-shadow: inset 0 0 0 2px var(--semantic-border-focus);
+  outline: none;
+}
+
+.canon-number-field-stepper[data-disabled] {
+  color: var(--semantic-icon-disabled);
+  cursor: not-allowed;
+}
+
+.canon-number-field-description,
+.canon-number-field-error {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-number-field-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-number-field-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-number-field[data-invalid] .canon-number-field-group {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-number-field[data-disabled] .canon-number-field-group {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+}
+
+.canon-number-field[data-readonly] .canon-number-field-group {
   background: var(--semantic-surface-muted);
 }
 
