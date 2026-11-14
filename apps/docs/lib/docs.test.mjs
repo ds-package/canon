@@ -3,6 +3,7 @@ import test from 'node:test'
 
 import { parseDocument, readDocuments, sourceToRoute, toWebHref } from './docs.mjs'
 import { searchDocuments } from './search.mjs'
+import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
@@ -33,6 +34,45 @@ test('Dialog playground preview settings and copied JSX share the Canon public i
   })
   assert.deepEqual(reset.dialogProps, { dismissable: false })
   assert.doesNotMatch(reset.jsx, /dismissable|DialogClose|DialogFooter/)
+})
+
+test('Button playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getButtonPlaygroundModel(initialButtonPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    variant: 'primary',
+    size: 'md',
+    disabled: false,
+    pending: false,
+  })
+  assert.equal(model.component, 'Button')
+  assert.match(model.jsx, /<Button variant="primary" size="md">Save changes<\/Button>/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const icon = getButtonPlaygroundModel({
+    ...initialButtonPlaygroundState,
+    component: 'icon',
+    variant: 'quiet',
+    size: 'xs',
+    disabled: true,
+    pending: true,
+    shape: 'round',
+    dark: true,
+  })
+  assert.equal(icon.component, 'IconButton')
+  assert.deepEqual(icon.componentProps, {
+    variant: 'quiet',
+    size: 'xs',
+    disabled: true,
+    pending: true,
+    shape: 'round',
+    'aria-label': 'Close',
+  })
+  assert.match(icon.jsx, /<IconButton/)
+  assert.match(icon.jsx, /icon=\{<XIcon \/>\}/)
+  assert.match(icon.jsx, /aria-label="Close"/)
+  assert.match(icon.jsx, /disabled/)
+  assert.match(icon.jsx, /pending/)
+  assert.equal(icon.theme, 'dark')
 })
 
 test('extracts the document index fields without creating another prose source', () => {

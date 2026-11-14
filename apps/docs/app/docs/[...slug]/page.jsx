@@ -1,8 +1,14 @@
 import { notFound } from 'next/navigation'
 
+import { ButtonPlayground } from '../../../components/ButtonPlayground.jsx'
 import { MarkdownPage } from '../../../components/MarkdownPage.jsx'
 import { DialogPlayground } from '../../../components/DialogPlayground.jsx'
 import { getDocument, getDocuments } from '../../../lib/docs.mjs'
+
+const playgrounds = {
+  '/docs/button': ButtonPlayground,
+  '/docs/dialog': DialogPlayground,
+}
 
 export const dynamicParams = false
 
@@ -22,11 +28,11 @@ export default async function DocumentPage({ params }) {
   const { slug = [] } = await params
   const document = await getDocument(`/docs${slug.length ? `/${slug.join('/')}` : ''}`)
   if (!document) notFound()
+  const Playground = playgrounds[document.route]
   return (
     <>
       <MarkdownPage document={document} />
-      {/* shortcut: add a registry only when a second interactive component repeats this mapping. */}
-      {document.route === '/docs/dialog' && <DialogPlayground />}
+      {Playground && <Playground />}
     </>
   )
 }

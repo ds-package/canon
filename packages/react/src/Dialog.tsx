@@ -20,9 +20,14 @@ import {
   Text,
 } from 'react-aria-components'
 import { XIcon } from '@phosphor-icons/react'
+import { Button as CanonButton, type ButtonProps } from './Button'
+
+type DialogTriggerElement =
+  | ReactElement<ComponentProps<'button'>, 'button'>
+  | ReactElement<ButtonProps, typeof CanonButton>
 
 export interface DialogTriggerProps {
-  children: [ReactElement<ComponentProps<'button'>, 'button'>, ReactElement<DialogProps, typeof Dialog>]
+  children: [DialogTriggerElement, ReactElement<DialogProps, typeof Dialog>]
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
@@ -31,17 +36,20 @@ export interface DialogTriggerProps {
 export function DialogTrigger({ children, open, defaultOpen, onOpenChange }: DialogTriggerProps) {
   const parts = Children.toArray(children)
   if (parts.length !== 2) throw new Error('DialogTrigger requires a trigger and a Dialog')
-  if (!isValidElement(parts[0]) || parts[0].type !== 'button') {
-    throw new Error('DialogTrigger requires a native button trigger')
+  if (!isValidElement(parts[0]) || (parts[0].type !== 'button' && parts[0].type !== CanonButton)) {
+    throw new Error('DialogTrigger requires a native button or Canon Button trigger')
   }
   if (!isValidElement(parts[1]) || parts[1].type !== Dialog) {
     throw new Error('DialogTrigger requires Dialog as its second child')
   }
-  const trigger = parts[0] as ReactElement<ComponentProps<'button'>, 'button'>
+  const trigger = parts[0] as DialogTriggerElement
+  const triggerElement = trigger.type === 'button'
+    ? <Pressable>{cloneElement(trigger, { type: trigger.props.type ?? 'button' }) as ComponentProps<typeof Pressable>['children']}</Pressable>
+    : trigger
 
   return (
     <AriaDialogTrigger isOpen={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <Pressable>{cloneElement(trigger, { type: trigger.props.type ?? 'button' }) as ComponentProps<typeof Pressable>['children']}</Pressable>
+      {triggerElement}
       {parts[1]}
     </AriaDialogTrigger>
   )

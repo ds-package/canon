@@ -1,13 +1,13 @@
 ---
 id: interaction-foundation
 status: adopted
-verified: 2026-11-01
+verified: 2026-11-15
 ---
 # Interaction foundation
 
 ## 맥락
 
-Canon에는 현재 `packages/tokens`와 `packages/cli`만 있고 runtime 컴포넌트 패키지는 없다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
+Canon은 현재 `@canon/react`에서 Preview Button, IconButton, Dialog를 제공한다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
 
 Dialog, Select, ComboBox처럼 상호작용이 복잡한 컴포넌트의 행동 계층을 처음부터 직접 구현하면 focus 복귀, 중첩 overlay, typeahead, form 연동, 국제화와 보조 기술 동작을 Canon이 계속 유지해야 한다.
 
@@ -40,7 +40,7 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 
 - Canon은 상호작용 동작을 복제하지 않고 공개 interface와 시각 계약에 집중할 수 있다.
 - React Aria Components의 접근성·collection 모델을 사용하지만 Canon 문서와 props가 해당 라이브러리의 복사본이 되지 않게 유지해야 한다.
-- 첫 runtime 검증 대상은 overlay와 focus를 확인하는 Dialog, collection과 form behavior를 확인하는 Select다.
+- 첫 runtime 검증 대상으로 press와 form 기본값을 확인하는 Button, overlay와 focus를 확인하는 Dialog를 구현했다. 다음 대상은 collection과 form behavior를 확인하는 Select다.
 - 채택만으로 접근성이 보장되지는 않는다. Canon wrapper의 DOM, label, error, motion을 실제 keyboard와 보조 기술로 검증해야 한다.
 
 ## 재검토 조건
@@ -59,4 +59,4 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 - [Modal](https://react-aria.adobe.com/Modal): controlled state, focus containment, dismissal behavior
 - [Select](https://react-aria.adobe.com/Select): collection, keyboard, form과 validation behavior
 - [Base UI](https://base-ui.com/react/overview/about), [Radix Primitives](https://www.radix-ui.com/primitives), [Ark UI](https://ark-ui.com/docs/overview/about): 비교한 headless foundation의 공식 문서
-- Canon의 현재 배포 package: [`packages/tokens`](../../packages/tokens/package.json), [`packages/cli`](../../packages/cli/package.json)
+- Canon의 현재 배포 package: [`packages/tokens`](../../packages/tokens/package.json), [`packages/cli`](../../packages/cli/package.json), [`@canon/react`](../../packages/react/package.json)

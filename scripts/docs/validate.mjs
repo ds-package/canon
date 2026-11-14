@@ -5,6 +5,12 @@ import { fileURLToPath } from 'node:url'
 const REQUIRED_DECISION_FIELDS = ['id', 'status', 'verified']
 const DECISION_STATUSES = new Set(['proposed', 'adopted', 'superseded', 'deprecated'])
 const ROUTE_DOCUMENTS = ['DESIGN.md', 'docs/README.md']
+const RUNTIME_STATUS_DOCUMENTS = [
+  'docs/README.md',
+  'docs/guides/README.md',
+  'docs/decisions/interaction-foundation.md',
+]
+const RUNTIME_STATUS_COMPONENTS = ['Button', 'IconButton', 'Dialog']
 const REQUIRED_DESIGN_ROUTES = [
   ['token naming', '컬러 토큰의 이름', './docs/color.md'],
   ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],
@@ -143,11 +149,31 @@ async function validateDocsApp(root, errors) {
   await scan(path.join(root, 'apps/docs'))
 }
 
+async function validateRuntimeStatus(root, errors) {
+  try {
+    await stat(path.join(root, 'packages/react/package.json'))
+  } catch {
+    return
+  }
+
+  for (const file of RUNTIME_STATUS_DOCUMENTS) {
+    let source = ''
+    try {
+      source = await readFile(path.join(root, file), 'utf8')
+    } catch {}
+    if (!source.includes('@canon/react')) errors.push(`${file}: missing @canon/react runtime status`)
+    for (const component of RUNTIME_STATUS_COMPONENTS) {
+      if (!source.includes(component)) errors.push(`${file}: missing ${component} runtime status`)
+    }
+  }
+}
+
 export async function validateDocs(root) {
   const errors = []
   await validateRouteLinks(root, errors)
   await validateDecisions(root, errors)
   await validateDocsApp(root, errors)
+  await validateRuntimeStatus(root, errors)
   return errors
 }
 

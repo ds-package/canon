@@ -21,8 +21,8 @@
         "primary": { "$value": "{color.gray.1000}" },
         "secondary": { "$value": "{tint.cool.text.secondary}" },
         "tertiary": { "$value": "{tint.cool.text.tertiary}" },
-        "placeholder": { "$value": "{color.gray.700}" },
-        "helper": { "$value": "{color.gray.700}" },
+        "placeholder": { "$value": "{color.gray.800}" },
+        "helper": { "$value": "{color.gray.800}" },
         "disabled": { "$value": "{tint.cool.text.disabled}" },
         "inverse": { "$value": "{color.white}" },
         "link": { "$value": "{brand.default.600}" },
@@ -88,7 +88,7 @@
           "solid": { "$value": "{color.yellow.500}" },
           "solid-hover": { "$value": "{color.yellow.600}" },
           "solid-pressed": { "$value": "{color.yellow.700}" },
-          "on-solid": { "$value": "{color.gray.1000}" }
+          "on-solid": { "$value": "{color.black}" }
         },
         "negative": {
           "solid": { "$value": "{color.red.600}" },
@@ -126,7 +126,7 @@
       },
       "text": {
         "primary": { "$value": "{color.gray.50}" },
-        "secondary": { "$value": "{color.gray.400}" },
+        "secondary": { "$value": "{color.gray.300}" },
         "tertiary": { "$value": "{color.gray.600}" },
         "placeholder": { "$value": "{color.gray.600}" },
         "helper": { "$value": "{color.gray.500}" },
@@ -150,7 +150,7 @@
       "border": {
         "default": { "$value": "{color.gray.950}" },
         "emphasis": { "$value": "{color.gray.800}" },
-        "focus": { "$value": "{brand.default.400}" },
+        "focus": { "$value": "{brand.default.300}" },
         "disabled": { "$value": "{color.gray.1000}" },
         "selected": { "$value": "{color.gray.50}" },
         "selected-hover": { "$value": "{color.gray.100}" },
@@ -175,32 +175,32 @@
         },
         "accent": {
           "solid": { "$value": "{brand.default.600}" },
-          "solid-hover": { "$value": "{brand.default.500}" },
-          "solid-pressed": { "$value": "{brand.default.400}" },
+          "solid-hover": { "$value": "{brand.default.700}" },
+          "solid-pressed": { "$value": "{brand.default.800}" },
           "on-solid": { "$value": "{color.white}" }
         },
         "informative": {
           "solid": { "$value": "{color.blue.600}" },
-          "solid-hover": { "$value": "{color.blue.500}" },
-          "solid-pressed": { "$value": "{color.blue.400}" },
+          "solid-hover": { "$value": "{color.blue.700}" },
+          "solid-pressed": { "$value": "{color.blue.800}" },
           "on-solid": { "$value": "{color.white}" }
         },
         "positive": {
           "solid": { "$value": "{color.green.700}" },
-          "solid-hover": { "$value": "{color.green.600}" },
-          "solid-pressed": { "$value": "{color.green.500}" },
+          "solid-hover": { "$value": "{color.green.800}" },
+          "solid-pressed": { "$value": "{color.green.900}" },
           "on-solid": { "$value": "{color.white}" }
         },
         "notice": {
           "solid": { "$value": "{color.yellow.500}" },
           "solid-hover": { "$value": "{color.yellow.400}" },
           "solid-pressed": { "$value": "{color.yellow.300}" },
-          "on-solid": { "$value": "{color.gray.1000}" }
+          "on-solid": { "$value": "{color.black}" }
         },
         "negative": {
           "solid": { "$value": "{color.red.600}" },
-          "solid-hover": { "$value": "{color.red.500}" },
-          "solid-pressed": { "$value": "{color.red.400}" },
+          "solid-hover": { "$value": "{color.red.700}" },
+          "solid-pressed": { "$value": "{color.red.800}" },
           "on-solid": { "$value": "{color.white}" }
         },
         "disabled": { "$value": "{color.gray.950}" }

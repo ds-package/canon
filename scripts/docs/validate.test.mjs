@@ -46,6 +46,30 @@ test('accepts reachable routes and adopted decision metadata', async (t) => {
   assert.deepEqual(await validateDocs(root), [])
 })
 
+test('requires runtime status docs to acknowledge the public React package', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n현재 runtime 컴포넌트 패키지는 없다.\n')
+  await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n현재 선택 가이드는 없다.\n')
+  await mkdir(path.join(root, 'packages/react'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/package.json'), '{"name":"@canon/react"}\n')
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/README.md: missing @canon/react runtime status',
+    'docs/README.md: missing Button runtime status',
+    'docs/README.md: missing IconButton runtime status',
+    'docs/README.md: missing Dialog runtime status',
+    'docs/guides/README.md: missing @canon/react runtime status',
+    'docs/guides/README.md: missing Button runtime status',
+    'docs/guides/README.md: missing IconButton runtime status',
+    'docs/guides/README.md: missing Dialog runtime status',
+    'docs/decisions/interaction-foundation.md: missing @canon/react runtime status',
+    'docs/decisions/interaction-foundation.md: missing Button runtime status',
+    'docs/decisions/interaction-foundation.md: missing IconButton runtime status',
+    'docs/decisions/interaction-foundation.md: missing Dialog runtime status',
+  ])
+})
+
 test('reports broken routes, missing metadata, and duplicate decision ids', async (t) => {
   const root = await fixture(t)
   await writeFile(path.join(root, 'DESIGN.md'), `${REQUIRED_DESIGN}\n[Missing](./docs/missing.md)`)

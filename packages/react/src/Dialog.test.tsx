@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import {
+  Button,
   Dialog,
   DialogBody,
   DialogDescription,
@@ -41,6 +42,20 @@ test('opens a dialog with its visible title and description', async () => {
   expect(screen.getByText('This action cannot be undone.')).toBeTruthy()
 })
 
+test('opens from the Canon Button without changing its public behavior', async () => {
+  const user = userEvent.setup()
+  render(
+    <DialogTrigger>
+      <Button variant="secondary">Delete document</Button>
+      {exampleDialog()}
+    </DialogTrigger>,
+  )
+
+  await user.click(screen.getByRole('button', { name: 'Delete document' }))
+
+  expect(screen.getByRole('dialog', { name: 'Delete document?' })).toBeTruthy()
+})
+
 test('rejects dialogs without a direct title and description', () => {
   expect(() => render(<Dialog><DialogTitle>Title</DialogTitle></Dialog>)).toThrow(
     'Dialog requires a direct DialogTitle and DialogDescription',
@@ -50,7 +65,7 @@ test('rejects dialogs without a direct title and description', () => {
 test('rejects a trigger that is not a native button', () => {
   const children = [<span>Open</span>, exampleDialog()] as unknown as DialogTriggerProps['children']
   expect(() => render(<DialogTrigger>{children}</DialogTrigger>)).toThrow(
-    'DialogTrigger requires a native button trigger',
+    'DialogTrigger requires a native button or Canon Button trigger',
   )
 })
 

@@ -65,13 +65,25 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Dialog } from '@canon/react'; process.stdout.write(Dialog.name)"], consumerDir),
-    'Dialog',
+    run('node', ['--input-type=module', '-e', "import { Button, Dialog } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name}`)"], consumerDir),
+    'Button,Dialog',
   )
   assert.equal(
-    run('node', ['-e', "process.stdout.write(require('@canon/react').Dialog.name)"], consumerDir),
-    'Dialog',
+    run('node', ['-e', "const { Button, Dialog } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name}`)"], consumerDir),
+    'Button,Dialog',
   )
+
+  const renderedButton = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Button } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Button, null, 'Save')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedButton, /class="canon-button"/)
+  assert.match(renderedButton, /data-variant="primary"/)
 
   const renderedDialog = run(
     'node',
@@ -97,6 +109,13 @@ test('packed packages work from a consumer project', async (t) => {
     consumerDir,
   )
   assert.match(await readFile(reactCssPath, 'utf8'), /--semantic-overlay-scrim/)
+  const reactCss = await readFile(reactCssPath, 'utf8')
+  for (const variant of ['primary', 'secondary', 'quiet', 'destructive']) {
+    assert.match(reactCss, new RegExp(`\\.canon-button\\[data-variant="${variant}"\\]`))
+  }
+  for (const size of ['xs', 'sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-button\\[data-size="${size}"\\]`))
+  }
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))
