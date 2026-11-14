@@ -173,6 +173,170 @@
   border-radius: var(--radius-full);
 }
 
+.canon-select {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-select-label {
+  font-family: var(--typography-label-14-strong-font-family);
+  font-size: var(--typography-label-14-strong-font-size);
+  font-weight: var(--typography-label-14-strong-font-weight);
+  letter-spacing: var(--typography-label-14-strong-letter-spacing);
+  line-height: var(--typography-label-14-strong-line-height);
+}
+
+.canon-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  cursor: pointer;
+}
+
+.canon-select-trigger[data-size="sm"] {
+  height: var(--spacing-8);
+  padding: 0 var(--spacing-2-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-select-trigger[data-size="md"] {
+  height: var(--spacing-10);
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-select-trigger[data-size="lg"] {
+  height: var(--spacing-12);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-select-trigger[data-hovered] {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-select-trigger[data-focus-visible] {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-select[data-invalid] .canon-select-trigger {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-select[data-disabled] .canon-select-trigger {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-select-value[data-placeholder] {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-select-caret {
+  flex: none;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  color: var(--semantic-icon-secondary);
+}
+
+.canon-select-description,
+.canon-select-error {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-select-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-select-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-select-popover {
+  width: var(--trigger-width);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--semantic-surface-overlay);
+  box-shadow: var(--shadow-lg);
+}
+
+.canon-select-listbox {
+  max-height: 50vh;
+  padding: var(--spacing-1);
+  overflow-y: auto;
+  outline: none;
+}
+
+.canon-select-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-8);
+  padding: var(--spacing-1-5) var(--spacing-2);
+  border-radius: var(--radius-md);
+  color: var(--semantic-text-primary);
+  cursor: pointer;
+  outline: none;
+}
+
+.canon-select-item[data-hovered],
+.canon-select-item[data-focused] {
+  background: var(--semantic-overlay-hover);
+}
+
+.canon-select-item[data-pressed] {
+  background: var(--semantic-overlay-pressed);
+}
+
+.canon-select-item[data-selected] {
+  background: var(--semantic-surface-accent);
+}
+
+.canon-select-item[data-focus-visible] {
+  box-shadow: inset 0 0 0 2px var(--semantic-border-focus);
+}
+
+.canon-select-item[data-disabled] {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-select-item-check {
+  flex: none;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  color: var(--semantic-icon-primary);
+}
+
 .canon-dialog-overlay {
   position: fixed;
   inset: 0;

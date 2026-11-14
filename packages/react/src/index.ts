@@ -20,6 +20,17 @@ export {
   DialogTrigger,
 } from './Dialog'
 
+export {
+  Select,
+  SelectItem,
+} from './Select'
+
+export type {
+  SelectItemProps,
+  SelectProps,
+  SelectSize,
+} from './Select'
+
 export type {
   DialogCloseProps,
   DialogProps,

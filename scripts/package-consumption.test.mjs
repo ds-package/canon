@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Dialog } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name}`)"], consumerDir),
-    'Button,Dialog',
+    run('node', ['--input-type=module', '-e', "import { Button, Dialog, Select } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name},${Select.name}`)"], consumerDir),
+    'Button,Dialog,Select',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Dialog } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name}`)"], consumerDir),
-    'Button,Dialog',
+    run('node', ['-e', "const { Button, Dialog, Select } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name},${Select.name}`)"], consumerDir),
+    'Button,Dialog,Select',
   )
 
   const renderedButton = run(
@@ -96,6 +96,18 @@ test('packed packages work from a consumer project', async (t) => {
   )
   assert.match(renderedDialog, />Open<\/button>/)
 
+  const renderedSelect = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Select, SelectItem } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Select, {label: 'Fruit', name: 'fruit', defaultValue: 'apple'}, React.createElement(SelectItem, {id: 'apple'}, 'Apple'))));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedSelect, /class="canon-select"/)
+  assert.match(renderedSelect, /value="apple"/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -115,6 +127,9 @@ test('packed packages work from a consumer project', async (t) => {
   }
   for (const size of ['xs', 'sm', 'md', 'lg']) {
     assert.match(reactCss, new RegExp(`\\.canon-button\\[data-size="${size}"\\]`))
+  }
+  for (const selector of ['canon-select-trigger', 'canon-select-popover', 'canon-select-item']) {
+    assert.match(reactCss, new RegExp(`\\.${selector}`))
   }
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)

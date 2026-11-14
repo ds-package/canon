@@ -5,6 +5,7 @@ import { parseDocument, readDocuments, sourceToRoute, toWebHref } from './docs.m
 import { searchDocuments } from './search.mjs'
 import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
+import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
   assert.equal(sourceToRoute('DESIGN.md'), '/')
@@ -73,6 +74,38 @@ test('Button playground preview settings and copied JSX share the Canon public i
   assert.match(icon.jsx, /disabled/)
   assert.match(icon.jsx, /pending/)
   assert.equal(icon.theme, 'dark')
+})
+
+test('Select playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getSelectPlaygroundModel(initialSelectPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    label: 'Fruit',
+    name: 'fruit',
+    size: 'md',
+    disabled: false,
+    required: false,
+    invalid: false,
+    description: 'Choose one fruit.',
+    defaultValue: 'apple',
+  })
+  assert.match(model.jsx, /<Select label="Fruit" name="fruit" size="md" defaultValue="apple"/)
+  assert.match(model.jsx, /<SelectItem id="apple">Apple<\/SelectItem>/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const invalid = getSelectPlaygroundModel({
+    ...initialSelectPlaygroundState,
+    defaultValue: '',
+    size: 'lg',
+    disabled: true,
+    required: true,
+    invalid: true,
+    dark: true,
+  })
+  assert.equal(invalid.componentProps.defaultValue, undefined)
+  assert.equal(invalid.componentProps.errorMessage, 'Choose a valid fruit.')
+  assert.match(invalid.jsx, /size="lg" disabled required invalid/)
+  assert.doesNotMatch(invalid.jsx, /defaultValue/)
+  assert.equal(invalid.theme, 'dark')
 })
 
 test('extracts the document index fields without creating another prose source', () => {
