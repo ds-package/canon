@@ -14,6 +14,14 @@ export { Checkbox } from './Checkbox'
 
 export type { CheckboxProps } from './Checkbox'
 
+export { RadioGroup, RadioOption } from './RadioGroup'
+
+export type {
+  RadioGroupOrientation,
+  RadioGroupProps,
+  RadioOptionProps,
+} from './RadioGroup'
+
 export {
   Dialog,
   DialogBody,

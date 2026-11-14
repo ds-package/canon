@@ -52,6 +52,7 @@ a:focus-visible, input:focus-visible { outline: 2px solid var(--semantic-border-
 .playground-controls button, .playground-preview-toolbar > button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--semantic-border-default); border-radius: var(--radius-md); background: var(--semantic-surface-default); color: var(--semantic-text-primary); cursor: pointer; }
 .playground-button-stage { min-height: 280px; }
 .playground-checkbox-stage { min-height: 280px; }
+.playground-radio-group-stage { min-height: 320px; }
 .playground-select-stage { min-height: 320px; }
 .playground-switch-stage { min-height: 280px; }
 .playground-text-field-stage { min-height: 320px; }

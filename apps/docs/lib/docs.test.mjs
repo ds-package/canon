@@ -6,6 +6,7 @@ import { searchDocuments } from './search.mjs'
 import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
 import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
+import { getRadioGroupPlaygroundModel, initialRadioGroupPlaygroundState } from './radio-group-playground.mjs'
 import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
 import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
@@ -112,6 +113,41 @@ test('Checkbox playground preview settings and copied JSX share the Canon public
   assert.match(constrained.jsx, /checked=\{checked\} indeterminate=\{indeterminate\}/)
   assert.match(constrained.jsx, /setIndeterminate\(false\)/)
   assert.match(constrained.jsx, /disabled required invalid readOnly/)
+  assert.equal(constrained.theme, 'dark')
+})
+
+test('RadioGroup playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getRadioGroupPlaygroundModel(initialRadioGroupPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    label: 'Plan',
+    name: 'plan',
+    orientation: 'vertical',
+    defaultValue: 'free',
+    disabled: false,
+    required: false,
+    invalid: false,
+    readOnly: false,
+    description: 'Choose one plan.',
+  })
+  assert.match(model.jsx, /<RadioGroup label="Plan" name="plan" orientation="vertical" defaultValue="free"/)
+  assert.match(model.jsx, /<RadioOption value="free">Free<\/RadioOption>/)
+  assert.match(model.jsx, /<RadioOption value="team" disabled>Team<\/RadioOption>/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const constrained = getRadioGroupPlaygroundModel({
+    ...initialRadioGroupPlaygroundState,
+    defaultValue: '',
+    orientation: 'horizontal',
+    disabled: true,
+    required: true,
+    invalid: true,
+    readOnly: true,
+    dark: true,
+  })
+  assert.equal(constrained.componentProps.defaultValue, undefined)
+  assert.equal(constrained.componentProps.errorMessage, 'Choose a plan.')
+  assert.match(constrained.jsx, /orientation="horizontal" disabled required invalid readOnly/)
+  assert.doesNotMatch(constrained.jsx, /defaultValue=/)
   assert.equal(constrained.theme, 'dark')
 })
 

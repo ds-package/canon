@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, Select, Switch, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,Select,Switch,TextField',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Checkbox, Dialog, Select, Switch, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,Select,Switch,TextField',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextField',
   )
 
   const renderedButton = run(
@@ -151,6 +151,21 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(renderedSwitch, /role="switch"/)
   assert.match(renderedSwitch, /checked=""/)
 
+  const renderedRadioGroup = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { RadioGroup, RadioOption } from '@canon/react'; process.stdout.write(renderToString(React.createElement(RadioGroup, {label: 'Plan', form: 'settings', name: 'plan', defaultValue: 'pro'}, React.createElement(RadioOption, {value: 'free'}, 'Free'), React.createElement(RadioOption, {value: 'pro'}, 'Pro'))));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedRadioGroup, /class="canon-radio-group"/)
+  assert.match(renderedRadioGroup, /name="plan"/)
+  assert.match(renderedRadioGroup, /value="pro"/)
+  assert.match(renderedRadioGroup, /form="settings"/)
+  assert.match(renderedRadioGroup, /checked=""/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -180,6 +195,7 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
   assert.match(reactCss, /\.canon-checkbox-control/)
   assert.match(reactCss, /\.canon-switch-control/)
+  assert.match(reactCss, /\.canon-radio-option-control/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

@@ -560,6 +560,147 @@
   cursor: default;
 }
 
+.canon-radio-group {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-radio-group-label {
+  font-family: var(--typography-label-14-strong-font-family);
+  font-size: var(--typography-label-14-strong-font-size);
+  font-weight: var(--typography-label-14-strong-font-weight);
+  letter-spacing: var(--typography-label-14-strong-letter-spacing);
+  line-height: var(--typography-label-14-strong-line-height);
+}
+
+.canon-radio-group-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.canon-radio-group[data-orientation="horizontal"] .canon-radio-group-options {
+  flex-flow: row wrap;
+  gap: var(--spacing-4);
+}
+
+.canon-radio-option {
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.canon-radio-option-button {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-radio-option-control {
+  display: grid;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-full);
+  background: var(--semantic-surface-default);
+  place-items: center;
+}
+
+.canon-radio-option-dot {
+  width: var(--spacing-2-5);
+  height: var(--spacing-2-5);
+  border-radius: var(--radius-full);
+  background: transparent;
+}
+
+.canon-radio-option-button[data-hovered] .canon-radio-option-control {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-radio-option-button[data-selected] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid);
+}
+
+.canon-radio-option-button[data-selected] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-radio-option-button[data-selected][data-hovered] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-radio-option-button[data-selected][data-hovered] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-radio-option-button[data-focus-visible] .canon-radio-option-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-radio-group-description,
+.canon-radio-group-error,
+.canon-radio-option-description {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-radio-group-description,
+.canon-radio-option-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-radio-option-description {
+  margin-left: calc(var(--spacing-5) + var(--spacing-2));
+}
+
+.canon-radio-group-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-radio-group[data-invalid] .canon-radio-option-control {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-radio-group[data-disabled] .canon-radio-option-button,
+.canon-radio-option[data-disabled] .canon-radio-option-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-radio-group[data-disabled] .canon-radio-option-control,
+.canon-radio-option[data-disabled] .canon-radio-option-control {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+}
+
+.canon-radio-group[data-readonly] .canon-radio-option-button {
+  cursor: default;
+}
+
 .canon-dialog-overlay {
   position: fixed;
   inset: 0;
