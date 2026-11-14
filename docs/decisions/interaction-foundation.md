@@ -7,7 +7,7 @@ verified: 2026-11-15
 
 ## 맥락
 
-Canon은 현재 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, Select, TextField를 제공한다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
+Canon은 현재 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, Select, Switch, TextField를 제공한다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
 
 Dialog, Select, ComboBox처럼 상호작용이 복잡한 컴포넌트의 행동 계층을 처음부터 직접 구현하면 focus 복귀, 중첩 overlay, typeahead, form 연동, 국제화와 보조 기술 동작을 Canon이 계속 유지해야 한다.
 

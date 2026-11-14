@@ -473,6 +473,93 @@
   cursor: default;
 }
 
+.canon-switch {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-switch-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-switch-control {
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-9);
+  height: var(--spacing-5);
+  padding: var(--spacing-0-5);
+  border-radius: var(--radius-full);
+  background: var(--semantic-control-neutral-subtle);
+  transition: background 120ms ease-out;
+}
+
+.canon-switch-thumb {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-full);
+  background: var(--semantic-surface-default);
+  box-shadow: var(--shadow-sm);
+  transition: transform 120ms ease-out;
+}
+
+.canon-switch-button[data-selected] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-switch-button[data-selected] .canon-switch-thumb {
+  background: var(--semantic-control-neutral-on-solid);
+  transform: translateX(calc(var(--spacing-9) - var(--spacing-5)));
+}
+
+.canon-switch-button[data-selected][data-hovered] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-switch-button[data-selected][data-pressed] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-switch-button[data-focus-visible] .canon-switch-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-switch-description {
+  color: var(--semantic-text-helper);
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-switch[data-disabled] .canon-switch-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-switch[data-disabled] .canon-switch-control {
+  background: var(--semantic-control-disabled);
+}
+
+.canon-switch[data-readonly] .canon-switch-button {
+  cursor: default;
+}
+
 .canon-dialog-overlay {
   position: fixed;
   inset: 0;
@@ -568,6 +655,11 @@
   .canon-dialog-overlay,
   .canon-dialog-modal {
     animation: none;
+  }
+
+  .canon-switch-control,
+  .canon-switch-thumb {
+    transition: none;
   }
 }
 

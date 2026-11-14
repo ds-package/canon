@@ -53,6 +53,7 @@ a:focus-visible, input:focus-visible { outline: 2px solid var(--semantic-border-
 .playground-button-stage { min-height: 280px; }
 .playground-checkbox-stage { min-height: 280px; }
 .playground-select-stage { min-height: 320px; }
+.playground-switch-stage { min-height: 280px; }
 .playground-text-field-stage { min-height: 320px; }
 .playground-code { margin-top: 16px; }
 

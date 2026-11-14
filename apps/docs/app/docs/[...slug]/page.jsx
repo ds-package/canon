@@ -5,6 +5,7 @@ import { CheckboxPlayground } from '../../../components/CheckboxPlayground.jsx'
 import { MarkdownPage } from '../../../components/MarkdownPage.jsx'
 import { DialogPlayground } from '../../../components/DialogPlayground.jsx'
 import { SelectPlayground } from '../../../components/SelectPlayground.jsx'
+import { SwitchPlayground } from '../../../components/SwitchPlayground.jsx'
 import { TextFieldPlayground } from '../../../components/TextFieldPlayground.jsx'
 import { getDocument, getDocuments } from '../../../lib/docs.mjs'
 
@@ -13,6 +14,7 @@ const playgrounds = {
   '/docs/checkbox': CheckboxPlayground,
   '/docs/dialog': DialogPlayground,
   '/docs/select': SelectPlayground,
+  '/docs/switch': SwitchPlayground,
   '/docs/text-field': TextFieldPlayground,
 }
 

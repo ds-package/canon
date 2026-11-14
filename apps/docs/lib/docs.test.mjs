@@ -7,6 +7,7 @@ import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button
 import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
 import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
+import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
@@ -144,6 +145,33 @@ test('Select playground preview settings and copied JSX share the Canon public i
   assert.match(invalid.jsx, /size="lg" disabled required invalid/)
   assert.doesNotMatch(invalid.jsx, /defaultValue/)
   assert.equal(invalid.theme, 'dark')
+})
+
+test('Switch playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getSwitchPlaygroundModel(initialSwitchPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    name: 'notifications',
+    value: 'enabled',
+    defaultChecked: false,
+    disabled: false,
+    readOnly: false,
+    description: 'Applies immediately.',
+  })
+  assert.match(model.jsx, /<Switch name="notifications" value="enabled"/)
+  assert.match(model.jsx, /onCheckedChange=\{\(checked\) => updateNotificationSettings\(checked\)\}/)
+  assert.match(model.jsx, />Notifications<\/Switch>/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const constrained = getSwitchPlaygroundModel({
+    ...initialSwitchPlaygroundState,
+    defaultChecked: true,
+    disabled: true,
+    readOnly: true,
+    dark: true,
+  })
+  assert.match(constrained.jsx, /defaultChecked disabled readOnly/)
+  assert.doesNotMatch(constrained.jsx, /updateNotificationSettings/)
+  assert.equal(constrained.theme, 'dark')
 })
 
 test('TextField playground preview settings and copied JSX share the Canon public interface', () => {

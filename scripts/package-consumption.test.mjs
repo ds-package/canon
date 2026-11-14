@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, Select, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,Select,TextField',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, Select, Switch, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,Select,Switch,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Checkbox, Dialog, Select, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,Select,TextField',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, Select, Switch, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,Select,Switch,TextField',
   )
 
   const renderedButton = run(
@@ -135,6 +135,22 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(renderedCheckbox, /form="settings"/)
   assert.match(renderedCheckbox, /checked=""/)
 
+  const renderedSwitch = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Switch } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Switch, {form: 'settings', name: 'motion', value: 'reduced', defaultChecked: true}, 'Reduce motion')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedSwitch, /class="canon-switch"/)
+  assert.match(renderedSwitch, /name="motion"/)
+  assert.match(renderedSwitch, /value="reduced"/)
+  assert.match(renderedSwitch, /form="settings"/)
+  assert.match(renderedSwitch, /role="switch"/)
+  assert.match(renderedSwitch, /checked=""/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -163,6 +179,7 @@ test('packed packages work from a consumer project', async (t) => {
   }
   assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
   assert.match(reactCss, /\.canon-checkbox-control/)
+  assert.match(reactCss, /\.canon-switch-control/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

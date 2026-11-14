@@ -35,6 +35,10 @@ export type {
   SelectSize,
 } from './Select'
 
+export { Switch } from './Switch'
+
+export type { SwitchProps } from './Switch'
+
 export { TextField } from './TextField'
 
 export type {
