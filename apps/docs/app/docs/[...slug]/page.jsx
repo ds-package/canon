@@ -4,12 +4,14 @@ import { ButtonPlayground } from '../../../components/ButtonPlayground.jsx'
 import { MarkdownPage } from '../../../components/MarkdownPage.jsx'
 import { DialogPlayground } from '../../../components/DialogPlayground.jsx'
 import { SelectPlayground } from '../../../components/SelectPlayground.jsx'
+import { TextFieldPlayground } from '../../../components/TextFieldPlayground.jsx'
 import { getDocument, getDocuments } from '../../../lib/docs.mjs'
 
 const playgrounds = {
   '/docs/button': ButtonPlayground,
   '/docs/dialog': DialogPlayground,
   '/docs/select': SelectPlayground,
+  '/docs/text-field': TextFieldPlayground,
 }
 
 export const dynamicParams = false

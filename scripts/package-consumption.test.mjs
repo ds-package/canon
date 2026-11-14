@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Dialog, Select } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name},${Select.name}`)"], consumerDir),
-    'Button,Dialog,Select',
+    run('node', ['--input-type=module', '-e', "import { Button, Dialog, Select, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
+    'Button,Dialog,Select,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Dialog, Select } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name},${Select.name}`)"], consumerDir),
-    'Button,Dialog,Select',
+    run('node', ['-e', "const { Button, Dialog, Select, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
+    'Button,Dialog,Select,TextField',
   )
 
   const renderedButton = run(
@@ -108,6 +108,18 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(renderedSelect, /class="canon-select"/)
   assert.match(renderedSelect, /value="apple"/)
 
+  const renderedTextField = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { TextField } from '@canon/react'; process.stdout.write(renderToString(React.createElement(TextField, {label: 'Email', name: 'email', type: 'email', defaultValue: 'lou@example.com'})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedTextField, /class="canon-text-field"/)
+  assert.match(renderedTextField, /value="lou@example.com"/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -131,6 +143,10 @@ test('packed packages work from a consumer project', async (t) => {
   for (const selector of ['canon-select-trigger', 'canon-select-popover', 'canon-select-item']) {
     assert.match(reactCss, new RegExp(`\\.${selector}`))
   }
+  for (const size of ['sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-text-field-input\\[data-size="${size}"\\]`))
+  }
+  assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

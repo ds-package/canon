@@ -173,13 +173,15 @@
   border-radius: var(--radius-full);
 }
 
-.canon-select {
+.canon-select,
+.canon-text-field {
   display: grid;
   gap: var(--spacing-1);
   color: var(--semantic-text-primary);
 }
 
-.canon-select-label {
+.canon-select-label,
+.canon-text-field-label {
   font-family: var(--typography-label-14-strong-font-family);
   font-size: var(--typography-label-14-strong-font-size);
   font-weight: var(--typography-label-14-strong-font-weight);
@@ -199,7 +201,8 @@
   cursor: pointer;
 }
 
-.canon-select-trigger[data-size="sm"] {
+.canon-select-trigger[data-size="sm"],
+.canon-text-field-input[data-size="sm"] {
   height: var(--spacing-8);
   padding: 0 var(--spacing-2-5);
   border-radius: var(--radius-md);
@@ -210,7 +213,8 @@
   line-height: var(--typography-label-13-line-height);
 }
 
-.canon-select-trigger[data-size="md"] {
+.canon-select-trigger[data-size="md"],
+.canon-text-field-input[data-size="md"] {
   height: var(--spacing-10);
   padding: 0 var(--spacing-3);
   border-radius: var(--radius-lg);
@@ -221,7 +225,8 @@
   line-height: var(--typography-label-14-line-height);
 }
 
-.canon-select-trigger[data-size="lg"] {
+.canon-select-trigger[data-size="lg"],
+.canon-text-field-input[data-size="lg"] {
   height: var(--spacing-12);
   padding: 0 var(--spacing-4);
   border-radius: var(--radius-xl);
@@ -264,7 +269,9 @@
 }
 
 .canon-select-description,
-.canon-select-error {
+.canon-select-error,
+.canon-text-field-description,
+.canon-text-field-error {
   font-family: var(--typography-body-14-font-family);
   font-size: var(--typography-body-14-font-size);
   font-weight: var(--typography-body-14-font-weight);
@@ -272,11 +279,13 @@
   line-height: var(--typography-body-14-line-height);
 }
 
-.canon-select-description {
+.canon-select-description,
+.canon-text-field-description {
   color: var(--semantic-text-helper);
 }
 
-.canon-select-error {
+.canon-select-error,
+.canon-text-field-error {
   color: var(--semantic-status-negative);
 }
 
@@ -335,6 +344,48 @@
   width: var(--spacing-4);
   height: var(--spacing-4);
   color: var(--semantic-icon-primary);
+}
+
+.canon-text-field-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  outline: none;
+}
+
+.canon-text-field-input::placeholder {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-text-field-input:hover:not(:disabled) {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-text-field-input:focus-visible {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-text-field[data-invalid] .canon-text-field-input {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-text-field[data-disabled] .canon-text-field-input {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-text-field[data-disabled] .canon-text-field-input::placeholder {
+  color: var(--semantic-text-disabled);
+}
+
+.canon-text-field[data-readonly] .canon-text-field-input {
+  background: var(--semantic-surface-muted);
 }
 
 .canon-dialog-overlay {

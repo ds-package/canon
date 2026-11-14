@@ -17,9 +17,9 @@ verified: 2026-11-15
 
 ## 현재 상태
 
-`@canon/react`는 Preview로 Button, IconButton, Dialog, Select를 제공하지만, 컴포넌트 사이의 선택을 일반화할 만큼 확인된 제품 사용 사례는 아직 없다. 따라서 현재 확정된 컴포넌트 선택 가이드는 없다. 가이드가 없는 질문은 일반적인 관행이나 외부 디자인 시스템을 Canon 규칙으로 추정하지 않고 미확인으로 남긴다.
+`@canon/react`는 Preview로 Button, IconButton, Dialog, Select, TextField를 제공하지만, 컴포넌트 사이의 선택을 일반화할 만큼 확인된 제품 사용 사례는 아직 없다. 따라서 현재 확정된 컴포넌트 선택 가이드는 없다. 가이드가 없는 질문은 일반적인 관행이나 외부 디자인 시스템을 Canon 규칙으로 추정하지 않고 미확인으로 남긴다.
 
-Button, Dialog, Select의 실제 사용 근거가 생기면 컴포넌트 이름 하나보다 선택 질문 단위로 가이드를 추가한다. 예를 들면 `overlays`, `selection`, `fields`처럼 여러 컴포넌트의 경계를 비교하는 문서다.
+Button, Dialog, Select, TextField의 실제 사용 근거가 생기면 컴포넌트 이름 하나보다 선택 질문 단위로 가이드를 추가한다. 예를 들면 `overlays`, `selection`, `fields`처럼 여러 컴포넌트의 경계를 비교하는 문서다.
 
 ## 작성 근거
 

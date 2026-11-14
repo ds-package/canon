@@ -60,16 +60,19 @@ test('requires runtime status docs to acknowledge the public React package', asy
     'docs/README.md: missing IconButton runtime status',
     'docs/README.md: missing Dialog runtime status',
     'docs/README.md: missing Select runtime status',
+    'docs/README.md: missing TextField runtime status',
     'docs/guides/README.md: missing @canon/react runtime status',
     'docs/guides/README.md: missing Button runtime status',
     'docs/guides/README.md: missing IconButton runtime status',
     'docs/guides/README.md: missing Dialog runtime status',
     'docs/guides/README.md: missing Select runtime status',
+    'docs/guides/README.md: missing TextField runtime status',
     'docs/decisions/interaction-foundation.md: missing @canon/react runtime status',
     'docs/decisions/interaction-foundation.md: missing Button runtime status',
     'docs/decisions/interaction-foundation.md: missing IconButton runtime status',
     'docs/decisions/interaction-foundation.md: missing Dialog runtime status',
     'docs/decisions/interaction-foundation.md: missing Select runtime status',
+    'docs/decisions/interaction-foundation.md: missing TextField runtime status',
   ])
 })
 
