@@ -4,6 +4,7 @@ import test from 'node:test'
 import { parseDocument, readDocuments, sourceToRoute, toWebHref } from './docs.mjs'
 import { searchDocuments } from './search.mjs'
 import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
+import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
 import { getDialogPlaygroundModel, initialDialogPlaygroundState } from './dialog-playground.mjs'
 import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
@@ -75,6 +76,42 @@ test('Button playground preview settings and copied JSX share the Canon public i
   assert.match(icon.jsx, /disabled/)
   assert.match(icon.jsx, /pending/)
   assert.equal(icon.theme, 'dark')
+})
+
+test('Checkbox playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getCheckboxPlaygroundModel(initialCheckboxPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    name: 'terms',
+    value: 'accepted',
+    defaultChecked: false,
+    indeterminate: false,
+    disabled: false,
+    required: false,
+    invalid: false,
+    readOnly: false,
+    description: 'Confirm before continuing.',
+  })
+  assert.match(model.jsx, /<Checkbox name="terms" value="accepted"/)
+  assert.match(model.jsx, />Accept the terms<\/Checkbox>/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const constrained = getCheckboxPlaygroundModel({
+    ...initialCheckboxPlaygroundState,
+    defaultChecked: true,
+    indeterminate: true,
+    disabled: true,
+    required: true,
+    invalid: true,
+    readOnly: true,
+    dark: true,
+  })
+  assert.equal(constrained.componentProps.errorMessage, 'Accept the terms to continue.')
+  assert.equal(constrained.componentProps.defaultChecked, false)
+  assert.match(constrained.jsx, /const \[checked, setChecked\] = useState\(false\)/)
+  assert.match(constrained.jsx, /checked=\{checked\} indeterminate=\{indeterminate\}/)
+  assert.match(constrained.jsx, /setIndeterminate\(false\)/)
+  assert.match(constrained.jsx, /disabled required invalid readOnly/)
+  assert.equal(constrained.theme, 'dark')
 })
 
 test('Select playground preview settings and copied JSX share the Canon public interface', () => {

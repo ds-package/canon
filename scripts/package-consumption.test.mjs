@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Dialog, Select, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
-    'Button,Dialog,Select,TextField',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, Select, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,Select,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Dialog, Select, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
-    'Button,Dialog,Select,TextField',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, Select, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${Select.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,Select,TextField',
   )
 
   const renderedButton = run(
@@ -120,6 +120,21 @@ test('packed packages work from a consumer project', async (t) => {
   assert.match(renderedTextField, /class="canon-text-field"/)
   assert.match(renderedTextField, /value="lou@example.com"/)
 
+  const renderedCheckbox = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Checkbox } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Checkbox, {form: 'settings', name: 'terms', value: 'accepted', defaultChecked: true}, 'Accept terms')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedCheckbox, /class="canon-checkbox"/)
+  assert.match(renderedCheckbox, /name="terms"/)
+  assert.match(renderedCheckbox, /value="accepted"/)
+  assert.match(renderedCheckbox, /form="settings"/)
+  assert.match(renderedCheckbox, /checked=""/)
+
   const cssPath = run(
     'node',
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
@@ -147,6 +162,7 @@ test('packed packages work from a consumer project', async (t) => {
     assert.match(reactCss, new RegExp(`\\.canon-text-field-input\\[data-size="${size}"\\]`))
   }
   assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
+  assert.match(reactCss, /\.canon-checkbox-control/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 
 import { ButtonPlayground } from '../../../components/ButtonPlayground.jsx'
+import { CheckboxPlayground } from '../../../components/CheckboxPlayground.jsx'
 import { MarkdownPage } from '../../../components/MarkdownPage.jsx'
 import { DialogPlayground } from '../../../components/DialogPlayground.jsx'
 import { SelectPlayground } from '../../../components/SelectPlayground.jsx'
@@ -9,6 +10,7 @@ import { getDocument, getDocuments } from '../../../lib/docs.mjs'
 
 const playgrounds = {
   '/docs/button': ButtonPlayground,
+  '/docs/checkbox': CheckboxPlayground,
   '/docs/dialog': DialogPlayground,
   '/docs/select': SelectPlayground,
   '/docs/text-field': TextFieldPlayground,

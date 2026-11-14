@@ -10,6 +10,10 @@ export type {
   IconButtonProps,
 } from './Button'
 
+export { Checkbox } from './Checkbox'
+
+export type { CheckboxProps } from './Checkbox'
+
 export {
   Dialog,
   DialogBody,

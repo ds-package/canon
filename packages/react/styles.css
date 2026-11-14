@@ -174,7 +174,8 @@
 }
 
 .canon-select,
-.canon-text-field {
+.canon-text-field,
+.canon-checkbox {
   display: grid;
   gap: var(--spacing-1);
   color: var(--semantic-text-primary);
@@ -271,7 +272,9 @@
 .canon-select-description,
 .canon-select-error,
 .canon-text-field-description,
-.canon-text-field-error {
+.canon-text-field-error,
+.canon-checkbox-description,
+.canon-checkbox-error {
   font-family: var(--typography-body-14-font-family);
   font-size: var(--typography-body-14-font-size);
   font-weight: var(--typography-body-14-font-weight);
@@ -280,12 +283,14 @@
 }
 
 .canon-select-description,
-.canon-text-field-description {
+.canon-text-field-description,
+.canon-checkbox-description {
   color: var(--semantic-text-helper);
 }
 
 .canon-select-error,
-.canon-text-field-error {
+.canon-text-field-error,
+.canon-checkbox-error {
   color: var(--semantic-status-negative);
 }
 
@@ -386,6 +391,86 @@
 
 .canon-text-field[data-readonly] .canon-text-field-input {
   background: var(--semantic-surface-muted);
+}
+
+.canon-checkbox-button {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-checkbox-control {
+  display: grid;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-control-neutral-on-solid);
+  place-items: center;
+}
+
+.canon-checkbox-control > svg {
+  width: var(--spacing-3-5);
+  height: var(--spacing-3-5);
+}
+
+.canon-checkbox-button[data-hovered] .canon-checkbox-control {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-checkbox-button[data-selected] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid);
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-checkbox-button[data-selected][data-hovered] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate][data-hovered] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid-hover);
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-checkbox-button[data-selected][data-pressed] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate][data-pressed] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid-pressed);
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-checkbox-button[data-focus-visible] .canon-checkbox-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-checkbox[data-invalid] .canon-checkbox-control {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-checkbox[data-disabled] .canon-checkbox-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-checkbox[data-disabled] .canon-checkbox-control {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-icon-disabled);
+}
+
+.canon-checkbox[data-readonly] .canon-checkbox-button {
+  cursor: default;
 }
 
 .canon-dialog-overlay {
