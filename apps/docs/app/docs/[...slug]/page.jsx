@@ -8,6 +8,7 @@ import { RadioGroupPlayground } from '../../../components/RadioGroupPlayground.j
 import { SelectPlayground } from '../../../components/SelectPlayground.jsx'
 import { SwitchPlayground } from '../../../components/SwitchPlayground.jsx'
 import { TextFieldPlayground } from '../../../components/TextFieldPlayground.jsx'
+import { TextAreaPlayground } from '../../../components/TextAreaPlayground.jsx'
 import { getDocument, getDocuments } from '../../../lib/docs.mjs'
 
 const playgrounds = {
@@ -18,6 +19,7 @@ const playgrounds = {
   '/docs/select': SelectPlayground,
   '/docs/switch': SwitchPlayground,
   '/docs/text-field': TextFieldPlayground,
+  '/docs/text-area': TextAreaPlayground,
 }
 
 export const dynamicParams = false

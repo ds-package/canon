@@ -175,6 +175,7 @@
 
 .canon-select,
 .canon-text-field,
+.canon-text-area,
 .canon-checkbox {
   display: grid;
   gap: var(--spacing-1);
@@ -182,7 +183,8 @@
 }
 
 .canon-select-label,
-.canon-text-field-label {
+.canon-text-field-label,
+.canon-text-area-label {
   font-family: var(--typography-label-14-strong-font-family);
   font-size: var(--typography-label-14-strong-font-size);
   font-weight: var(--typography-label-14-strong-font-weight);
@@ -273,6 +275,8 @@
 .canon-select-error,
 .canon-text-field-description,
 .canon-text-field-error,
+.canon-text-area-description,
+.canon-text-area-error,
 .canon-checkbox-description,
 .canon-checkbox-error {
   font-family: var(--typography-body-14-font-family);
@@ -284,12 +288,14 @@
 
 .canon-select-description,
 .canon-text-field-description,
+.canon-text-area-description,
 .canon-checkbox-description {
   color: var(--semantic-text-helper);
 }
 
 .canon-select-error,
 .canon-text-field-error,
+.canon-text-area-error,
 .canon-checkbox-error {
   color: var(--semantic-status-negative);
 }
@@ -390,6 +396,79 @@
 }
 
 .canon-text-field[data-readonly] .canon-text-field-input {
+  background: var(--semantic-surface-muted);
+}
+
+.canon-text-area-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  outline: none;
+  resize: vertical;
+}
+
+.canon-text-area-input[data-size="sm"] {
+  padding: var(--spacing-2) var(--spacing-2-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-text-area-input[data-size="md"] {
+  padding: var(--spacing-2-5) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-text-area-input[data-size="lg"] {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-text-area-input::placeholder {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-text-area-input:hover:not(:disabled) {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-text-area-input:focus-visible {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-text-area[data-invalid] .canon-text-area-input {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-text-area[data-disabled] .canon-text-area-input {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-text-area[data-disabled] .canon-text-area-input::placeholder {
+  color: var(--semantic-text-disabled);
+}
+
+.canon-text-area[data-readonly] .canon-text-area-input {
   background: var(--semantic-surface-muted);
 }
 

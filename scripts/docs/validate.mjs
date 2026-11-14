@@ -10,7 +10,7 @@ const RUNTIME_STATUS_DOCUMENTS = [
   'docs/guides/README.md',
   'docs/decisions/interaction-foundation.md',
 ]
-const RUNTIME_STATUS_COMPONENTS = ['Button', 'IconButton', 'Checkbox', 'Dialog', 'RadioGroup', 'Select', 'Switch', 'TextField']
+const RUNTIME_STATUS_COMPONENTS = ['Button', 'IconButton', 'Checkbox', 'Dialog', 'RadioGroup', 'Select', 'Switch', 'TextField', 'TextArea']
 const REQUIRED_DESIGN_ROUTES = [
   ['token naming', '컬러 토큰의 이름', './docs/color.md'],
   ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],

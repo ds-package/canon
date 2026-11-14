@@ -65,12 +65,12 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextField',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
   assert.equal(
-    run('node', ['-e', "const { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextField.name}`)"], consumerDir),
-    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextField',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
 
   const renderedButton = run(
@@ -119,6 +119,22 @@ test('packed packages work from a consumer project', async (t) => {
   )
   assert.match(renderedTextField, /class="canon-text-field"/)
   assert.match(renderedTextField, /value="lou@example.com"/)
+
+  const renderedTextArea = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { TextArea } from '@canon/react'; process.stdout.write(renderToString(React.createElement(TextArea, {label: 'Bio', form: 'profile', name: 'bio', defaultValue: 'Designer', rows: 5})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedTextArea, /class="canon-text-area"/)
+  assert.match(renderedTextArea, /<textarea/)
+  assert.match(renderedTextArea, /form="profile"/)
+  assert.match(renderedTextArea, /name="bio"/)
+  assert.match(renderedTextArea, /rows="5"/)
+  assert.match(renderedTextArea, />Designer<\/textarea>/)
 
   const renderedCheckbox = run(
     'node',
@@ -193,6 +209,10 @@ test('packed packages work from a consumer project', async (t) => {
     assert.match(reactCss, new RegExp(`\\.canon-text-field-input\\[data-size="${size}"\\]`))
   }
   assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
+  for (const size of ['sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-text-area-input\\[data-size="${size}"\\]`))
+  }
+  assert.match(reactCss, /\.canon-text-area-input/)
   assert.match(reactCss, /\.canon-checkbox-control/)
   assert.match(reactCss, /\.canon-switch-control/)
   assert.match(reactCss, /\.canon-radio-option-control/)

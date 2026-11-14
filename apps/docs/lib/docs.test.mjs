@@ -10,6 +10,7 @@ import { getRadioGroupPlaygroundModel, initialRadioGroupPlaygroundState } from '
 import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select-playground.mjs'
 import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
+import { getTextAreaPlaygroundModel, initialTextAreaPlaygroundState } from './text-area-playground.mjs'
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
   assert.equal(sourceToRoute('DESIGN.md'), '/')
@@ -243,6 +244,41 @@ test('TextField playground preview settings and copied JSX share the Canon publi
   assert.equal(invalid.componentProps.errorMessage, 'Enter a valid value.')
   assert.match(invalid.jsx, /type="password" size="lg" disabled required invalid readOnly/)
   assert.doesNotMatch(invalid.jsx, /defaultValue=/)
+  assert.equal(invalid.theme, 'dark')
+})
+
+test('TextArea playground preview settings and copied JSX share the Canon public interface', () => {
+  const model = getTextAreaPlaygroundModel(initialTextAreaPlaygroundState)
+  assert.deepEqual(model.componentProps, {
+    label: 'Message',
+    name: 'message',
+    size: 'md',
+    rows: 4,
+    defaultValue: '',
+    placeholder: 'Write your message',
+    disabled: false,
+    required: false,
+    invalid: false,
+    readOnly: false,
+    description: 'Include the details needed to help.',
+  })
+  assert.match(model.jsx, /<TextArea label="Message" name="message" size="md" rows=\{4\}/)
+  assert.match(model.jsx, /placeholder="Write your message"/)
+  assert.doesNotMatch(model.jsx, /react-aria-components|className=|style=/)
+
+  const invalid = getTextAreaPlaygroundModel({
+    ...initialTextAreaPlaygroundState,
+    size: 'lg',
+    rows: 8,
+    disabled: true,
+    required: true,
+    invalid: true,
+    readOnly: true,
+    dark: true,
+  })
+  assert.equal(invalid.componentProps.errorMessage, 'Enter a message.')
+  assert.match(invalid.jsx, /size="lg" rows=\{8\}/)
+  assert.match(invalid.jsx, /disabled required invalid readOnly/)
   assert.equal(invalid.theme, 'dark')
 })
 

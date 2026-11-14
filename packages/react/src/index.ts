@@ -55,6 +55,13 @@ export type {
   TextFieldType,
 } from './TextField'
 
+export { TextArea } from './TextArea'
+
+export type {
+  TextAreaProps,
+  TextAreaSize,
+} from './TextArea'
+
 export type {
   DialogCloseProps,
   DialogProps,
