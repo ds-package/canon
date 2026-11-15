@@ -1,5 +1,7 @@
 ---
 verified: 2026-11-15
+navigation: foundation
+navigationOrder: 1
 ---
 # 컬러
 

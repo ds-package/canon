@@ -37,6 +37,8 @@ export function toWebHref(href, sourcePath) {
 export function parseDocument(sourcePath, source) {
   const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/)
   const navigation = frontmatter?.[1].match(/^navigation:\s*(\S+)\s*$/m)?.[1]
+  const navigationOrderMatch = frontmatter?.[1].match(/^navigationOrder:\s*(\d+)\s*$/m)?.[1]
+  const navigationOrder = navigationOrderMatch ? Number(navigationOrderMatch) : undefined
   const markdown = frontmatter ? source.slice(frontmatter[0].length) : source
   const headings = [...markdown.matchAll(/^#{1,6}\s+(.+)$/gm)].map((match) => match[1].replace(/[*_`]/g, '').trim())
   const title = headings[0] ?? sourcePath
@@ -49,7 +51,7 @@ export function parseDocument(sourcePath, source) {
     .replace(/\s+([.,:;!?])/g, '$1')
     .trim()
 
-  return { sourcePath, route: sourceToRoute(sourcePath), title, headings, body, markdown, navigation }
+  return { sourcePath, route: sourceToRoute(sourcePath), title, headings, body, markdown, navigation, navigationOrder }
 }
 
 export async function readDocuments() {

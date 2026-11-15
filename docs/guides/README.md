@@ -1,5 +1,7 @@
 ---
 verified: 2026-11-15
+navigation: getting-started
+navigationOrder: 2
 ---
 # 컴포넌트 선택 가이드
 

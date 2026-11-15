@@ -2,6 +2,8 @@
 id: docs-platform
 status: adopted
 verified: 2026-11-15
+navigation: architecture
+navigationOrder: 1
 ---
 # Docs platform
 
@@ -13,7 +15,7 @@ Canon 문서는 사람이 읽는 web, agent가 읽는 source, 앞으로 추가�
 
 Canon은 Next.js App Router로 docs web의 shell, navigation, renderer를 직접 만든다. Docusaurus와 Starlight는 사용하지 않는다.
 
-첫 document index는 기존 Markdown에서 title, headings, body text, route, source path와 authored frontmatter의 `navigation` metadata를 추출한다. Navigation과 local lexical search는 이 index를 공유한다. `navigation: component` 문서는 Components 그룹에 모으고 `/docs/components` Overview를 첫 항목으로 둔다. Component registry는 Dialog와 Select에서 반복되는 필드가 확인되기 전에는 만들지 않는다.
+첫 document index는 기존 Markdown에서 title, headings, body text, route, source path와 authored frontmatter의 `navigation`, `navigationOrder` metadata를 추출한다. Navigation과 local lexical search는 이 index를 공유한다. 데스크톱은 viewport 높이의 left sidebar를 사용하고 모바일은 native disclosure로 접는다. Component route에서는 일반 문서 섹션을 숨기고 `/docs/components` Overview와 component 문서에 집중한다. Component registry는 Dialog와 Select에서 반복되는 필드가 확인되기 전에는 만들지 않는다.
 
 ## 책임 경계
 
@@ -28,7 +30,7 @@ Canon은 Next.js App Router로 docs web의 shell, navigation, renderer를 직접
 
 ## 근거
 
-Astryx는 Next.js 기반 자체 docsite에서 monorepo source를 typed registry로 만들고 custom shell, renderer, playground, search가 함께 소비한다. Canon은 같은 source-to-projection 원칙만 가져오고 Astryx의 package registry, latest/canary pipeline, playground IDE는 현재 규모에 맞지 않아 가져오지 않는다.
+Astryx는 Next.js 기반 자체 docsite에서 monorepo source를 typed registry로 만들고 custom shell, renderer, playground, search가 함께 소비한다. Component route에서는 다른 영역을 숨기고 component 전용 left sidebar로 집중시킨다. Canon은 이 source-to-projection 원칙과 focused sidebar만 가져오고 Astryx의 package registry, component search, latest/canary pipeline, playground IDE는 현재 규모에 맞지 않아 가져오지 않는다.
 
 ## Storybook을 쓰지 않는 이유
 

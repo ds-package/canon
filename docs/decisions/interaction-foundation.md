@@ -2,6 +2,8 @@
 id: interaction-foundation
 status: adopted
 verified: 2026-11-15
+navigation: architecture
+navigationOrder: 2
 ---
 # Interaction foundation
 

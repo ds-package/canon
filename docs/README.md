@@ -1,5 +1,7 @@
 ---
 verified: 2026-11-15
+navigation: getting-started
+navigationOrder: 1
 ---
 # Canon 제작 가이드
 

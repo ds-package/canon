@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import { parseDocument, readDocuments, sourceToRoute, toWebHref } from './docs.mjs'
-import { groupNavigationDocuments } from './navigation.mjs'
+import { getNavigationMode, getNavigationSections, groupNavigationDocuments } from './navigation.mjs'
 import { searchDocuments } from './search.mjs'
 import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
 import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
@@ -14,19 +14,35 @@ import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
 import { getTextAreaPlaygroundModel, initialTextAreaPlaygroundState } from './text-area-playground.mjs'
 
-test('groups component documents under Components without changing document order', () => {
+test('builds focused documentation and component navigation from authored metadata', () => {
   const documents = [
     { route: '/', title: 'Canon' },
     { route: '/docs/button', title: 'Button', navigation: 'component' },
-    { route: '/docs/color', title: 'Color' },
+    { route: '/docs/color', title: 'Color', navigation: 'foundation', navigationOrder: 1 },
     { route: '/docs/components', title: 'Components', navigation: 'component' },
+    { route: '/docs', title: 'Docs', navigation: 'getting-started', navigationOrder: 1 },
+    { route: '/docs/decisions/platform', title: 'Platform', navigation: 'architecture', navigationOrder: 1 },
     { route: '/docs/text-field', title: 'TextField', navigation: 'component' },
   ]
 
   assert.deepEqual(groupNavigationDocuments(documents), {
-    documents: [documents[0], documents[2]],
-    components: [documents[3], documents[1], documents[4]],
+    components: [documents[3], documents[1], documents[6]],
+    sections: [
+      { key: 'getting-started', title: 'Getting started', documents: [documents[4]] },
+      { key: 'foundation', title: 'Foundations', documents: [documents[2]] },
+      { key: 'architecture', title: 'Architecture', documents: [documents[5]] },
+    ],
   })
+
+  const navigation = groupNavigationDocuments(documents)
+  assert.equal(getNavigationMode(navigation, '/docs/button/'), 'components')
+  assert.equal(getNavigationMode(navigation, '/docs/color'), 'docs')
+  assert.equal(getNavigationMode(navigation, '/'), 'home')
+  assert.deepEqual(getNavigationSections(navigation, '/docs/button/'), [
+    { key: 'components', title: 'Components', documents: navigation.components },
+  ])
+  assert.deepEqual(getNavigationSections(navigation, '/docs/color'), navigation.sections)
+  assert.deepEqual(getNavigationSections(navigation, '/'), navigation.sections)
 })
 
 test('component navigation metadata covers the complete authored component corpus', async () => {
@@ -46,6 +62,25 @@ test('component navigation metadata covers the complete authored component corpu
     '/docs/text-area',
     '/docs/text-field',
   ])
+})
+
+test('authored navigation metadata covers the complete left navigation corpus', async () => {
+  const navigation = groupNavigationDocuments(await readDocuments())
+
+  assert.deepEqual(
+    navigation.sections.map((section) => ({
+      key: section.key,
+      routes: section.documents.map((document) => document.route),
+    })),
+    [
+      { key: 'getting-started', routes: ['/docs', '/docs/guides', '/docs/workflow'] },
+      { key: 'foundation', routes: ['/docs/color', '/docs/typography', '/docs/icons'] },
+      {
+        key: 'architecture',
+        routes: ['/docs/decisions/docs-platform', '/docs/decisions/interaction-foundation'],
+      },
+    ],
+  )
 })
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
