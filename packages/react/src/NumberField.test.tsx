@@ -20,6 +20,12 @@ test('edits a visibly labelled number with keyboard and stepper buttons', async 
   expect(input.value).toBe('2')
 })
 
+test('keeps a rich label as the accessible name', () => {
+  render(<NumberField label={<span>Guest count</span>} />)
+
+  expect(screen.getByRole('textbox', { name: 'Guest count' })).toBeTruthy()
+})
+
 test('normalizes an empty controlled edit to null without owning product state', async () => {
   const user = userEvent.setup()
   const onValueChange = vi.fn()

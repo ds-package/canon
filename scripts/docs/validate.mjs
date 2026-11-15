@@ -1,6 +1,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import ts from 'typescript'
 
 const REQUIRED_DECISION_FIELDS = ['id', 'status', 'verified']
 const DECISION_STATUSES = new Set(['proposed', 'adopted', 'superseded', 'deprecated'])
@@ -169,12 +170,100 @@ async function validateRuntimeStatus(root, errors) {
   }
 }
 
+async function validatePropertyCoverage(root, errors) {
+  const indexPath = path.join(root, 'packages/react/src/index.ts')
+  const componentsPath = path.join(root, 'docs/components.md')
+  let componentsSource
+  try {
+    await stat(indexPath)
+    componentsSource = await readFile(componentsPath, 'utf8')
+  } catch {
+    return
+  }
+
+  const sourceFiles = ts.sys.readDirectory(path.dirname(indexPath), ['.ts', '.tsx'])
+  const program = ts.createProgram(sourceFiles, {
+    jsx: ts.JsxEmit.ReactJSX,
+    module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
+    noEmit: true,
+    skipLibCheck: true,
+    target: ts.ScriptTarget.ESNext,
+  })
+  const checker = program.getTypeChecker()
+  const index = program.getSourceFile(indexPath)
+  const module = index && checker.getSymbolAtLocation(index)
+  if (!module) {
+    errors.push('packages/react/src/index.ts: cannot read public exports')
+    return
+  }
+
+  const documented = new Map()
+  const rowPattern = /^\|[^\n|]+\|\s*`([^`]+Props)`\s*\|([^\n|]+)\|/gm
+  for (const match of componentsSource.matchAll(rowPattern)) {
+    documented.set(match[1], [...match[2].matchAll(/`([^`]+)`/g)].map((prop) => prop[1]).sort())
+  }
+
+  const publicProps = checker
+    .getExportsOfModule(module)
+    .filter((symbol) => symbol.name.endsWith('Props'))
+    .map((symbol) => [
+      symbol.name,
+      checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(symbol)).map((prop) => prop.name).sort(),
+    ])
+
+  for (const [typeName, props] of publicProps) {
+    const documentedProps = documented.get(typeName)
+    if (!documentedProps) {
+      errors.push(`docs/components.md: missing ${typeName} coverage`)
+      continue
+    }
+    const missing = props.filter((prop) => !documentedProps.includes(prop))
+    const extra = documentedProps.filter((prop) => !props.includes(prop))
+    if (missing.length || extra.length) {
+      const details = [
+        missing.length && `missing: ${missing.join(', ')}`,
+        extra.length && `undocumented: ${extra.join(', ')}`,
+      ].filter(Boolean).join('; ')
+      errors.push(`docs/components.md: ${typeName} property coverage mismatch (${details})`)
+    }
+    documented.delete(typeName)
+  }
+
+  for (const typeName of documented.keys()) {
+    errors.push(`docs/components.md: ${typeName} is not a public @canon/react props export`)
+  }
+
+  const matrix = componentsSource.match(/## 구현 coverage matrix([\s\S]*?)(?=\n## |$)/)?.[1] ?? ''
+  const documentedComponents = new Set(
+    [...matrix.matchAll(/\[([^\]]+)\]\(\.\/[^)]+\)/g)]
+      .flatMap((match) => match[1].split(',').map((name) => name.trim())),
+  )
+  const publicComponents = checker
+    .getExportsOfModule(module)
+    .filter((symbol) => {
+      const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol
+      return target.declarations?.some((declaration) => ts.isFunctionDeclaration(declaration))
+    })
+    .map((symbol) => symbol.name)
+
+  for (const component of publicComponents) {
+    if (!documentedComponents.delete(component)) {
+      errors.push(`docs/components.md: missing public component ${component} coverage`)
+    }
+  }
+  for (const component of documentedComponents) {
+    errors.push(`docs/components.md: ${component} is not a public @canon/react component export`)
+  }
+}
+
 export async function validateDocs(root) {
   const errors = []
   await validateRouteLinks(root, errors)
   await validateDecisions(root, errors)
   await validateDocsApp(root, errors)
   await validateRuntimeStatus(root, errors)
+  await validatePropertyCoverage(root, errors)
   return errors
 }
 

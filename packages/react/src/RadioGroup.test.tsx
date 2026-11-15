@@ -33,6 +33,12 @@ test('selects one visible option through click and wraps with arrow keys', async
   expect(none.checked).toBe(true)
 })
 
+test('keeps a rich label as the accessible name', () => {
+  render(<RadioGroup label={<span>Notification channel</span>}>{options}</RadioGroup>)
+
+  expect(screen.getByRole('radiogroup', { name: 'Notification channel' })).toBeTruthy()
+})
+
 test('wraps horizontal arrow navigation', async () => {
   const user = userEvent.setup()
   render(

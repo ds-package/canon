@@ -4,133 +4,188 @@ navigation: component
 ---
 # 컴포넌트 프로퍼티 모델
 
-Canon의 프로퍼티는 사용자가 코드에 쓰는 React interface를 중심으로 설계한다. Figma 편집 property, 브라우저에서 파생되는 상태, 문서 playground의 제어값은 React props와 목적이 다르므로 같은 이름이나 축을 강제하지 않는다.
+Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이 계산하는 interaction, Figma에서 검수하는 시각 상태를 분리한다. 같은 의미는 `disabled`, `checked`, `value`, `open`처럼 같은 명사로 연결하되 각 표면의 역할 때문에 표현이 다르면 명시적으로 변환한다.
 
-> 확인 범위: 2026-11-15의 runtime 코드, 공식 시스템 문서와 Prism 규칙을 대조했다. Canon Figma의 현재 property inventory는 이번 변경에서 다시 읽지 않았으므로, Figma 절은 앞으로 적용할 authoring 원칙이며 실제 migration 범위는 미확인이다.
+이 문서에 기록한 property model이 현재 Canon의 정본이다. React public interface와 Figma authoring interface는 모두 이 모델을 따라야 한다. 실제 코드와 Figma inventory는 현재 구현을 확인하고 migration 범위를 찾는 근거이며, 현재 상태가 정본과 다르면 정본을 현재 상태에 맞추지 않고 각 표면의 migration을 결정한다.
 
-## 1. 네 가지 표면
+## 네 가지 표면
 
-| 표면 | 사용하는 사람 | 역할 | 정본 |
+| 표면 | 역할 | 현재 구현 근거 | 정본에 맞출 때 |
 | --- | --- | --- | --- |
-| React public interface | 개발자와 AI | 제품 코드에서 콘텐츠, 선택, 동작을 선언한다. | `@canon/react`의 TypeScript |
-| Runtime-derived state | 브라우저와 React Aria | hover, press, focus와 현재 값에서 상태를 계산한다. | 실제 DOM과 interaction test |
-| Figma authoring interface | 디자이너 | variant를 비교하고 레이어와 instance를 편집한다. | Canon Figma component property |
-| Playground state | 문서 사용자 | 예제를 바꾸고 복사할 JSX를 만든다. | `apps/docs`의 playground model |
+| React public interface | 제품이 콘텐츠, 값, 조건, 동작을 선언한다. | `packages/react/src/*.tsx` | property 이름, 타입, 변환 규칙을 이 모델에 맞춘다. |
+| Runtime-derived state | 브라우저와 React Aria가 interaction과 현재 값을 계산한다. | DOM과 `packages/react/styles.css` | 모델의 의미를 platform 표현으로 변환한다. `data-*`와 pseudo-class를 public prop으로 만들지 않는다. |
+| Figma authoring interface | 설계자가 조합과 시각 상태를 편집하고 검수한다. | Canon Figma component property | property 이름과 값을 이 모델에 맞춘다. 현재 inventory는 migration 입력이다. |
+| Playground state | 문서 사용자가 예제를 바꾸고 JSX를 복사한다. | `apps/docs` playground model | 정본과 React 구현을 재현한다. `dark`, `component`, `showFooter`를 public prop으로 복사하지 않는다. |
 
-한 표면의 이름을 다른 표면에 자동으로 복사하지 않는다. 같은 개념은 mapping으로 연결한다. 예를 들어 Figma의 `showLeadingIcon=true`와 icon instance는 React의 `leadingIcon` 콘텐츠에 대응하지만, React에 `showLeadingIcon` prop을 만들지 않는다.
+## Property 사전
 
-## 2. React public interface
+### 선택과 구조
 
-React props는 호출자가 내려야 하는 결정만 노출한다. 토큰 이름, CSS 면 처리, hover 같은 구현 상태를 고르게 하지 않는다.
+| 이름 | 뜻과 타입 | 기본값 | 사용 | 사용하지 않는 조건 |
+| --- | --- | --- | --- | --- |
+| `variant` | `ButtonVariant = 'primary' \| 'secondary' \| 'quiet' \| 'destructive'` | Button `primary`, IconButton `quiet` | Button, IconButton | 범용 variant 목록, token 이름, Figma 면 처리 축을 복사하지 않는다. |
+| `status` | 구현 전 후보는 `'informative' \| 'positive' \| 'notice' \| 'negative'` | 확정 기본값 없음 | 구현된 컴포넌트 없음 | Alert와 Badge가 구현되기 전에는 예상 public prop으로 만들지 않는다. |
+| `size` | Button은 `'xs' \| 'sm' \| 'md' \| 'lg'`, field는 `'sm' \| 'md' \| 'lg'` | 모두 `md` | Button 계열, Select, TextField, TextArea, NumberField | 의미, icon 형태, 반응형 breakpoint를 값에 넣지 않는다. |
+| `orientation` | `'horizontal' \| 'vertical'`, 선택지 구조와 keyboard 방향 | `vertical` | RadioGroup | 단순 CSS 정렬만 바꾸는 prop으로 쓰지 않는다. |
+| `shape` | `'square' \| 'round'`, 같은 역할의 외곽 형태 | `square` | IconButton | Button의 의미나 icon 종류를 표현하지 않는다. |
 
-| 종류 | 이름 | 규칙 |
-| --- | --- | --- |
-| 컴포넌트별 선택 | `variant` | 함께 움직여야 하는 사용 목적과 표현을 닫힌 union 하나로 제공한다. 범용 variant 목록은 만들지 않는다. |
-| 피드백 의미 | `status` | Badge, Alert처럼 상태를 전달하는 컴포넌트에서만 `informative`, `positive`, `notice`, `negative`를 검토한다. |
-| 크기 | `size` | 물리적 크기와 밀도만 표현한다. icon 전용 형태나 의미를 size 값에 넣지 않는다. |
-| 조건 | `disabled`, `pending`, `readOnly`, `required`, `invalid`, `indeterminate` | 호출자가 정하는 조건만 boolean으로 받는다. `is` 접두사를 붙이지 않는다. |
-| 콘텐츠 | `children`, `label`, `description`, `leadingIcon`, `trailingIcon` | 콘텐츠가 있으면 보이고 없으면 숨는다. 별도 `show*` prop을 함께 만들지 않는다. |
-| 구조 | composition 또는 명시적 prop | 큰 영역은 `DialogFooter`처럼 조합하고, 작은 고정 슬롯만 이름 있는 prop으로 받는다. |
-| 변경 알림 | `on<Value>Change` | 어떤 값이 바뀌는지 event 이름에 쓴다. 범용 `onChange`는 Canon field interface로 노출하지 않는다. |
+`variant` 값은 컴포넌트마다 다를 수 있다. Button의 `destructive`는 되돌리기 어려운 행동의 결과이므로 feedback `status`가 아니라 Button variant다.
 
-`variant`는 모든 컴포넌트가 공유하는 시각 축이 아니다. Button의 `primary`, `secondary`, `quiet`, `destructive`처럼 그 컴포넌트를 올바르게 쓰기 위한 완성된 preset이다. `destructive`는 피드백 상태가 아니라 되돌리기 어려운 행동의 결과이므로 Button variant에 남긴다.
+### 호출자가 정하는 조건
 
-`intent`는 공개 축으로 사용하지 않는다. 작성자의 목적, 행동 결과, 상태색을 모두 뜻할 수 있어 값의 범위가 불명확하기 때문이다. 피드백 의미가 실제로 필요한 컴포넌트에서만 더 좁은 `status`를 검토한다.
-
-## 3. Controlled와 uncontrolled
-
-상태의 명사를 기준으로 세 가지 문법만 사용한다.
-
-| 상태 | Controlled | Uncontrolled | 변경 알림 |
+| 이름 | 타입과 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- |
-| 일반 값 | `value` | `defaultValue` | `onValueChange` |
-| 선택 여부 | `checked` | `defaultChecked` | `onCheckedChange` |
-| 열림 여부 | `open` | `defaultOpen` | `onOpenChange` |
+| `disabled` | `boolean`, 기본 `false` | 사용할 수 없는 interactive component | hover, focus 같은 순간 interaction을 대신하지 않는다. |
+| `readOnly` | `boolean`, 기본 `false` | 값은 제출하고 focus할 수 있지만 수정할 수 없는 field | Select처럼 플랫폼에 안정적인 read-only 동작이 없으면 노출하지 않는다. |
+| `required` | `boolean`, 기본 `false` | 제출 전 값이 필요한 form control | Switch의 즉시 적용 설정, Button, Dialog에 쓰지 않는다. |
+| `invalid` | `boolean`, 기본 `false` | 검증 실패를 명시하는 form control | 시각적 강조나 warning status를 대신하지 않는다. `errorMessage`와 함께 쓴다. |
+| `pending` | `boolean`, 기본 `false` | 비동기 action 중인 Button | 모든 loading 표현이나 field validation 상태로 일반화하지 않는다. |
+| `indeterminate` | `boolean`, 기본 `false` | 일부 하위 항목만 선택된 Checkbox | 세 번째 form value나 일반적인 mixed style로 쓰지 않는다. |
 
-1. controlled 값과 default 값은 함께 받지 않는다.
-2. controlled 값에는 변경 알림을 필수로 둔다. 읽기 전용 field만 `readOnly`와 함께 변경 알림을 생략할 수 있다.
-3. React Aria의 `selectedKey`, `isSelected`, `isOpen`, `onSelectionChange`는 구현에서 번역하고 Canon 호출자에게 자동 노출하지 않는다.
-4. React Aria props 전체를 상속하지 않는다. Canon이 지원하고 검증하는 동작만 public interface에 명시한다.
+React boolean에는 `is` 접두사를 붙이지 않는다. adapter가 `disabled`를 React Aria `isDisabled`로, `checked`를 `isSelected`로 번역한다.
 
-## 4. Runtime-derived state
+### 지속 상태 문법
 
-아래 상태는 호출자가 `state` prop으로 고르지 않는다.
+| 상태 | 값 타입 | Controlled | Uncontrolled와 생략 기본값 | 변경 알림 | 사용하지 않는 조건 |
+| --- | --- | --- | --- | --- | --- |
+| 일반 값 | text `string`, NumberField `number \| null`, 선택 key `string \| null` | `value` | `defaultValue`, 생략하면 빈 값 또는 미선택 | `onValueChange` | boolean 선택 여부나 overlay 열림에 쓰지 않는다. |
+| 선택 여부 | `boolean` | `checked` | `defaultChecked`, 생략하면 `false` | `onCheckedChange` | RadioGroup과 Select의 단일 선택 key에 쓰지 않는다. |
+| 열림 여부 | `boolean` | `open` | `defaultOpen`, 생략하면 `false` | `onOpenChange` | 단순 visibility나 interaction state에 쓰지 않는다. |
 
-| 상태 | 결정 주체 | 코드 표현 |
+- controlled 값과 default 값은 함께 받지 않는다.
+- controlled 값에는 변경 알림이 필요하다. `readOnly` field만 callback을 생략할 수 있다.
+- uncontrolled 변경 알림은 선택 사항이다.
+- `value` 타입은 역할을 따른다. 텍스트는 `string`, NumberField는 `number | null`, Select와 RadioGroup은 선택 key를 쓴다.
+- React Aria의 `selectedKey`, `isSelected`, `isOpen`, `onSelectionChange`는 adapter 안에서 번역한다.
+
+### 콘텐츠와 슬롯
+
+| 이름 | 타입과 기본값 | 사용 | 사용하지 않는 조건 |
+| --- | --- | --- | --- |
+| `children` | Button과 Dialog anatomy는 필수 `ReactNode`; Checkbox, Switch, RadioOption은 필수 `string`; option container는 제한된 element | 해당 컴포넌트 | 생략 기본값은 없다. 보임을 위한 별도 `showChildren`을 만들지 않는다. |
+| `label` | 필수 `ReactNode`, 생략 기본값 없음 | Select, TextField, TextArea, NumberField, RadioGroup | placeholder나 주변 문맥으로 대신하지 않는다. |
+| `description` | `ReactNode \| undefined`, 기본 `undefined` | 설명을 연결하는 field와 choice control | label이나 오류를 반복하지 않는다. |
+| `errorMessage` | `ReactNode \| undefined`, 기본 `undefined` | `invalid`를 지원하는 control | `invalid` 없이 상시 helper text로 쓰지 않는다. |
+| `leadingIcon` | `ReactElement \| undefined`, 기본 `undefined` | Button | 콘텐츠 존재로 보임을 정한다. `showLeadingIcon`을 함께 만들지 않는다. |
+| `trailingIcon` | `ReactElement \| undefined`, 기본 `undefined` | Button | 콘텐츠 존재로 보임을 정한다. `showTrailingIcon`을 함께 만들지 않는다. |
+| `leadingSlot` | 구현된 타입과 기본값 없음 | 구현된 컴포넌트 없음 | Figma InputGroup의 instance swap만 보고 React prop을 만들지 않는다. |
+| `trailingSlot` | 구현된 타입과 기본값 없음 | 구현된 컴포넌트 없음 | 실제 runtime 사용 사례와 접근성 계약이 생길 때 결정한다. |
+| `pendingLabel` | 비어 있지 않은 `string`, 기본 `Loading` | Button의 progressbar 이름 | 보이는 Button label을 대체하지 않는다. |
+
+Checkbox, Switch, RadioOption의 `children`은 단일한 보이는 label이므로 `string`으로 제한한다. SelectItem은 rich content를 허용하지만 문자열이 아니면 typeahead용 `textValue`가 필요하다. 이 차이는 같은 의미의 이름 불일치가 아니라 역할별 콘텐츠 제약이다.
+
+### Action, native form, focus, escape hatch
+
+| 이름 | 타입과 생략 기본값 | 지원 범위 | 사용하지 않는 조건 |
+| --- | --- | --- | --- |
+| `onPress` | `AriaButtonProps['onPress'] \| undefined`, 기본 `undefined` | Button, IconButton | native `onClick`을 함께 노출하지 않는다. |
+| `type`, `form`, `name`, `value` | Button type은 `'button' \| 'submit' \| 'reset'`, 기본 `button`; 나머지는 `string \| undefined` | Button의 native form seam | submit일 때만 type을 바꾸고 field state value와 혼동하지 않는다. |
+| `form`, `name` | `string \| undefined`, 기본 `undefined` | form field와 choice control | native form 연결이 검증되지 않은 컴포넌트에는 노출하지 않는다. |
+| 제출용 `value` | `string \| undefined`, 생략하면 native 기본값 `on` | Checkbox, Switch | `checked` 상태와 같은 prop으로 취급하지 않는다. |
+| `autoFocus` | `boolean \| undefined`, 기본 `false` | Button, IconButton, Select, TextField | 검증하지 않은 control로 일괄 확대하지 않는다. |
+| `onFocus`, `onBlur` | React Aria focus handler 또는 `undefined`, 기본 `undefined` | Select, TextField | DOM 상태를 제어하는 prop으로 쓰지 않는다. |
+| `aria-label`, `aria-labelledby`, `aria-describedby` | `string \| undefined`, 기본 `undefined`; IconButton의 `aria-label`은 필수 | Button 계열 | 보이는 label이 있는 곳에 중복 이름을 만들지 않는다. |
+| `className` | `string \| undefined`, 기본 `undefined` | Button, IconButton | 공통 escape hatch로 가정하지 않는다. |
+| native input props | `autoComplete`, `inputMode`, `pattern`은 string 계열, length는 `number \| undefined`; 모두 기본 `undefined` | TextField | 검증한 allowlist 밖 native prop을 추가하지 않는다. |
+| 숫자 props | bound와 step은 `number \| undefined`, format은 `Intl.NumberFormatOptions \| undefined`; 모두 기본 `undefined` | NumberField | 비유한 숫자 식별자에 쓰지 않는다. |
+| 구조 props | TextArea `rows: number = 4`; Dialog close 조건은 `boolean`, outside 기본 `false`, Escape 기본 `true` | TextArea, Dialog | 범용 layout prop으로 확대하지 않는다. |
+
+React Aria props 전체를 상속하지 않는다. 지원되지 않는 focus·form prop은 누락이 아니라 아직 검증되지 않은 interface다.
+
+## Figma, React, runtime 변환 계약
+
+| 의미 | Figma 목표 표현 | React public interface | 현재 runtime 표현 |
+| --- | --- | --- | --- |
+| hover | `interaction=hover` | 없음 | React Aria `data-hovered` 또는 native `:hover` |
+| pressed | `interaction=pressed` | 없음 | React Aria `data-pressed` |
+| keyboard focus | `interaction=focus` | 없음 | `data-focus-visible`, native `:focus-visible`, composite field의 `data-focus-within` |
+| disabled | `disabled=true` | `disabled` | React Aria `data-disabled`와 native `disabled` |
+| checked | `checked=true` | `checked/defaultChecked/onCheckedChange` | Checkbox와 Switch의 `data-selected`, native `checked` |
+| selected | `selected=true` 또는 선택 value example | `value/defaultValue/onValueChange` | option의 `data-selected`와 native 선택 상태 |
+| invalid | `invalid=true` | `invalid` | `data-invalid`와 `aria-invalid` |
+| filled | 실제 value가 있는 example | 별도 prop 없음 | value와 placeholder 상태에서 파생 |
+| pending | `pending=true` | `pending` | Button `data-pending`과 progressbar |
+| open | 열린 상태 example | `open/defaultOpen/onOpenChange` | React Aria open state, overlay와 popover layer |
+
+TextField와 TextArea는 native input과 textarea가 직접 hover와 focus를 계산하므로 `:hover`와 `:focus-visible`을 쓴다. SelectItem의 `data-focused`는 roving focus로 현재 option을 가리키고, `data-focus-visible`은 keyboard focus ring을 그린다. 두 상태는 합치지 않는다.
+
+## 실제 Figma inventory
+
+2026-11-15에 파일 `9GZgtyTnVbm2YfJoadmIjp`의 31개 페이지와 모든 local component property owner를 읽었다. 아래는 구현된 React component에 대응하는 현재 Figma다. 이는 목표 convention이나 정본이 아니라, Figma를 Canon property model에 맞추기 위한 원문 확인 결과다.
+
+| Figma owner | 현재 property와 값 | local instance, override 있음 |
 | --- | --- | --- |
-| hover, pressed, focus-visible | 브라우저와 React Aria | React Aria가 만든 `data-hovered`, `data-pressed`, `data-focus-visible` |
-| selected, checked, open | controlled 또는 uncontrolled 현재 값 | 각 상태의 명사형 props와 React Aria state |
-| filled | field의 현재 값 | 값의 유무에서 파생 |
-| invalid | validation 결과 또는 명시적 `invalid` | `aria-invalid`와 React Aria state |
-| disabled, read-only | 명시적 조건 | public boolean을 React Aria의 `is*` prop으로 번역 |
+| Button | TEXT `children=Button`; BOOLEAN `showLeadingIcon=true`, `showTrailingIcon=true`; VARIANT `variant=[subtle], default subtle`, `state=[default, focus, hover], default default`, `size=[lg, md, sm, xs], default lg`, `intent=[neutral], default neutral`, `disabled=[false, true], default false` | 37, 29 |
+| IconButton | BOOLEAN `showLeadingIcon=true`; INSTANCE_SWAP `icon`; VARIANT `variant=[subtle], default subtle`, `state=[default, hover, pressed, focus], default default`, `size=[lg, md, sm, xs], default lg`, `intent=[neutral], default neutral`, `disabled=[false, true], default false`, `shape=[square, round], default square` | Button 계열에 포함 |
+| Checkbox | TEXT `children=Checkbox Label`; VARIANT `size=[sm, md, lg], default sm`, `state=[hover, pressed, focus, default], default default`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `indeterminate=[false, true], default false` | 45, 45 |
+| Switch | VARIANT `size=[sm, md, lg], default sm`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `state=[default, hover, pressed, focus], default default` | 30, 27 |
+| Radio | TEXT `children=Radio Label`; VARIANT `size=[sm, md, lg], default sm`, `state=[hover, pressed, default, focus], default default`, `disabled=[false, true], default false`, `checked=[false, true], default false`; RadioGroup owner 없음 | 0, 0 |
+| Input Next | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default xs`, `variant=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `state=[default, focus], default default` | 412, 381 |
+| NumberInput | TEXT `defaultValue=40`; VARIANT `size=[md, sm, xs, lg], default sm`, `state=[default, focus], default default`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false` | 20, 20 |
+| Select | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default xs`, `variant=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `state=[default, focus], default default` | 80, 80 |
+| Modal, ModalContent | Modal property 없음; Next는 BOOLEAN `showCloseButton=true`, `showFooter=true`; legacy는 `showCloseButton=true`와 VARIANT `showFooter=true\|false` | Modal 3, 3; Next 6, 6 |
 
-`default`, `hover`, `pressed`, `focus`, `filled`를 하나의 public `state` union으로 만들지 않는다. CSS의 `data-*`는 스타일 구현 계약이며 React public interface가 아니다.
+Figma의 boolean 의미가 VARIANT의 문자열 `true|false`로 구현된 경우가 있다. 외형 조합과 instance override를 보존하기 위한 Figma 구현 선택이므로 이름이 boolean이라는 이유만으로 BOOLEAN property로 일괄 변환하지 않는다.
 
-## 5. Figma authoring interface
+### 현재와 목표, migration 영향
 
-Figma property는 설계자가 상태와 구조를 편집하고 시각적으로 검수하기 위한 schema다.
-
-| Figma property | 역할 | React 대응 |
+| 현재 Figma | 목표 convention | migration 영향 |
 | --- | --- | --- |
-| `interaction=default|hover|pressed|focus` | interaction 시각 검수. `focus`는 keyboard `focus-visible` 표현을 검수한다. | runtime에서 파생되며 public prop은 없다. |
-| `showLeadingIcon`, `showFooter` 같은 BOOLEAN | 레이어 표시와 variant 수 관리 | 콘텐츠나 composition의 존재로 결정한다. |
-| icon INSTANCE_SWAP | 편집기에서 아이콘을 교체한다. | `leadingIcon`, `trailingIcon` 같은 제한된 콘텐츠 prop에 대응한다. |
-| Figma variant | 설계 조합을 탐색하고 검수한다. | 같은 사용자 결정을 나타낼 때만 React `variant`와 이름을 맞춘다. |
-| `.variant`, `.size` 같은 점 접두사 | Figma 내부 property임을 표시한다. | JavaScript 이름 규칙으로 가져오지 않는다. |
+| interaction 검수 축 이름이 `state` | `interaction` | Input 412개, Select 80개, Checkbox 45개 등 local override key를 옮겨야 한다. 외부 library 소비 파일은 미확인이다. |
+| Button `state`에 pressed 없음, hover/lg variant 중복 | `default\|hover\|pressed\|focus` 완성 | 새 pressed 시각 검수와 중복 variant 정리가 필요하다. |
+| Figma Button `variant=subtle`, `intent=neutral` | React는 행동 의미 variant 하나 | React contract로 복사하지 않는다. Figma 재구성은 별도 승인 범위다. |
+| Figma field에 `xs`와 표현 `variant` 존재 | React field는 `sm\|md\|lg`, 표현 variant 없음 | 코드에 값을 추가하지 않는다. 실제 제품 요구가 생기면 별도 public interface 변경으로 검증한다. |
+| Figma Select에 `readOnly` 존재 | React Select는 `readOnly` 미지원 | 플랫폼에 예측 가능한 read-only 선택 동작이 없어 현재는 mapping하지 않는다. |
+| Badge와 Alert가 feedback 의미를 `intent`로 표현 | 구현 시 `status`를 검토 | React 미구현이므로 아직 확정 계약이 아니다. |
+| `show*` BOOLEAN과 icon INSTANCE_SWAP | 콘텐츠와 composition 존재 | React에는 `show*`를 만들지 않는다. icon은 `leadingIcon`, `trailingIcon` 같은 제한된 콘텐츠 prop으로 번역한다. |
 
-Figma에는 component set을 완성하기 위한 `default` 값이 필요하지만 React에서는 기본값을 생략할 수 있다. Figma의 보임 BOOLEAN과 instance swap이 한 쌍이어도 React는 콘텐츠 prop 하나만 제공한다.
+권장 migration은 새 `interaction` property를 추가하고 기존 instance 값을 옮긴 뒤, local과 외부 소비처의 override가 0인지 확인하고 `state`를 폐기하는 순서다. 이번 작업에서는 Figma를 수정하거나 publish하지 않았다.
 
-filled 모습은 실제 value 콘텐츠를 넣은 example로 검수한다. 값이 있을 때 구조 자체가 달라지는 컴포넌트가 생기면 해당 Figma 컴포넌트에서만 content 상태를 추가로 결정하며, 범용 `state=filled` 축은 만들지 않는다.
+미확인 범위는 외부 소비 Figma 파일의 library instance 수와 publish 이후 override 보존이다. TextArea에 직접 대응하는 Figma property owner도 확인되지 않았다.
 
-## 6. 이름 규칙
+## 구현 coverage matrix
 
-| 대상 | 규칙 | 예시 |
-| --- | --- | --- |
-| React 컴포넌트 | PascalCase | `InputGroup`, `DialogContent` |
-| React prop | camelCase | `leadingIcon`, `readOnly`, `onValueChange` |
-| 문자열 값 | 소문자 kebab-case | `soft-rounded`, `left-accent` |
-| 위치 | `leading`, `trailing` | `leadingIcon`, `trailingIcon` |
-| Figma 보임 BOOLEAN | `show` 접두사 | `showLeadingIcon`, `showFooter` |
-| Figma 내부 property | `.` 접두사 | `.variant`, `.size` |
+세 번째 열은 TypeScript public interface와 자동 대조한다. 컴포넌트별 사용 판단과 값 설명은 링크한 문서가 맡는다.
 
-React boolean에는 `is` 접두사를 붙이지 않는다. React Aria의 `isDisabled`는 Canon의 `disabled`로 번역한다. 위치에는 쓰기 방향을 지원하는 `leading`, `trailing`을 쓰고 `left`, `right`를 쓰지 않는다.
+| Component | Public type | Public props | 문서와 예외 |
+| --- | --- | --- | --- |
+| [Button](./button.md) | `ButtonProps` | `children`, `variant`, `size`, `leadingIcon`, `trailingIcon`, `disabled`, `pending`, `pendingLabel`, `className`, `id`, `form`, `name`, `value`, `type`, `autoFocus`, `onPress`, `aria-label`, `aria-labelledby`, `aria-describedby` | `className`과 press/form allowlist를 지원한다. |
+| [IconButton](./button.md) | `IconButtonProps` | `icon`, `aria-label`, `variant`, `shape`, `size`, `disabled`, `pending`, `pendingLabel`, `className`, `id`, `form`, `name`, `value`, `type`, `autoFocus`, `onPress`, `aria-labelledby`, `aria-describedby` | children 대신 icon과 필수 이름을 받는다. |
+| [Checkbox](./checkbox.md) | `CheckboxProps` | `children`, `description`, `errorMessage`, `indeterminate`, `disabled`, `required`, `invalid`, `name`, `value`, `form`, `checked`, `defaultChecked`, `onCheckedChange`, `readOnly` | public checked를 runtime selected로 번역한다. |
+| [RadioGroup](./radio-group.md) | `RadioGroupProps` | `children`, `label`, `description`, `errorMessage`, `orientation`, `disabled`, `required`, `invalid`, `name`, `form`, `value`, `defaultValue`, `onValueChange`, `readOnly` | rich label, 제한된 RadioOption children을 쓴다. |
+| [RadioOption](./radio-group.md) | `RadioOptionProps` | `value`, `children`, `description`, `disabled` | label children은 string이다. |
+| [SelectItem](./select.md) | `SelectItemProps` | `id`, `children`, `textValue`, `disabled` | rich children에는 textValue가 필요하다. |
+| [Select](./select.md) | `SelectProps` | `children`, `label`, `description`, `errorMessage`, `placeholder`, `size`, `disabled`, `required`, `invalid`, `name`, `form`, `autoFocus`, `onFocus`, `onBlur`, `value`, `defaultValue`, `onValueChange` | readOnly를 지원하지 않는다. |
+| [Switch](./switch.md) | `SwitchProps` | `children`, `description`, `disabled`, `name`, `value`, `form`, `checked`, `defaultChecked`, `onCheckedChange`, `readOnly` | required, invalid, errorMessage를 지원하지 않는다. |
+| [TextField](./text-field.md) | `TextFieldProps` | `label`, `description`, `errorMessage`, `type`, `size`, `disabled`, `required`, `invalid`, `name`, `form`, `autoComplete`, `placeholder`, `autoFocus`, `onFocus`, `onBlur`, `inputMode`, `pattern`, `minLength`, `maxLength`, `value`, `defaultValue`, `onValueChange`, `readOnly` | native hover와 focus pseudo-class를 쓴다. |
+| [TextArea](./text-area.md) | `TextAreaProps` | `label`, `description`, `errorMessage`, `placeholder`, `rows`, `size`, `disabled`, `required`, `invalid`, `name`, `form`, `value`, `defaultValue`, `onValueChange`, `readOnly` | native textarea 계약을 쓴다. |
+| [NumberField](./number-field.md) | `NumberFieldProps` | `label`, `description`, `errorMessage`, `size`, `minValue`, `maxValue`, `step`, `formatOptions`, `disabled`, `required`, `invalid`, `name`, `form`, `value`, `defaultValue`, `onValueChange`, `readOnly` | 빈 값은 null이며 composite focus를 쓴다. |
+| [DialogClose](./dialog.md) | `DialogCloseProps` | `children`, `aria-label` | children이 없으면 aria-label이 필수다. |
+| [Dialog](./dialog.md) | `DialogProps` | `children`, `closeOnInteractOutside`, `closeOnEscape` | 기본 closeOnEscape는 true다. |
+| [DialogTrigger](./dialog.md) | `DialogTriggerProps` | `children`, `open`, `defaultOpen`, `onOpenChange` | trigger와 Dialog 두 element를 제한한다. |
+| [DialogTitle, DialogDescription, DialogBody, DialogFooter](./dialog.md) | 내부 공통 타입 | `children` | public anatomy component이며 별도 exported Props type은 없다. |
 
-## 7. 현재 runtime interface
+## Figma에만 있는 property와 React에만 있는 prop
 
-미구현 컴포넌트의 예상 props는 정본에 미리 넣지 않는다.
+Figma에만 있는 `state`, `showLeadingIcon`, `showFooter`, INSTANCE_SWAP `icon`, 표현용 field `variant`, component catalog용 `size`는 편집과 시각 검수를 위한 것이다. React에 같은 이름을 자동 추가하지 않는다.
 
-| 컴포넌트 | 주요 선택 | 상태 문법 |
-| --- | --- | --- |
-| Button | `variant=primary|secondary|quiet|destructive`, `size=xs|sm|md|lg` | `pending`, `disabled` |
-| IconButton | Button 선택 + `shape=square|round` | Button과 같음 |
-| Checkbox | `indeterminate` | `checked/defaultChecked/onCheckedChange` |
-| Switch | 없음 | `checked/defaultChecked/onCheckedChange` |
-| RadioGroup | `orientation=horizontal|vertical` | `value/defaultValue/onValueChange` |
-| Select | `size=sm|md|lg` | `value/defaultValue/onValueChange` |
-| TextField, TextArea | `size=sm|md|lg` | `value/defaultValue/onValueChange` |
-| NumberField | `size=sm|md|lg`, 범위와 format | `value/defaultValue/onValueChange` |
-| Dialog | anatomy composition | `open/defaultOpen/onOpenChange` |
+React에만 있는 callback, native form 연결, focus handler, `formatOptions`, `rows`, 접근성 이름, controlled와 uncontrolled 쌍은 실행과 데이터 흐름을 위한 것이다. Figma property로 자동 추가하지 않고 필요한 example이나 annotation으로 검수한다.
 
-## 8. 구현할 때 결정할 것
+## AI 선택 규칙
 
-- InputGroup의 `leading`, `trailing` 구조는 실제 runtime 사용 사례와 함께 결정한다. Figma variant 수만 보고 React props를 만들지 않는다.
-- Alert의 accent 위치는 feedback vertical slice에서 `variant`, 구조 prop, composition을 다시 비교한다.
-- Badge, Tag, Alert의 의미 축은 실제 콘텐츠와 접근성 계약을 만든 뒤 `status`로 확정한다.
-- `className` 같은 escape hatch는 공통 prop으로 가정하지 않는다. 실제 소비처 요구와 커스터마이징 계약이 생길 때 지원 범위를 정한다.
-- Figma의 기존 `state`를 `interaction`으로 바꾸는 migration은 instance 영향을 확인하고 별도로 진행한다.
-
-## 9. 폐기한 모델
-
-- Button의 `solid|outline|subtle + intent` 조합은 2026-11-15의 semantic action variant로 대체했다.
-- Radio, Checkbox, Switch, Tabs에 색상 선택 prop을 두지 않는다.
-- `state=filled`는 값에서 파생하므로 public prop이나 Figma의 지속 상태 축으로 만들지 않는다.
-- Chakra의 범용 `colorScheme`과 컴포넌트 전체에 적용하는 `intent` matrix를 가져오지 않는다.
+1. 먼저 이 문서의 property 사전과 변환 규칙을 따른다. component 문서와 exported `*Props`는 현재 구현 coverage이며, 정본과 충돌하면 차이를 migration 대상으로 기록한다.
+2. Figma `show*`는 콘텐츠나 composition 존재로 번역한다. React에 같은 boolean을 만들지 않는다.
+3. hover, pressed, focus, filled는 runtime-derived다. public `state`나 각각의 boolean prop을 만들지 않는다.
+4. 값은 `value`, 선택 여부는 `checked`, 열림은 `open` 문법을 쓴다. React Aria 이름을 public interface로 새지 않게 한다.
+5. 위치에는 `leading`, `trailing`을 쓴다. `left`, `right`나 token 이름을 public prop으로 만들지 않는다.
+6. 지원되지 않은 native prop이 필요하면 기존 allowlist와 테스트 근거를 먼저 확인한다. React Aria props 전체를 상속하지 않는다.
+7. Figma 현재값과 정본 convention이 다르면 현재값, 정본값, instance migration 영향을 따로 쓴다. 현재 Figma에 맞춰 정본을 바꾸지 않는다.
+8. 미구현 컴포넌트의 예상 props는 확정 계약처럼 쓰지 않는다.
 
 ## 근거
 
-- [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html): interaction과 accessibility behavior를 구현하고 상태를 DOM `data-*`로 제공한다.
-- [Spectrum 2 Button](https://react-spectrum.adobe.com/Button): 행동의 위계와 위험도를 Button 선택으로 제공하지만 Canon은 조합 축을 더 늘리지 않는다.
-- [SEED Text Button](https://v2.seed-design.io/component/text-button/style/): 제품 중요도를 기준으로 Button을 선택하는 설명을 참고했다.
-- [shadcn/ui Button](https://ui.shadcn.com/docs/components/base/button): 작은 interface는 참고했지만 `link`와 면 처리와 위험도를 한 범용 목록에 섞는 방식은 가져오지 않았다.
-- [Astryx API conventions](https://github.com/meta/astryx/wiki/API-Conventions/): prop 이름, 기본값, agent가 읽을 수 있는 문서 계약을 참고했다.
-- Prism `packages/liner-prism/rules/`: Figma와 runtime 분리, controlled 문법, slot 존재로 보임을 정하는 규칙을 교차검토했다.
+- Canon property model 정본: 이 문서에 기록한 사용자와 에이전트의 합의
+- Canon runtime 구현 근거: `packages/react/src/*.tsx`, `packages/react/styles.css`
+- Canon Figma 현황 근거: file `9GZgtyTnVbm2YfJoadmIjp`, 2026-11-15 원문 확인
+- Prism: `packages/liner-prism/rules/`, `packages/design-token/rules/`의 표면 분리와 migration 방식만 비교
+- [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html): interaction과 accessibility behavior, DOM state contract

@@ -12,7 +12,7 @@ export type RadioGroupOrientation = 'horizontal' | 'vertical'
 
 interface RadioGroupBaseProps {
   children: ReactElement<RadioOptionProps> | ReactElement<RadioOptionProps>[]
-  label: string
+  label: ReactNode
   description?: ReactNode
   errorMessage?: ReactNode
   orientation?: RadioGroupOrientation
@@ -78,7 +78,7 @@ export function RadioGroup({
   readOnly,
   ...props
 }: RadioGroupProps) {
-  if (typeof label !== 'string' || !label.trim()) {
+  if (isEmptyContent(label)) {
     throw new Error('RadioGroup requires a visible label')
   }
   if (invalid && isEmptyContent(errorMessage)) {

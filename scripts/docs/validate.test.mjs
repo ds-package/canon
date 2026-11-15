@@ -215,3 +215,43 @@ test('rejects authored prose inside the docs app and ignores generated directori
     'apps/docs/content/overview.md: authored docs prose must live outside apps/docs',
   ])
 })
+
+test('keeps documented property coverage aligned with public TypeScript props', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    'export interface FieldProps { label: string; value?: string }\nexport function Field(_props: FieldProps) { return null }\n',
+  )
+  await writeFile(
+    path.join(root, 'docs/components.md'),
+    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `state` |\n',
+  )
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: FieldProps property coverage mismatch (missing: value; undocumented: state)',
+  ])
+})
+
+test('requires every public component export in the coverage matrix', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    'export interface FieldProps { label: string }\nexport function Field(_props: FieldProps) { return null }\n',
+  )
+  await writeFile(
+    path.join(root, 'docs/components.md'),
+    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Field | `FieldProps` | `label` |\n',
+  )
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: missing public component Field coverage',
+  ])
+})

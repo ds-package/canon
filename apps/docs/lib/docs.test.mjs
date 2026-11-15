@@ -416,5 +416,5 @@ test('indexes every Canon source and ranks title, headings, then body matches', 
   ]
   assert.deepEqual(searchDocuments(fixtures, 'React Aria').map(({ route }) => route), ['/title', '/heading', '/body'])
   assert.equal(searchDocuments(documents, 'React Aria Components 책임 경계')[0]?.route, '/docs/decisions/interaction-foundation')
-  assert.equal(searchDocuments(documents, 'closeOnEscape')[0]?.route, '/docs/dialog')
+  assert.equal(searchDocuments(documents, 'closeOnEscape focus containment')[0]?.route, '/docs/dialog')
 })

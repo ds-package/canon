@@ -10,7 +10,7 @@ import {
 export type TextAreaSize = 'sm' | 'md' | 'lg'
 
 interface TextAreaBaseProps {
-  label: string
+  label: ReactNode
   description?: ReactNode
   errorMessage?: ReactNode
   placeholder?: string
@@ -66,7 +66,7 @@ export function TextArea({
   readOnly,
   ...props
 }: TextAreaProps) {
-  if (!label.trim()) {
+  if (isEmptyContent(label)) {
     throw new Error('TextArea requires a visible label')
   }
   if (invalid && isEmptyContent(errorMessage)) {

@@ -17,6 +17,12 @@ test('accepts multiple lines through a visible label', async () => {
   expect(input.rows).toBe(4)
 })
 
+test('keeps a rich label as the accessible name', () => {
+  render(<TextArea label={<span>Comment details</span>} />)
+
+  expect(screen.getByRole('textbox', { name: 'Comment details' })).toBeTruthy()
+})
+
 test('reports controlled edits without replacing product state', async () => {
   const user = userEvent.setup()
   const onValueChange = vi.fn()

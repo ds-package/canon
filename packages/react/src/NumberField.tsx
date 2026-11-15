@@ -13,7 +13,7 @@ import {
 export type NumberFieldSize = 'sm' | 'md' | 'lg'
 
 interface NumberFieldBaseProps {
-  label: string
+  label: ReactNode
   description?: ReactNode
   errorMessage?: ReactNode
   size?: NumberFieldSize
@@ -85,7 +85,7 @@ export function NumberField({
   readOnly,
   ...props
 }: NumberFieldProps) {
-  if (!label.trim()) {
+  if (isEmptyContent(label)) {
     throw new Error('NumberField requires a visible label')
   }
   if (invalid && isEmptyContent(errorMessage)) {
