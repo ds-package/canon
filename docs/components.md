@@ -115,31 +115,31 @@ TextField와 TextArea는 native input과 textarea가 직접 hover와 focus를 �
 
 | Figma owner | 현재 property와 값 | local instance, override 있음 |
 | --- | --- | --- |
-| Button | TEXT `children=Button`; BOOLEAN `showLeadingIcon=true`, `showTrailingIcon=true`; VARIANT `variant=[subtle], default subtle`, `state=[default, focus, hover], default default`, `size=[lg, md, sm, xs], default lg`, `intent=[neutral], default neutral`, `disabled=[false, true], default false` | 37, 29 |
-| IconButton | BOOLEAN `showLeadingIcon=true`; INSTANCE_SWAP `icon`; VARIANT `variant=[subtle], default subtle`, `state=[default, hover, pressed, focus], default default`, `size=[lg, md, sm, xs], default lg`, `intent=[neutral], default neutral`, `disabled=[false, true], default false`, `shape=[square, round], default square` | Button 계열에 포함 |
-| Checkbox | TEXT `children=Checkbox Label`; VARIANT `size=[sm, md, lg], default sm`, `state=[hover, pressed, focus, default], default default`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `indeterminate=[false, true], default false` | 45, 45 |
-| Switch | VARIANT `size=[sm, md, lg], default sm`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `state=[default, hover, pressed, focus], default default` | 30, 27 |
-| Radio | TEXT `children=Radio Label`; VARIANT `size=[sm, md, lg], default sm`, `state=[hover, pressed, default, focus], default default`, `disabled=[false, true], default false`, `checked=[false, true], default false`; RadioGroup owner 없음 | 0, 0 |
-| Input Next | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default xs`, `variant=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `state=[default, focus], default default` | 412, 381 |
-| NumberInput | TEXT `defaultValue=40`; VARIANT `size=[md, sm, xs, lg], default sm`, `state=[default, focus], default default`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false` | 20, 20 |
-| Select | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default xs`, `variant=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `state=[default, focus], default default` | 80, 80 |
+| Button | TEXT `children=Button`; BOOLEAN `showLeadingIcon=true`, `showTrailingIcon=true`; VARIANT `variant=[quiet], default quiet`, `interaction=[default, focus, hover, pressed], default default`, `size=[lg, md, sm, xs], default md`, `disabled=[false, true], default false` | 26, override key migration 완료 |
+| IconButton | INSTANCE_SWAP `icon`; VARIANT `variant=[quiet], default quiet`, `interaction=[default, hover, pressed, focus], default default`, `size=[lg, md, sm, xs], default md`, `disabled=[false, true], default false`, `shape=[square, round], default square` | local instance 없음 |
+| Checkbox | TEXT `children=Checkbox Label`; VARIANT `size=[sm, md, lg], default sm`, `interaction=[hover, pressed, focus, default], default default`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `indeterminate=[false, true], default false` | 45, stale `state` override 0 |
+| Switch | VARIANT `size=[sm, md, lg], default sm`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `interaction=[default, hover, pressed, focus], default default` | 30, stale `state` override 0 |
+| Radio | TEXT `children=Radio Label`; VARIANT `size=[sm, md, lg], default sm`, `interaction=[hover, pressed, default, focus], default default`, `disabled=[false, true], default false`, `checked=[false, true], default false`; RadioGroup owner 없음 | local instance 없음 |
+| Input Next | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default md`, `appearance=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `interaction=[default, focus], default default` | 411, stale `state`·`variant` override 0 |
+| NumberInput | TEXT `defaultValue=40`; VARIANT `size=[md, sm, xs, lg], default md`, `interaction=[default, focus], default default`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false` | 20, stale `state` override 0 |
+| Select | TEXT `placeholder=Placeholder`; VARIANT `size=[xs, sm, md, lg], default md`, `appearance=[filled, flushed, outline, unstyled], default outline`, `invalid=[false, true], default false`, `disabled=[false, true], default false`, `readOnly=[false, true], default false`, `interaction=[default, focus], default default` | 80, stale `state`·`variant` override 0 |
 | Modal, ModalContent | Modal property 없음; Next는 BOOLEAN `showCloseButton=true`, `showFooter=true`; legacy는 `showCloseButton=true`와 VARIANT `showFooter=true\|false` | Modal 3, 3; Next 6, 6 |
 
 Figma의 boolean 의미가 VARIANT의 문자열 `true|false`로 구현된 경우가 있다. 외형 조합과 instance override를 보존하기 위한 Figma 구현 선택이므로 이름이 boolean이라는 이유만으로 BOOLEAN property로 일괄 변환하지 않는다.
 
 ### 현재와 목표, migration 영향
 
-| 현재 Figma | 목표 convention | migration 영향 |
+| migration 전 Figma | 목표 convention | migration 결과와 영향 |
 | --- | --- | --- |
-| interaction 검수 축 이름이 `state` | `interaction` | Input 412개, Select 80개, Checkbox 45개 등 local override key를 옮겨야 한다. 외부 library 소비 파일은 미확인이다. |
-| Button `state`에 pressed 없음, hover/lg variant 중복 | `default\|hover\|pressed\|focus` 완성 | 새 pressed 시각 검수와 중복 variant 정리가 필요하다. |
-| Figma Button `variant=subtle`, `intent=neutral` | React는 행동 의미 variant 하나 | React contract로 복사하지 않는다. Figma 재구성은 별도 승인 범위다. |
-| Figma field에 `xs`와 표현 `variant` 존재 | React field는 `sm\|md\|lg`, 표현 variant 없음 | 코드에 값을 추가하지 않는다. 실제 제품 요구가 생기면 별도 public interface 변경으로 검증한다. |
+| interaction 검수 축 이름이 `state` | `interaction` | 8개 component set과 local instance를 migration했다. stale `state` override는 0개다. 외부 library 소비 파일은 미확인이다. |
+| Button `state`에 pressed 없음, hover/lg variant 중복 | `default\|hover\|pressed\|focus` 완성 | pressed token을 쓰던 중복 hover를 `pressed`로 바로잡았다. |
+| Figma Button `variant=subtle`, `intent=neutral` | React 행동 의미 `variant` | 기존 표현은 `variant=quiet`로 옮겼다. 단일값 `intent`는 제거했다. `primary`, `secondary`, `destructive` 시각 정의는 아직 없다. |
+| Figma field에 `xs`와 표현 `variant` 존재 | React field는 `sm\|md\|lg`, 표현 variant 없음 | 표현 축은 Figma 전용 `appearance`로 분리했다. 기본 size는 `md`로 맞췄다. `xs` catalog variant는 React에 노출하지 않는다. |
 | Figma Select에 `readOnly` 존재 | React Select는 `readOnly` 미지원 | 플랫폼에 예측 가능한 read-only 선택 동작이 없어 현재는 mapping하지 않는다. |
 | Badge와 Alert가 feedback 의미를 `intent`로 표현 | 구현 시 `status`를 검토 | React 미구현이므로 아직 확정 계약이 아니다. |
 | `show*` BOOLEAN과 icon INSTANCE_SWAP | 콘텐츠와 composition 존재 | React에는 `show*`를 만들지 않는다. icon은 `leadingIcon`, `trailingIcon` 같은 제한된 콘텐츠 prop으로 번역한다. |
 
-권장 migration은 새 `interaction` property를 추가하고 기존 instance 값을 옮긴 뒤, local과 외부 소비처의 override가 0인지 확인하고 `state`를 폐기하는 순서다. 이번 작업에서는 Figma를 수정하거나 publish하지 않았다.
+Figma Plugin API의 property rename을 사용해 기존 component와 local instance ID를 유지한 채 `state`를 `interaction`으로 옮겼다. Button 계열의 `intent`와 IconButton의 중복 `showLeadingIcon`도 제거했다. library publish는 하지 않았다.
 
 미확인 범위는 외부 소비 Figma 파일의 library instance 수와 publish 이후 override 보존이다. TextArea에 직접 대응하는 Figma property owner도 확인되지 않았다.
 
@@ -167,7 +167,7 @@ Figma의 boolean 의미가 VARIANT의 문자열 `true|false`로 구현된 경우
 
 ## Figma에만 있는 property와 React에만 있는 prop
 
-Figma에만 있는 `state`, `showLeadingIcon`, `showFooter`, INSTANCE_SWAP `icon`, 표현용 field `variant`, component catalog용 `size`는 편집과 시각 검수를 위한 것이다. React에 같은 이름을 자동 추가하지 않는다.
+Figma에만 있는 `interaction`, `appearance`, `showLeadingIcon`, `showFooter`, INSTANCE_SWAP `icon`, component catalog용 `size`는 편집과 시각 검수를 위한 것이다. React에 같은 이름을 자동 추가하지 않는다.
 
 React에만 있는 callback, native form 연결, focus handler, `formatOptions`, `rows`, 접근성 이름, controlled와 uncontrolled 쌍은 실행과 데이터 흐름을 위한 것이다. Figma property로 자동 추가하지 않고 필요한 example이나 annotation으로 검수한다.
 
