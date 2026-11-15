@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import { parseDocument, readDocuments, sourceToRoute, toWebHref } from './docs.mjs'
+import { groupNavigationDocuments } from './navigation.mjs'
 import { searchDocuments } from './search.mjs'
 import { getButtonPlaygroundModel, initialButtonPlaygroundState } from './button-playground.mjs'
 import { getCheckboxPlaygroundModel, initialCheckboxPlaygroundState } from './checkbox-playground.mjs'
@@ -12,6 +13,40 @@ import { getSelectPlaygroundModel, initialSelectPlaygroundState } from './select
 import { getSwitchPlaygroundModel, initialSwitchPlaygroundState } from './switch-playground.mjs'
 import { getTextFieldPlaygroundModel, initialTextFieldPlaygroundState } from './text-field-playground.mjs'
 import { getTextAreaPlaygroundModel, initialTextAreaPlaygroundState } from './text-area-playground.mjs'
+
+test('groups component documents under Components without changing document order', () => {
+  const documents = [
+    { route: '/', title: 'Canon' },
+    { route: '/docs/button', title: 'Button', navigation: 'component' },
+    { route: '/docs/color', title: 'Color' },
+    { route: '/docs/components', title: 'Components', navigation: 'component' },
+    { route: '/docs/text-field', title: 'TextField', navigation: 'component' },
+  ]
+
+  assert.deepEqual(groupNavigationDocuments(documents), {
+    documents: [documents[0], documents[2]],
+    components: [documents[3], documents[1], documents[4]],
+  })
+})
+
+test('component navigation metadata covers the complete authored component corpus', async () => {
+  const componentRoutes = (await readDocuments())
+    .filter((document) => document.navigation === 'component')
+    .map((document) => document.route)
+
+  assert.deepEqual(componentRoutes, [
+    '/docs/button',
+    '/docs/checkbox',
+    '/docs/components',
+    '/docs/dialog',
+    '/docs/number-field',
+    '/docs/radio-group',
+    '/docs/select',
+    '/docs/switch',
+    '/docs/text-area',
+    '/docs/text-field',
+  ])
+})
 
 test('maps authored source paths and relative Markdown links to stable web routes', () => {
   assert.equal(sourceToRoute('DESIGN.md'), '/')

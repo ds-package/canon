@@ -1,7 +1,7 @@
 ---
 id: docs-platform
 status: adopted
-verified: 2026-11-01
+verified: 2026-11-15
 ---
 # Docs platform
 
@@ -13,7 +13,7 @@ Canon 문서는 사람이 읽는 web, agent가 읽는 source, 앞으로 추가�
 
 Canon은 Next.js App Router로 docs web의 shell, navigation, renderer를 직접 만든다. Docusaurus와 Starlight는 사용하지 않는다.
 
-첫 document index는 기존 Markdown에서 title, headings, body text, route, source path만 추출한다. Navigation과 local lexical search는 이 index를 공유한다. Component registry는 Dialog와 Select에서 반복되는 필드가 확인되기 전에는 만들지 않는다.
+첫 document index는 기존 Markdown에서 title, headings, body text, route, source path와 authored frontmatter의 `navigation` metadata를 추출한다. Navigation과 local lexical search는 이 index를 공유한다. `navigation: component` 문서는 Components 그룹에 모으고 `/docs/components` Overview를 첫 항목으로 둔다. Component registry는 Dialog와 Select에서 반복되는 필드가 확인되기 전에는 만들지 않는다.
 
 ## 책임 경계
 

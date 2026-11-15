@@ -1,5 +1,6 @@
 ---
 verified: 2026-11-01
+navigation: component
 ---
 # 컴포넌트
 
