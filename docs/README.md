@@ -59,6 +59,8 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 
 ### 로컬 검증
 
+컴포넌트는 docs 앱의 playground에서 확인한다. 레포 루트에서 `pnpm install`과 `pnpm build`를 한 번 실행한 뒤 `pnpm dev`를 실행하고 `http://localhost:3000/docs/button/`처럼 `/docs/<컴포넌트>/`를 연다. docs 앱(`@canon/docs`)은 `@canon/react`의 빌드 산출물을 쓰고 `@canon/react`에는 watch 스크립트가 없으므로, 컴포넌트 코드를 고친 뒤에는 `pnpm --filter @canon/react build`를 다시 실행한다.
+
 `pnpm dev`는 토큰 JSON과 TypeScript 변경을 감시해 배포 파일을 갱신한다. 프리뷰는 `packages/tokens`를 정적 서버로 열어 `/preview/`에서 확인한다. 브라우저는 변경 뒤 새로고침한다.
 
 `pnpm check`는 빌드, 토큰·프리뷰·타이포 회귀 테스트, 실제 패키지 묶음의 소비 검증과 타입 검사를 실행한다. CI와 npm 배포 명령은 같은 검증을 사용한다.
