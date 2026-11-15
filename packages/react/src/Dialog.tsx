@@ -20,28 +20,56 @@ import {
   Text,
 } from 'react-aria-components'
 import { XIcon } from '@phosphor-icons/react'
+import { Button as CanonButton, type ButtonProps } from './Button'
 
-export interface DialogTriggerProps {
-  children: [ReactElement<ComponentProps<'button'>, 'button'>, ReactElement<DialogProps, typeof Dialog>]
-  open?: boolean
+type DialogTriggerElement =
+  | ReactElement<ComponentProps<'button'>, 'button'>
+  | ReactElement<ButtonProps, typeof CanonButton>
+
+interface DialogTriggerBaseProps {
+  children: [DialogTriggerElement, ReactElement<DialogProps, typeof Dialog>]
+}
+
+type DialogTriggerControlledProps = {
+  open: boolean
+  defaultOpen?: never
+  onOpenChange: (open: boolean) => void
+}
+
+type DialogTriggerUncontrolledProps = {
+  open?: never
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
 }
 
+export type DialogTriggerProps = DialogTriggerBaseProps & (
+  | DialogTriggerControlledProps
+  | DialogTriggerUncontrolledProps
+)
+
 export function DialogTrigger({ children, open, defaultOpen, onOpenChange }: DialogTriggerProps) {
+  if (open !== undefined && defaultOpen !== undefined) {
+    throw new Error('DialogTrigger cannot use open and defaultOpen together')
+  }
+  if (open !== undefined && typeof onOpenChange !== 'function') {
+    throw new Error('Controlled DialogTrigger requires onOpenChange')
+  }
   const parts = Children.toArray(children)
   if (parts.length !== 2) throw new Error('DialogTrigger requires a trigger and a Dialog')
-  if (!isValidElement(parts[0]) || parts[0].type !== 'button') {
-    throw new Error('DialogTrigger requires a native button trigger')
+  if (!isValidElement(parts[0]) || (parts[0].type !== 'button' && parts[0].type !== CanonButton)) {
+    throw new Error('DialogTrigger requires a native button or Canon Button trigger')
   }
   if (!isValidElement(parts[1]) || parts[1].type !== Dialog) {
     throw new Error('DialogTrigger requires Dialog as its second child')
   }
-  const trigger = parts[0] as ReactElement<ComponentProps<'button'>, 'button'>
+  const trigger = parts[0] as DialogTriggerElement
+  const triggerElement = trigger.type === 'button'
+    ? <Pressable>{cloneElement(trigger, { type: trigger.props.type ?? 'button' }) as ComponentProps<typeof Pressable>['children']}</Pressable>
+    : trigger
 
   return (
     <AriaDialogTrigger isOpen={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <Pressable>{cloneElement(trigger, { type: trigger.props.type ?? 'button' }) as ComponentProps<typeof Pressable>['children']}</Pressable>
+      {triggerElement}
       {parts[1]}
     </AriaDialogTrigger>
   )
@@ -49,13 +77,13 @@ export function DialogTrigger({ children, open, defaultOpen, onOpenChange }: Dia
 
 export interface DialogProps {
   children: ReactNode
-  dismissable?: boolean
-  keyboardDismissDisabled?: boolean
+  closeOnInteractOutside?: boolean
+  closeOnEscape?: boolean
 }
 
 const DialogDescriptionContext = createContext<string | undefined>(undefined)
 
-export function Dialog({ children, dismissable, keyboardDismissDisabled }: DialogProps) {
+export function Dialog({ children, closeOnInteractOutside, closeOnEscape = true }: DialogProps) {
   const parts = Children.toArray(children)
   const hasTitle = parts.some((part) => isValidElement(part) && part.type === DialogTitle)
   const hasDescription = parts.some((part) => isValidElement(part) && part.type === DialogDescription)
@@ -65,8 +93,8 @@ export function Dialog({ children, dismissable, keyboardDismissDisabled }: Dialo
   return (
     <ModalOverlay
       className="canon-dialog-overlay"
-      isDismissable={dismissable}
-      isKeyboardDismissDisabled={keyboardDismissDisabled}
+      isDismissable={closeOnInteractOutside}
+      isKeyboardDismissDisabled={!closeOnEscape}
     >
       <Modal className="canon-dialog-modal">
         <AriaDialog className="canon-dialog" aria-describedby={descriptionId}>

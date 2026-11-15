@@ -1,9 +1,13 @@
 ---
-verified: 2026-11-01
+verified: 2026-11-15
+navigation: foundation
+navigationOrder: 1
 ---
 # 컬러
 
-Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 쓰임새 이름과 라이트/다크 값을 가진다. 컴포넌트는 `semantic`만 쓴다.
+Figma 변수는 `primitive`, `semantic`, `shape`, `brand`, `tint` 다섯 컬렉션이다. 색은 `primitive`와 `semantic`에 두고, 나머지 세 컬렉션은 scheme과 독립된 테마 축을 맡는다. 컴포넌트의 색은 `semantic`만 쓴다.
+
+이 문서의 값 표는 코드 배포 정본인 `packages/tokens`를 설명한다. 2026-11-15에 추가한 대비 수정은 아직 Figma에 동기화되지 않았으므로, Figma의 해당 값은 현재 Preview 불일치로 본다.
 
 ## 1. 프리미티브 램프
 
@@ -67,7 +71,7 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
    - 채워진 강조(`control/neutral/solid`, `control/*/solid`)는 전용 토큰을 쓴다(`solid-hover`, `solid-pressed`).
    - 투명하거나 옅은 면(아웃라인 버튼, 행, 메뉴 항목)은 `overlay/hover`, `overlay/pressed`를 얹는다. 회색 solid 버튼처럼 기본 면이 있는 경우에는 fill을 두 겹(`control/disabled` 또는 `surface/muted` + `overlay`)으로 쓴다.
    - 이유: 오버레이는 어떤 바탕 위에서도 동작해서 토큰 수를 줄이고, 선명한 강조에는 색 이동이 필요하다.
-3. **solid 위 글자는 `on-solid`다.** `control/notice/on-solid`만 어두운 글자(`gray/1000`)이고 나머지는 흰색이다. 노란 바탕에 흰 글자는 대비가 부족하다.
+3. **solid 위 글자는 `on-solid`다.** `control/notice/on-solid`만 검정이고 나머지는 흰색이다. 노란 바탕에 흰 글자는 대비가 부족하다. 공개 solid 상태의 글자 대비는 모두 4.5:1 이상을 유지한다.
 4. **disabled는 항목이 아니라 의미로 고른다.** 글자는 `text/disabled`, 아이콘은 `icon/disabled`, 테두리는 `border/disabled`, 채움은 `control/disabled`, 면은 `surface/muted`로 간다. 색조를 유지한 흐린 색을 만들지 않는다.
 5. **같은 값과 역할이면 `status/*`를 공유한다.** 상태 텍스트와 아이콘은 같은 토큰을 쓴다. 대상에 따라 값이나 역할이 실제로 달라질 때만 `text/status-*`, `icon/status-*`, `border/status-*`처럼 대상 그룹에 별도 토큰을 만든다.
 
@@ -82,10 +86,10 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `surface/overlay` | white | gray/900 |
 | `surface/muted` | gray/100 | gray/950 |
 | `text/primary` | gray/1000 | gray/50 |
-| `text/secondary` | gray/800 | gray/400 |
-| `text/tertiary` | gray/600 | gray/600 |
-| `text/placeholder` | gray/700 | gray/600 |
-| `text/helper` | gray/700 | gray/500 |
+| `text/secondary` | gray/900 | gray/300 |
+| `text/tertiary` | gray/800 | gray/600 |
+| `text/placeholder` | gray/800 | gray/600 |
+| `text/helper` | gray/800 | gray/500 |
 | `text/disabled` | gray/400 | gray/800 |
 | `text/inverse` | white | gray/1000 |
 | `text/link` | blue/600 | blue/400 |
@@ -96,7 +100,7 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `icon/inverse` | white | gray/1000 |
 | `border/default` | gray/200 | gray/950 |
 | `border/emphasis` | gray/400 | gray/800 |
-| `border/focus` | blue/600 | blue/400 |
+| `border/focus` | blue/600 | blue/300 |
 | `border/disabled` | gray/100 | gray/1000 |
 | `border/selected` | gray/1000 | gray/50 |
 | `border/selected-hover` | gray/950 | gray/100 |
@@ -112,18 +116,18 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 | `overlay/pressed` | blackAlpha/300 | whiteAlpha/300 |
 | `overlay/scrim` | blackAlpha/500 | blackAlpha/700 |
 
-`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 intent를 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
+`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 의미 역할을 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
 
 | 키 | 라이트 | 다크 |
 | --- | --- | --- |
 | `control/{c}/solid` | blue/600, green/700, yellow/500, red/600 | 라이트와 같음 |
-| `control/{c}/solid-hover` | 한 단계 진하게(700, 800, 600, 700) | 한 단계 밝게(500, 600, 400, 500) |
-| `control/{c}/solid-pressed` | 두 단계 진하게(800, 900, 700, 800) | 두 단계 밝게(400, 500, 300, 400) |
+| `control/{c}/solid-hover` | 700, 800, 600, 700 | 700, 800, 400, 700 |
+| `control/{c}/solid-pressed` | 800, 900, 700, 800 | 800, 900, 300, 800 |
 | `surface/{c}` | 50 | 950 |
 | `status/{c}` | 800 (yellow는 900) | 300 |
 | `border/status-{c}` | blue/600, green/700, yellow/900, red/600 | blue/600, green/700, yellow/300, red/600 |
 | `border/status-{c}-subtle` | 200 (yellow는 300) | 800 |
-| `control/{c}/on-solid` | white (notice는 gray/1000) | 라이트와 같음 |
+| `control/{c}/on-solid` | white (notice는 black) | 라이트와 같음 |
 
 ## 3. 컴포넌트 바인딩
 
@@ -134,4 +138,4 @@ Figma 변수는 두 컬렉션이다. `primitive`는 원시 색, `semantic`은 �
 ## 4. 변수 이름 규칙
 
 - 변수 이름에 `.`을 쓸 수 없다. 소수는 `_`로 쓴다(`line-height/4_5`).
-- 의미색 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.
+- 의미색 이름은 feedback 컴포넌트에서 검토할 `status` 값과 같은 어휘를 쓴다. `status=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.

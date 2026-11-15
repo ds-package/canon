@@ -1,13 +1,15 @@
 ---
 id: interaction-foundation
 status: adopted
-verified: 2026-11-01
+verified: 2026-11-15
+navigation: architecture
+navigationOrder: 2
 ---
 # Interaction foundation
 
 ## 맥락
 
-Canon에는 현재 `packages/tokens`와 `packages/cli`만 있고 runtime 컴포넌트 패키지는 없다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
+Canon은 현재 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공한다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
 
 Dialog, Select, ComboBox처럼 상호작용이 복잡한 컴포넌트의 행동 계층을 처음부터 직접 구현하면 focus 복귀, 중첩 overlay, typeahead, form 연동, 국제화와 보조 기술 동작을 Canon이 계속 유지해야 한다.
 
@@ -25,7 +27,7 @@ Canon의 React runtime 컴포넌트는 `react-aria-components`를 interaction fo
 | Canon | 공개 props와 variant, 노출할 part, 토큰과 스타일, motion, Figma와 코드의 대응, React Aria 고유 어휘를 감출 범위, foundation behavior를 보존하는 통합과 검증 |
 | Canon을 사용하는 앱 | 데이터와 비즈니스 상태, 권한, 요청과 오류 처리, 제품별 콘텐츠 |
 
-React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다.
+React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다. React Aria props 전체를 `Omit`으로 상속하지 않고 Canon이 지원하고 테스트하는 동작만 명시한다. controlled state는 [컴포넌트 프로퍼티 모델](../components.md)의 `value`, `checked`, `open` 문법으로 번역하고 hover, press, focus 같은 interaction은 runtime-derived state로 남긴다.
 
 ## 검토한 대안
 
@@ -40,7 +42,7 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 
 - Canon은 상호작용 동작을 복제하지 않고 공개 interface와 시각 계약에 집중할 수 있다.
 - React Aria Components의 접근성·collection 모델을 사용하지만 Canon 문서와 props가 해당 라이브러리의 복사본이 되지 않게 유지해야 한다.
-- 첫 runtime 검증 대상은 overlay와 focus를 확인하는 Dialog, collection과 form behavior를 확인하는 Select다.
+- 첫 runtime 검증 대상으로 press와 form 기본값을 확인하는 Button, overlay와 focus를 확인하는 Dialog, collection과 form behavior를 확인하는 Select를 구현했다.
 - 채택만으로 접근성이 보장되지는 않는다. Canon wrapper의 DOM, label, error, motion을 실제 keyboard와 보조 기술로 검증해야 한다.
 
 ## 재검토 조건
@@ -59,4 +61,4 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 - [Modal](https://react-aria.adobe.com/Modal): controlled state, focus containment, dismissal behavior
 - [Select](https://react-aria.adobe.com/Select): collection, keyboard, form과 validation behavior
 - [Base UI](https://base-ui.com/react/overview/about), [Radix Primitives](https://www.radix-ui.com/primitives), [Ark UI](https://ark-ui.com/docs/overview/about): 비교한 headless foundation의 공식 문서
-- Canon의 현재 배포 package: [`packages/tokens`](../../packages/tokens/package.json), [`packages/cli`](../../packages/cli/package.json)
+- Canon의 현재 배포 package: [`packages/tokens`](../../packages/tokens/package.json), [`packages/cli`](../../packages/cli/package.json), [`@canon/react`](../../packages/react/package.json)

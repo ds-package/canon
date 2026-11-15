@@ -1,5 +1,7 @@
 ---
 verified: 2026-10-14
+navigation: foundation
+navigationOrder: 2
 ---
 # 타이포그래피
 

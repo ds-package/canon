@@ -1,3 +1,914 @@
+.canon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-button[data-variant="primary"] {
+  background: var(--semantic-control-accent-solid);
+  color: var(--semantic-control-accent-on-solid);
+}
+
+.canon-button[data-variant="primary"][data-hovered] {
+  background: var(--semantic-control-accent-solid-hover);
+}
+
+.canon-button[data-variant="primary"][data-pressed] {
+  background: var(--semantic-control-accent-solid-pressed);
+}
+
+.canon-button[data-variant="secondary"] {
+  border-color: var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+}
+
+.canon-button[data-variant="secondary"][data-hovered] {
+  background: linear-gradient(var(--semantic-overlay-hover), var(--semantic-overlay-hover)), var(--semantic-surface-default);
+}
+
+.canon-button[data-variant="secondary"][data-pressed] {
+  background: linear-gradient(var(--semantic-overlay-pressed), var(--semantic-overlay-pressed)), var(--semantic-surface-default);
+}
+
+.canon-button[data-variant="quiet"] {
+  background: transparent;
+  color: var(--semantic-text-primary);
+}
+
+.canon-button[data-variant="quiet"][data-hovered] {
+  background: var(--semantic-overlay-hover);
+}
+
+.canon-button[data-variant="quiet"][data-pressed] {
+  background: var(--semantic-overlay-pressed);
+}
+
+.canon-button[data-variant="destructive"] {
+  background: var(--semantic-control-negative-solid);
+  color: var(--semantic-control-negative-on-solid);
+}
+
+.canon-button[data-variant="destructive"][data-hovered] {
+  background: var(--semantic-control-negative-solid-hover);
+}
+
+.canon-button[data-variant="destructive"][data-pressed] {
+  background: var(--semantic-control-negative-solid-pressed);
+}
+
+.canon-button[data-focus-visible] {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-button[data-disabled]:not([data-pending]) {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-button[data-pending] {
+  cursor: progress;
+}
+
+.canon-button[data-pending] > :not(.canon-button-spinner) {
+  opacity: 0;
+}
+
+.canon-button-spinner {
+  position: absolute;
+  inset: 0;
+  width: var(--canon-button-icon-size);
+  height: var(--canon-button-icon-size);
+  margin: auto;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: canon-button-spin 640ms linear infinite;
+}
+
+.canon-button[data-size="lg"] {
+  height: var(--spacing-12);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+  --canon-button-icon-size: 20px;
+}
+
+.canon-button[data-size="md"] {
+  height: var(--spacing-10);
+  padding: 0 var(--spacing-3-5);
+  border-radius: var(--radius-lg);
+  --canon-button-icon-size: 18px;
+}
+
+.canon-button[data-size="sm"] {
+  height: var(--spacing-8);
+  padding: 0 var(--spacing-2-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+  --canon-button-icon-size: 14px;
+}
+
+.canon-button[data-size="xs"] {
+  height: var(--spacing-6);
+  gap: var(--spacing-1);
+  padding: 0 var(--spacing-1-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-10-font-family);
+  font-size: var(--typography-label-10-font-size);
+  font-weight: var(--typography-label-10-font-weight);
+  letter-spacing: var(--typography-label-10-letter-spacing);
+  line-height: var(--typography-label-10-line-height);
+  --canon-button-icon-size: 11px;
+}
+
+.canon-button-icon {
+  display: inline-flex;
+  flex: none;
+  width: var(--canon-button-icon-size);
+  height: var(--canon-button-icon-size);
+  color: currentColor;
+}
+
+.canon-button-icon > svg {
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+}
+
+.canon-icon-button {
+  width: auto;
+  aspect-ratio: 1;
+  padding: 0;
+}
+
+.canon-icon-button .canon-button-label {
+  display: contents;
+}
+
+.canon-icon-button[data-shape="round"] {
+  border-radius: var(--radius-full);
+}
+
+.canon-select,
+.canon-text-field,
+.canon-text-area,
+.canon-number-field,
+.canon-checkbox {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-select-label,
+.canon-text-field-label,
+.canon-text-area-label,
+.canon-number-field-label {
+  font-family: var(--typography-label-14-strong-font-family);
+  font-size: var(--typography-label-14-strong-font-size);
+  font-weight: var(--typography-label-14-strong-font-weight);
+  letter-spacing: var(--typography-label-14-strong-letter-spacing);
+  line-height: var(--typography-label-14-strong-line-height);
+}
+
+.canon-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  cursor: pointer;
+}
+
+.canon-select-trigger[data-size="sm"],
+.canon-text-field-input[data-size="sm"] {
+  height: var(--spacing-8);
+  padding: 0 var(--spacing-2-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-select-trigger[data-size="md"],
+.canon-text-field-input[data-size="md"] {
+  height: var(--spacing-10);
+  padding: 0 var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-select-trigger[data-size="lg"],
+.canon-text-field-input[data-size="lg"] {
+  height: var(--spacing-12);
+  padding: 0 var(--spacing-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-select-trigger[data-hovered] {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-select-trigger[data-focus-visible] {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-select[data-invalid] .canon-select-trigger {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-select[data-disabled] .canon-select-trigger {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-select-value[data-placeholder] {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-select-caret {
+  flex: none;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  color: var(--semantic-icon-secondary);
+}
+
+.canon-select-description,
+.canon-select-error,
+.canon-text-field-description,
+.canon-text-field-error,
+.canon-text-area-description,
+.canon-text-area-error,
+.canon-checkbox-description,
+.canon-checkbox-error {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-select-description,
+.canon-text-field-description,
+.canon-text-area-description,
+.canon-checkbox-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-select-error,
+.canon-text-field-error,
+.canon-text-area-error,
+.canon-checkbox-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-select-popover {
+  width: var(--trigger-width);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--semantic-surface-overlay);
+  box-shadow: var(--shadow-lg);
+}
+
+.canon-select-listbox {
+  max-height: 50vh;
+  padding: var(--spacing-1);
+  overflow-y: auto;
+  outline: none;
+}
+
+.canon-select-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-2);
+  min-height: var(--spacing-8);
+  padding: var(--spacing-1-5) var(--spacing-2);
+  border-radius: var(--radius-md);
+  color: var(--semantic-text-primary);
+  cursor: pointer;
+  outline: none;
+}
+
+.canon-select-item[data-hovered],
+.canon-select-item[data-focused] {
+  background: var(--semantic-overlay-hover);
+}
+
+.canon-select-item[data-pressed] {
+  background: var(--semantic-overlay-pressed);
+}
+
+.canon-select-item[data-selected] {
+  background: var(--semantic-surface-accent);
+}
+
+.canon-select-item[data-focus-visible] {
+  box-shadow: inset 0 0 0 2px var(--semantic-border-focus);
+}
+
+.canon-select-item[data-disabled] {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-select-item-check {
+  flex: none;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  color: var(--semantic-icon-primary);
+}
+
+.canon-text-field-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  outline: none;
+}
+
+.canon-text-field-input::placeholder {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-text-field-input:hover:not(:disabled) {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-text-field-input:focus-visible {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-text-field[data-invalid] .canon-text-field-input {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-text-field[data-disabled] .canon-text-field-input {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-text-field[data-disabled] .canon-text-field-input::placeholder {
+  color: var(--semantic-text-disabled);
+}
+
+.canon-text-field[data-readonly] .canon-text-field-input {
+  background: var(--semantic-surface-muted);
+}
+
+.canon-text-area-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  outline: none;
+  resize: vertical;
+}
+
+.canon-text-area-input[data-size="sm"] {
+  padding: var(--spacing-2) var(--spacing-2-5);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-text-area-input[data-size="md"] {
+  padding: var(--spacing-2-5) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-text-area-input[data-size="lg"] {
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-text-area-input::placeholder {
+  color: var(--semantic-text-placeholder);
+}
+
+.canon-text-area-input:hover:not(:disabled) {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-text-area-input:focus-visible {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-text-area[data-invalid] .canon-text-area-input {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-text-area[data-disabled] .canon-text-area-input {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-text-area[data-disabled] .canon-text-area-input::placeholder {
+  color: var(--semantic-text-disabled);
+}
+
+.canon-text-area[data-readonly] .canon-text-area-input {
+  background: var(--semantic-surface-muted);
+}
+
+.canon-number-field-group {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid var(--semantic-border-default);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-text-primary);
+  overflow: hidden;
+}
+
+.canon-number-field-group[data-size="sm"] {
+  height: var(--spacing-8);
+  border-radius: var(--radius-md);
+  font-family: var(--typography-label-13-font-family);
+  font-size: var(--typography-label-13-font-size);
+  font-weight: var(--typography-label-13-font-weight);
+  letter-spacing: var(--typography-label-13-letter-spacing);
+  line-height: var(--typography-label-13-line-height);
+}
+
+.canon-number-field-group[data-size="md"] {
+  height: var(--spacing-10);
+  border-radius: var(--radius-lg);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+}
+
+.canon-number-field-group[data-size="lg"] {
+  height: var(--spacing-12);
+  border-radius: var(--radius-xl);
+  font-family: var(--typography-label-16-font-family);
+  font-size: var(--typography-label-16-font-size);
+  font-weight: var(--typography-label-16-font-weight);
+  letter-spacing: var(--typography-label-16-letter-spacing);
+  line-height: var(--typography-label-16-line-height);
+}
+
+.canon-number-field-group[data-hovered] {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-number-field-group[data-focus-within] {
+  border-color: var(--semantic-border-focus);
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-number-field-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 var(--spacing-2);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  outline: none;
+}
+
+.canon-number-field-stepper {
+  display: grid;
+  flex: none;
+  width: var(--spacing-8);
+  border: 0;
+  background: transparent;
+  color: var(--semantic-icon-secondary);
+  cursor: pointer;
+  place-items: center;
+}
+
+.canon-number-field-stepper > svg {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+}
+
+.canon-number-field-stepper[data-hovered] {
+  background: var(--semantic-overlay-hover);
+}
+
+.canon-number-field-stepper[data-pressed] {
+  background: var(--semantic-overlay-pressed);
+}
+
+.canon-number-field-stepper[data-focus-visible] {
+  box-shadow: inset 0 0 0 2px var(--semantic-border-focus);
+  outline: none;
+}
+
+.canon-number-field-stepper[data-disabled] {
+  color: var(--semantic-icon-disabled);
+  cursor: not-allowed;
+}
+
+.canon-number-field-description,
+.canon-number-field-error {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-number-field-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-number-field-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-number-field[data-invalid] .canon-number-field-group {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-number-field[data-disabled] .canon-number-field-group {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-text-disabled);
+}
+
+.canon-number-field[data-readonly] .canon-number-field-group {
+  background: var(--semantic-surface-muted);
+}
+
+.canon-checkbox-button {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-checkbox-control {
+  display: grid;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-sm);
+  background: var(--semantic-surface-default);
+  color: var(--semantic-control-neutral-on-solid);
+  place-items: center;
+}
+
+.canon-checkbox-control > svg {
+  width: var(--spacing-3-5);
+  height: var(--spacing-3-5);
+}
+
+.canon-checkbox-button[data-hovered] .canon-checkbox-control {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-checkbox-button[data-selected] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid);
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-checkbox-button[data-selected][data-hovered] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate][data-hovered] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid-hover);
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-checkbox-button[data-selected][data-pressed] .canon-checkbox-control,
+.canon-checkbox-button[data-indeterminate][data-pressed] .canon-checkbox-control {
+  border-color: var(--semantic-control-neutral-solid-pressed);
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-checkbox-button[data-focus-visible] .canon-checkbox-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-checkbox[data-invalid] .canon-checkbox-control {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-checkbox[data-disabled] .canon-checkbox-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-checkbox[data-disabled] .canon-checkbox-control {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+  color: var(--semantic-icon-disabled);
+}
+
+.canon-checkbox[data-readonly] .canon-checkbox-button {
+  cursor: default;
+}
+
+.canon-switch {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-switch-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-switch-control {
+  display: flex;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-9);
+  height: var(--spacing-5);
+  padding: var(--spacing-0-5);
+  border-radius: var(--radius-full);
+  background: var(--semantic-control-neutral-subtle);
+  transition: background 120ms ease-out;
+}
+
+.canon-switch-thumb {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  border-radius: var(--radius-full);
+  background: var(--semantic-surface-default);
+  box-shadow: var(--shadow-sm);
+  transition: transform 120ms ease-out;
+}
+
+.canon-switch-button[data-selected] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-switch-button[data-selected] .canon-switch-thumb {
+  background: var(--semantic-control-neutral-on-solid);
+  transform: translateX(calc(var(--spacing-9) - var(--spacing-5)));
+}
+
+.canon-switch-button[data-selected][data-hovered] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-switch-button[data-selected][data-pressed] .canon-switch-control {
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-switch-button[data-focus-visible] .canon-switch-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-switch-description {
+  color: var(--semantic-text-helper);
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-switch[data-disabled] .canon-switch-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-switch[data-disabled] .canon-switch-control {
+  background: var(--semantic-control-disabled);
+}
+
+.canon-switch[data-readonly] .canon-switch-button {
+  cursor: default;
+}
+
+.canon-radio-group {
+  display: grid;
+  gap: var(--spacing-1);
+  color: var(--semantic-text-primary);
+}
+
+.canon-radio-group-label {
+  font-family: var(--typography-label-14-strong-font-family);
+  font-size: var(--typography-label-14-strong-font-size);
+  font-weight: var(--typography-label-14-strong-font-weight);
+  letter-spacing: var(--typography-label-14-strong-letter-spacing);
+  line-height: var(--typography-label-14-strong-line-height);
+}
+
+.canon-radio-group-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.canon-radio-group[data-orientation="horizontal"] .canon-radio-group-options {
+  flex-flow: row wrap;
+  gap: var(--spacing-4);
+}
+
+.canon-radio-option {
+  display: grid;
+  gap: var(--spacing-1);
+}
+
+.canon-radio-option-button {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--spacing-2);
+  width: fit-content;
+  color: var(--semantic-text-primary);
+  font-family: var(--typography-label-14-font-family);
+  font-size: var(--typography-label-14-font-size);
+  font-weight: var(--typography-label-14-font-weight);
+  letter-spacing: var(--typography-label-14-letter-spacing);
+  line-height: var(--typography-label-14-line-height);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.canon-radio-option-control {
+  display: grid;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--spacing-5);
+  height: var(--spacing-5);
+  border: 1px solid var(--semantic-border-default);
+  border-radius: var(--radius-full);
+  background: var(--semantic-surface-default);
+  place-items: center;
+}
+
+.canon-radio-option-dot {
+  width: var(--spacing-2-5);
+  height: var(--spacing-2-5);
+  border-radius: var(--radius-full);
+  background: transparent;
+}
+
+.canon-radio-option-button[data-hovered] .canon-radio-option-control {
+  border-color: var(--semantic-border-emphasis);
+}
+
+.canon-radio-option-button[data-selected] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid);
+}
+
+.canon-radio-option-button[data-selected] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid);
+}
+
+.canon-radio-option-button[data-selected][data-hovered] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-radio-option-button[data-selected][data-hovered] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid-hover);
+}
+
+.canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-control {
+  border-color: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-dot {
+  background: var(--semantic-control-neutral-solid-pressed);
+}
+
+.canon-radio-option-button[data-focus-visible] .canon-radio-option-control {
+  outline: 2px solid var(--semantic-border-focus);
+  outline-offset: 2px;
+}
+
+.canon-radio-group-description,
+.canon-radio-group-error,
+.canon-radio-option-description {
+  font-family: var(--typography-body-14-font-family);
+  font-size: var(--typography-body-14-font-size);
+  font-weight: var(--typography-body-14-font-weight);
+  letter-spacing: var(--typography-body-14-letter-spacing);
+  line-height: var(--typography-body-14-line-height);
+}
+
+.canon-radio-group-description,
+.canon-radio-option-description {
+  color: var(--semantic-text-helper);
+}
+
+.canon-radio-option-description {
+  margin-left: calc(var(--spacing-5) + var(--spacing-2));
+}
+
+.canon-radio-group-error {
+  color: var(--semantic-status-negative);
+}
+
+.canon-radio-group[data-invalid] .canon-radio-option-control {
+  border-color: var(--semantic-border-status-negative);
+}
+
+.canon-radio-group[data-disabled] .canon-radio-option-button,
+.canon-radio-option[data-disabled] .canon-radio-option-button {
+  color: var(--semantic-text-disabled);
+  cursor: not-allowed;
+}
+
+.canon-radio-group[data-disabled] .canon-radio-option-control,
+.canon-radio-option[data-disabled] .canon-radio-option-control {
+  border-color: var(--semantic-border-disabled);
+  background: var(--semantic-control-disabled);
+}
+
+.canon-radio-group[data-readonly] .canon-radio-option-button {
+  cursor: default;
+}
+
 .canon-dialog-overlay {
   position: fixed;
   inset: 0;
@@ -89,10 +1000,20 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .canon-button-spinner,
   .canon-dialog-overlay,
   .canon-dialog-modal {
     animation: none;
   }
+
+  .canon-switch-control,
+  .canon-switch-thumb {
+    transition: none;
+  }
+}
+
+@keyframes canon-button-spin {
+  to { transform: rotate(360deg); }
 }
 
 @keyframes canon-dialog-fade {

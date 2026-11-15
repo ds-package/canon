@@ -51,6 +51,13 @@ test('packed packages work from a consumer project', async (t) => {
   )
   run('pnpm', ['install', '--ignore-scripts'], consumerDir)
 
+  const reactTypes = await readFile(path.join(consumerDir, 'node_modules/@canon/react/dist/index.d.ts'), 'utf8')
+  assert.doesNotMatch(reactTypes, /type (?:Aria|Select|TextField)BehaviorProps = Omit/)
+  assert.match(reactTypes, /onValueChange/)
+  assert.match(reactTypes, /closeOnInteractOutside/)
+  assert.match(reactTypes, /closeOnEscape/)
+  assert.doesNotMatch(reactTypes, /dismissable|keyboardDismissDisabled/)
+
   assert.equal(
     run(
       'node',
@@ -65,13 +72,25 @@ test('packed packages work from a consumer project', async (t) => {
   )
 
   assert.equal(
-    run('node', ['--input-type=module', '-e', "import { Dialog } from '@canon/react'; process.stdout.write(Dialog.name)"], consumerDir),
-    'Dialog',
+    run('node', ['--input-type=module', '-e', "import { Button, Checkbox, Dialog, NumberField, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } from '@canon/react'; process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${NumberField.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,NumberField,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
   assert.equal(
-    run('node', ['-e', "process.stdout.write(require('@canon/react').Dialog.name)"], consumerDir),
-    'Dialog',
+    run('node', ['-e', "const { Button, Checkbox, Dialog, NumberField, RadioGroup, RadioOption, Select, Switch, TextArea, TextField } = require('@canon/react'); process.stdout.write(`${Button.name},${Checkbox.name},${Dialog.name},${NumberField.name},${RadioGroup.name},${RadioOption.name},${Select.name},${Switch.name},${TextArea.name},${TextField.name}`)"], consumerDir),
+    'Button,Checkbox,Dialog,NumberField,RadioGroup,RadioOption,Select,Switch,TextArea,TextField',
   )
+
+  const renderedButton = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Button } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Button, null, 'Save')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedButton, /class="canon-button"/)
+  assert.match(renderedButton, /data-variant="primary"/)
 
   const renderedDialog = run(
     'node',
@@ -83,6 +102,107 @@ test('packed packages work from a consumer project', async (t) => {
     consumerDir,
   )
   assert.match(renderedDialog, />Open<\/button>/)
+
+  const renderedSelect = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Select, SelectItem } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Select, {label: 'Fruit', name: 'fruit', defaultValue: 'apple'}, React.createElement(SelectItem, {id: 'apple'}, 'Apple'))));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedSelect, /class="canon-select"/)
+  assert.match(renderedSelect, /value="apple"/)
+
+  const renderedTextField = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { TextField } from '@canon/react'; process.stdout.write(renderToString(React.createElement(TextField, {label: 'Email', name: 'email', type: 'email', defaultValue: 'lou@example.com'})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedTextField, /class="canon-text-field"/)
+  assert.match(renderedTextField, /value="lou@example.com"/)
+
+  const renderedTextArea = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { TextArea } from '@canon/react'; process.stdout.write(renderToString(React.createElement(TextArea, {label: 'Bio', form: 'profile', name: 'bio', defaultValue: 'Designer', rows: 5})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedTextArea, /class="canon-text-area"/)
+  assert.match(renderedTextArea, /<textarea/)
+  assert.match(renderedTextArea, /form="profile"/)
+  assert.match(renderedTextArea, /name="bio"/)
+  assert.match(renderedTextArea, /rows="5"/)
+  assert.match(renderedTextArea, />Designer<\/textarea>/)
+
+  const renderedCheckbox = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Checkbox } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Checkbox, {form: 'settings', name: 'terms', value: 'accepted', defaultChecked: true}, 'Accept terms')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedCheckbox, /class="canon-checkbox"/)
+  assert.match(renderedCheckbox, /name="terms"/)
+  assert.match(renderedCheckbox, /value="accepted"/)
+  assert.match(renderedCheckbox, /form="settings"/)
+  assert.match(renderedCheckbox, /checked=""/)
+
+  const renderedSwitch = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { Switch } from '@canon/react'; process.stdout.write(renderToString(React.createElement(Switch, {form: 'settings', name: 'motion', value: 'reduced', defaultChecked: true}, 'Reduce motion')));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedSwitch, /class="canon-switch"/)
+  assert.match(renderedSwitch, /name="motion"/)
+  assert.match(renderedSwitch, /value="reduced"/)
+  assert.match(renderedSwitch, /form="settings"/)
+  assert.match(renderedSwitch, /role="switch"/)
+  assert.match(renderedSwitch, /checked=""/)
+
+  const renderedRadioGroup = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { RadioGroup, RadioOption } from '@canon/react'; process.stdout.write(renderToString(React.createElement(RadioGroup, {label: 'Plan', form: 'settings', name: 'plan', defaultValue: 'pro'}, React.createElement(RadioOption, {value: 'free'}, 'Free'), React.createElement(RadioOption, {value: 'pro'}, 'Pro'))));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedRadioGroup, /class="canon-radio-group"/)
+  assert.match(renderedRadioGroup, /name="plan"/)
+  assert.match(renderedRadioGroup, /value="pro"/)
+  assert.match(renderedRadioGroup, /form="settings"/)
+  assert.match(renderedRadioGroup, /checked=""/)
+
+  const renderedNumberField = run(
+    'node',
+    [
+      '--input-type=module',
+      '-e',
+      "import React from 'react'; import { renderToString } from 'react-dom/server'; import { NumberField } from '@canon/react'; process.stdout.write(renderToString(React.createElement(NumberField, {label: 'Quantity', form: 'order', name: 'quantity', defaultValue: 2, minValue: 1, maxValue: 5})));",
+    ],
+    consumerDir,
+  )
+  assert.match(renderedNumberField, /class="canon-number-field"/)
+  assert.match(renderedNumberField, /name="quantity"/)
+  assert.match(renderedNumberField, /form="order"/)
+  assert.match(renderedNumberField, /aria-roledescription="Number field"/)
+  assert.match(renderedNumberField, /<input type="hidden" form="order" name="quantity" value="2"\/>/)
 
   const cssPath = run(
     'node',
@@ -97,6 +217,28 @@ test('packed packages work from a consumer project', async (t) => {
     consumerDir,
   )
   assert.match(await readFile(reactCssPath, 'utf8'), /--semantic-overlay-scrim/)
+  const reactCss = await readFile(reactCssPath, 'utf8')
+  for (const variant of ['primary', 'secondary', 'quiet', 'destructive']) {
+    assert.match(reactCss, new RegExp(`\\.canon-button\\[data-variant="${variant}"\\]`))
+  }
+  for (const size of ['xs', 'sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-button\\[data-size="${size}"\\]`))
+  }
+  for (const selector of ['canon-select-trigger', 'canon-select-popover', 'canon-select-item']) {
+    assert.match(reactCss, new RegExp(`\\.${selector}`))
+  }
+  for (const size of ['sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-text-field-input\\[data-size="${size}"\\]`))
+  }
+  assert.match(reactCss, /\.canon-text-field\[data-disabled\] \.canon-text-field-input::placeholder/)
+  for (const size of ['sm', 'md', 'lg']) {
+    assert.match(reactCss, new RegExp(`\\.canon-text-area-input\\[data-size="${size}"\\]`))
+  }
+  assert.match(reactCss, /\.canon-text-area-input/)
+  assert.match(reactCss, /\.canon-checkbox-control/)
+  assert.match(reactCss, /\.canon-switch-control/)
+  assert.match(reactCss, /\.canon-radio-option-control/)
+  assert.match(reactCss, /\.canon-number-field-group/)
 
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))

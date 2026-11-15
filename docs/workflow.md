@@ -1,5 +1,7 @@
 ---
 verified: 2026-10-14
+navigation: getting-started
+navigationOrder: 3
 ---
 # 작업 방식
 

@@ -9,6 +9,7 @@ import { validateDocs } from './validate.mjs'
 const REQUIRED_DESIGN = [
   '컬러 토큰의 이름을 정한다 [Color](./docs/color.md)',
   'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/workflow.md)',
+  'React props, runtime 상태, Figma property의 책임과 이름을 정한다 [Components](./docs/components.md)',
   'interaction foundation을 확인한다 [Interaction](./docs/decisions/interaction-foundation.md)',
   'docs web, search, playground의 구조를 정한다 [Docs platform](./docs/decisions/docs-platform.md)',
   '제품 상황에 맞는 컴포넌트를 고른다 [Selection](./docs/guides/README.md)',
@@ -22,6 +23,7 @@ async function fixture(t) {
   await mkdir(path.join(root, 'docs/guides'), { recursive: true })
   await writeFile(path.join(root, 'docs/color.md'), '# Color\n')
   await writeFile(path.join(root, 'docs/workflow.md'), '# Workflow\n')
+  await writeFile(path.join(root, 'docs/components.md'), '# Components\n')
   await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n')
   await writeFile(
     path.join(root, 'docs/decisions/interaction-foundation.md'),
@@ -44,6 +46,51 @@ test('accepts reachable routes and adopted decision metadata', async (t) => {
   )
 
   assert.deepEqual(await validateDocs(root), [])
+})
+
+test('requires runtime status docs to acknowledge the public React package', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n현재 runtime 컴포넌트 패키지는 없다.\n')
+  await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n현재 선택 가이드는 없다.\n')
+  await mkdir(path.join(root, 'packages/react'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/package.json'), '{"name":"@canon/react"}\n')
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/README.md: missing @canon/react runtime status',
+    'docs/README.md: missing Button runtime status',
+    'docs/README.md: missing IconButton runtime status',
+    'docs/README.md: missing Checkbox runtime status',
+    'docs/README.md: missing Dialog runtime status',
+    'docs/README.md: missing NumberField runtime status',
+    'docs/README.md: missing RadioGroup runtime status',
+    'docs/README.md: missing Select runtime status',
+    'docs/README.md: missing Switch runtime status',
+    'docs/README.md: missing TextField runtime status',
+    'docs/README.md: missing TextArea runtime status',
+    'docs/guides/README.md: missing @canon/react runtime status',
+    'docs/guides/README.md: missing Button runtime status',
+    'docs/guides/README.md: missing IconButton runtime status',
+    'docs/guides/README.md: missing Checkbox runtime status',
+    'docs/guides/README.md: missing Dialog runtime status',
+    'docs/guides/README.md: missing NumberField runtime status',
+    'docs/guides/README.md: missing RadioGroup runtime status',
+    'docs/guides/README.md: missing Select runtime status',
+    'docs/guides/README.md: missing Switch runtime status',
+    'docs/guides/README.md: missing TextField runtime status',
+    'docs/guides/README.md: missing TextArea runtime status',
+    'docs/decisions/interaction-foundation.md: missing @canon/react runtime status',
+    'docs/decisions/interaction-foundation.md: missing Button runtime status',
+    'docs/decisions/interaction-foundation.md: missing IconButton runtime status',
+    'docs/decisions/interaction-foundation.md: missing Checkbox runtime status',
+    'docs/decisions/interaction-foundation.md: missing Dialog runtime status',
+    'docs/decisions/interaction-foundation.md: missing NumberField runtime status',
+    'docs/decisions/interaction-foundation.md: missing RadioGroup runtime status',
+    'docs/decisions/interaction-foundation.md: missing Select runtime status',
+    'docs/decisions/interaction-foundation.md: missing Switch runtime status',
+    'docs/decisions/interaction-foundation.md: missing TextField runtime status',
+    'docs/decisions/interaction-foundation.md: missing TextArea runtime status',
+  ])
 })
 
 test('reports broken routes, missing metadata, and duplicate decision ids', async (t) => {
@@ -119,6 +166,7 @@ test('requires the six Canon design routing seams', async (t) => {
   assert.deepEqual(await validateDocs(root), [
     'DESIGN.md: missing token naming route ./docs/color.md',
     'DESIGN.md: missing Figma migration route ./docs/workflow.md',
+    'DESIGN.md: missing component property model route ./docs/components.md',
     'DESIGN.md: missing interaction decision route ./docs/decisions/interaction-foundation.md',
     'DESIGN.md: missing docs platform decision route ./docs/decisions/docs-platform.md',
     'DESIGN.md: missing component selection route ./docs/guides/README.md',
@@ -133,6 +181,7 @@ test('requires each design question and target on the same line', async (t) => {
     [
       '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/workflow.md) |',
       '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/color.md) |',
+      '| React props, runtime 상태, Figma property의 책임과 이름을 정한다 | [Components](./docs/components.md) |',
       '| interaction foundation을 확인한다 | [Interaction](./docs/decisions/interaction-foundation.md) |',
       '| docs web, search, playground의 구조를 정한다 | [Docs platform](./docs/decisions/docs-platform.md) |',
       '| 제품 상황에 맞는 컴포넌트를 고른다 | [Selection](./docs/guides/README.md) |',
@@ -164,5 +213,45 @@ test('rejects authored prose inside the docs app and ignores generated directori
   assert.deepEqual(await validateDocs(root), [
     'apps/docs/content/dialog.mdx: authored docs prose must live outside apps/docs',
     'apps/docs/content/overview.md: authored docs prose must live outside apps/docs',
+  ])
+})
+
+test('keeps documented property coverage aligned with public TypeScript props', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    'export interface FieldProps { label: string; value?: string }\nexport function Field(_props: FieldProps) { return null }\n',
+  )
+  await writeFile(
+    path.join(root, 'docs/components.md'),
+    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `state` |\n',
+  )
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: FieldProps property coverage mismatch (missing: value; undocumented: state)',
+  ])
+})
+
+test('requires every public component export in the coverage matrix', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    'export interface FieldProps { label: string }\nexport function Field(_props: FieldProps) { return null }\n',
+  )
+  await writeFile(
+    path.join(root, 'docs/components.md'),
+    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Field | `FieldProps` | `label` |\n',
+  )
+
+  assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: missing public component Field coverage',
   ])
 })

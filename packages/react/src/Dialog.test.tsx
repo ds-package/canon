@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import {
+  Button,
   Dialog,
   DialogBody,
   DialogDescription,
@@ -14,9 +15,9 @@ import {
 
 afterEach(cleanup)
 
-function exampleDialog({ dismissable = false, keyboardDismissDisabled = false } = {}) {
+function exampleDialog({ closeOnInteractOutside = false, closeOnEscape = true } = {}) {
   return (
-    <Dialog dismissable={dismissable} keyboardDismissDisabled={keyboardDismissDisabled}>
+    <Dialog closeOnInteractOutside={closeOnInteractOutside} closeOnEscape={closeOnEscape}>
       <DialogTitle>Delete document?</DialogTitle>
       <DialogDescription>This action cannot be undone.</DialogDescription>
       <DialogBody>Review the document before deleting it.</DialogBody>
@@ -41,6 +42,20 @@ test('opens a dialog with its visible title and description', async () => {
   expect(screen.getByText('This action cannot be undone.')).toBeTruthy()
 })
 
+test('opens from the Canon Button without changing its public behavior', async () => {
+  const user = userEvent.setup()
+  render(
+    <DialogTrigger>
+      <Button variant="secondary">Delete document</Button>
+      {exampleDialog()}
+    </DialogTrigger>,
+  )
+
+  await user.click(screen.getByRole('button', { name: 'Delete document' }))
+
+  expect(screen.getByRole('dialog', { name: 'Delete document?' })).toBeTruthy()
+})
+
 test('rejects dialogs without a direct title and description', () => {
   expect(() => render(<Dialog><DialogTitle>Title</DialogTitle></Dialog>)).toThrow(
     'Dialog requires a direct DialogTitle and DialogDescription',
@@ -50,7 +65,7 @@ test('rejects dialogs without a direct title and description', () => {
 test('rejects a trigger that is not a native button', () => {
   const children = [<span>Open</span>, exampleDialog()] as unknown as DialogTriggerProps['children']
   expect(() => render(<DialogTrigger>{children}</DialogTrigger>)).toThrow(
-    'DialogTrigger requires a native button trigger',
+    'DialogTrigger requires a native button or Canon Button trigger',
   )
 })
 
@@ -112,12 +127,12 @@ test('Escape closes the dialog and returns focus to its trigger', async () => {
   await waitFor(() => expect(document.activeElement).toBe(trigger))
 })
 
-test('keyboard dismissal can be disabled', async () => {
+test('Escape dismissal can be disabled', async () => {
   const user = userEvent.setup()
   render(
     <DialogTrigger>
       <button>Delete document</button>
-      {exampleDialog({ keyboardDismissDisabled: true })}
+      {exampleDialog({ closeOnEscape: false })}
     </DialogTrigger>,
   )
   await user.click(screen.getByRole('button', { name: 'Delete document' }))
@@ -127,12 +142,12 @@ test('keyboard dismissal can be disabled', async () => {
   expect(screen.getByRole('dialog')).toBeTruthy()
 })
 
-test('dismissable dialogs close when the overlay is pressed', async () => {
+test('dialogs can close when the overlay is pressed', async () => {
   const user = userEvent.setup()
   render(
     <DialogTrigger>
       <button>Delete document</button>
-      {exampleDialog({ dismissable: true })}
+      {exampleDialog({ closeOnInteractOutside: true })}
     </DialogTrigger>,
   )
   await user.click(screen.getByRole('button', { name: 'Delete document' }))
@@ -140,4 +155,16 @@ test('dismissable dialogs close when the overlay is pressed', async () => {
   await user.click(document.querySelector('.canon-dialog-overlay') as HTMLElement)
 
   expect(screen.queryByRole('dialog')).toBeNull()
+})
+
+test('rejects ambiguous or incomplete controlled open state at runtime', () => {
+  const children = [<button>Open</button>, exampleDialog()] as DialogTriggerProps['children']
+  const ambiguous = { children, open: false, defaultOpen: true, onOpenChange: () => {} } as unknown as DialogTriggerProps
+  const incomplete = { children, open: false } as unknown as DialogTriggerProps
+  expect(() => render(
+    <DialogTrigger {...ambiguous} />,
+  )).toThrow('DialogTrigger cannot use open and defaultOpen together')
+  expect(() => render(
+    <DialogTrigger {...incomplete} />,
+  )).toThrow('Controlled DialogTrigger requires onOpenChange')
 })

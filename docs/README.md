@@ -1,5 +1,7 @@
 ---
-verified: 2026-11-01
+verified: 2026-11-15
+navigation: getting-started
+navigationOrder: 1
 ---
 # Canon 제작 가이드
 
@@ -9,12 +11,20 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 | --- | --- | --- |
 | [color.md](./color.md) | 컬러 foundation과 현재 토큰 계약 | Figma 변수는 설계 값과 이름의 정본이고 `packages/tokens`는 코드 배포 정본이다. 이 문서는 둘의 대응과 선택 규칙을 설명한다. |
 | [typography.md](./typography.md) | 타이포 foundation과 Figma 바인딩 규칙 | Figma 텍스트 스타일은 설계 정본이고 `packages/tokens`는 코드 토큰 정본이다. |
-| [components.md](./components.md) | Figma 컴포넌트 프로퍼티 규칙과 현재 상태의 스냅샷 | 현재 runtime 컴포넌트 패키지는 없다. 이 문서는 미래 React API의 정본이 아니다. |
+| [components.md](./components.md) | React public interface, runtime 상태, Figma authoring property와 playground state의 분리 원칙 | `@canon/react`의 TypeScript가 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField props의 정본이다. Figma property는 설계 편집의 정본이며 둘은 mapping으로 연결한다. |
 | [icons.md](./icons.md) | 아이콘 foundation, Phosphor 채택 결정, Figma 적용 현황 | Phosphor 원본과 Canon Figma 컴포넌트가 현재 근거다. 코드 icon package 계약은 아직 없다. |
 | [workflow.md](./workflow.md) | Figma contributing 절차 | Figma MCP 제약과 실제 마이그레이션에서 검증한 순서를 기록한다. |
 | [decisions/interaction-foundation.md](./decisions/interaction-foundation.md) | React Aria Components 채택 결정 | interaction foundation의 이유, 책임 경계, 재검토 조건의 정본이다. |
 | [decisions/docs-platform.md](./decisions/docs-platform.md) | 자체 docs web 채택 결정 | Next.js shell, document index, search와 playground의 현재 경계를 기록한다. |
+| [button.md](./button.md) | Button 선택, 접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
+| [checkbox.md](./checkbox.md) | Checkbox 선택, form·접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
 | [dialog.md](./dialog.md) | Dialog anatomy, behavior, playground와 Figma mapping | TypeScript public interface가 props의 정본이고 Figma `Modal`은 시각 구조의 정본이다. |
+| [number-field.md](./number-field.md) | NumberField 숫자·범위·locale form 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
+| [radio-group.md](./radio-group.md) | RadioGroup 단일 선택, form·접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
+| [select.md](./select.md) | Select 선택, form·접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
+| [switch.md](./switch.md) | Switch 선택, 즉시 적용 설정·접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
+| [text-field.md](./text-field.md) | TextField 선택, form·접근성 계약, playground | TypeScript public interface가 props의 정본이고 Figma `Input`은 시각 구조의 정본이다. |
+| [text-area.md](./text-area.md) | TextArea 선택, 다중행 form·접근성 계약, playground | TypeScript public interface가 props의 정본이고 문서는 사용 판단을 설명한다. |
 | [guides/README.md](./guides/README.md) | 컴포넌트 선택 가이드의 범위와 작성 기준 | 실제 선택 가이드는 아직 없다. 확인되지 않은 선택을 Canon 규칙으로 만들지 않는다. |
 | [references.md](./references.md) | 외부 시스템을 참고한 근거 | 가져온 것과 가져오지 않은 것을 구분하는 증거다. Canon 규칙 자체의 정본은 아니다. |
 | [tools/](./tools/) | 문서를 실제 값과 Figma에 연결하는 도구 | 생성된 결과가 아니라 스크립트와 플러그인 소스가 정본이다. |
@@ -50,6 +60,8 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 `data-tint`, `data-brand`, `data-shape`도 같은 `html`에서 설정한다. 하위 영역에서 테마를 바꾸거나 부모의 테마를 기본값으로 되돌리는 중첩 테마는 지원하지 않는다. 현재 dark의 cool과 warm은 같은 중립색을 사용한다.
 
 ### 로컬 검증
+
+컴포넌트는 docs 앱의 playground에서 확인한다. 레포 루트에서 `pnpm install`과 `pnpm build`를 한 번 실행한 뒤 `pnpm dev`를 실행하고 `http://localhost:3000/docs/button/`처럼 `/docs/<컴포넌트>/`를 연다. docs 앱(`@canon/docs`)은 `@canon/react`의 빌드 산출물을 쓰고 `@canon/react`에는 watch 스크립트가 없으므로, 컴포넌트 코드를 고친 뒤에는 `pnpm --filter @canon/react build`를 다시 실행한다.
 
 `pnpm dev`는 토큰 JSON과 TypeScript 변경을 감시해 배포 파일을 갱신한다. 프리뷰는 `packages/tokens`를 정적 서버로 열어 `/preview/`에서 확인한다. 브라우저는 변경 뒤 새로고침한다.
 

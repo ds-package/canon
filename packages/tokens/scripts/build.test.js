@@ -7,6 +7,44 @@ const previewHtml = await readFile(new URL('../preview/index.html', import.meta.
 const previewCss = await readFile(new URL('../preview/styles.css', import.meta.url), 'utf8')
 const { tokens } = await import('../dist/index.mjs')
 
+const declarationsFor = (selector) => {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const block = css.match(new RegExp(`${escaped} \\{([\\s\\S]*?)\\n\\}`))?.[1]
+  assert.ok(block, `Missing CSS selector ${selector}`)
+  return new Map(
+    [...block.matchAll(/^\s*(--[^:]+):\s*([^;]+);/gm)].map(([, name, value]) => [name, value]),
+  )
+}
+
+const rootVariables = declarationsFor(':root')
+const darkVariables = new Map([...rootVariables, ...declarationsFor('[data-theme="dark"]')])
+const warmVariables = new Map([...rootVariables, ...declarationsFor('[data-tint="warm"]')])
+
+const resolveColor = (variables, name, seen = new Set()) => {
+  assert.ok(!seen.has(name), `Circular CSS variable reference at ${name}`)
+  seen.add(name)
+  const value = variables.get(name)
+  assert.ok(value, `Missing CSS variable ${name}`)
+  const reference = value.match(/^var\((--[^)]+)\)$/)?.[1]
+  return reference ? resolveColor(variables, reference, seen) : value
+}
+
+const relativeLuminance = (hex) => {
+  assert.match(hex, /^#[0-9a-f]{6}$/i)
+  const channels = [1, 3, 5].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16) / 255)
+  const [red, green, blue] = channels.map((channel) =>
+    channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+  )
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+}
+
+const contrastRatio = (variables, foreground, background) => {
+  const foregroundLuminance = relativeLuminance(resolveColor(variables, foreground))
+  const backgroundLuminance = relativeLuminance(resolveColor(variables, background))
+  return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+    (Math.min(foregroundLuminance, backgroundLuminance) + 0.05)
+}
+
 test('status colors are shared unless an application target needs a distinct value', () => {
   for (const name of [
     'text-accent',
@@ -45,6 +83,67 @@ test('status colors are shared unless an application target needs a distinct val
   assert.match(css, /--semantic-border-selected-pressed: var\(--color-gray-100\);/)
   assert.match(css, /--semantic-control-neutral-solid-pressed: var\(--color-gray-950\);/)
   assert.match(css, /--semantic-control-neutral-solid-pressed: var\(--color-gray-100\);/)
+})
+
+test('solid control labels meet WCAG AA in every interactive state', () => {
+  for (const [theme, variables] of [['light', rootVariables], ['dark', darkVariables]]) {
+    for (const intent of ['neutral', 'accent', 'informative', 'positive', 'notice', 'negative']) {
+      const foreground = `--semantic-control-${intent}-on-solid`
+      for (const state of ['solid', 'solid-hover', 'solid-pressed']) {
+        const background = `--semantic-control-${intent}-${state}`
+        assert.ok(
+          contrastRatio(variables, foreground, background) >= 4.5,
+          `${theme} ${intent} ${state} label contrast is below 4.5:1`,
+        )
+      }
+    }
+  }
+})
+
+test('readable text meets WCAG AA on its supported surfaces', () => {
+  const defaultSurfaceText = ['primary', 'secondary', 'tertiary', 'placeholder', 'helper']
+  const cases = [
+    ['light cool', rootVariables],
+    ['light warm', warmVariables],
+    ['dark', darkVariables],
+  ]
+
+  for (const [theme, variables] of cases) {
+    for (const text of defaultSurfaceText) {
+      assert.ok(
+        contrastRatio(variables, `--semantic-text-${text}`, '--semantic-surface-default') >= 4.5,
+        `${theme} ${text} text contrast is below 4.5:1 on the default surface`,
+      )
+    }
+  }
+
+  for (const surface of ['raised', 'overlay', 'muted']) {
+    assert.ok(
+      contrastRatio(darkVariables, '--semantic-text-secondary', `--semantic-surface-${surface}`) >= 4.5,
+      `dark secondary text contrast is below 4.5:1 on the ${surface} surface`,
+    )
+  }
+})
+
+test('focus border remains distinguishable on common component canvases', () => {
+  const canvases = [
+    '--semantic-background-base',
+    '--semantic-surface-default',
+    '--semantic-surface-overlay',
+  ]
+
+  for (const [theme, variables] of [
+    ['light cool', rootVariables],
+    ['light warm', warmVariables],
+    ['dark', darkVariables],
+  ]) {
+    for (const canvas of canvases) {
+      assert.ok(
+        contrastRatio(variables, '--semantic-border-focus', canvas) >= 3,
+        `${theme} focus border contrast is below 3:1 against ${canvas}`,
+      )
+    }
+  }
 })
 
 test('preview shows shared status colors and target-specific exceptions', () => {
