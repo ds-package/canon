@@ -1,5 +1,6 @@
 export const initialDialogPlaygroundState = Object.freeze({
-  dismissable: true,
+  closeOnInteractOutside: true,
+  closeOnEscape: true,
   showCloseButton: true,
   showFooter: true,
 })
@@ -14,13 +15,16 @@ export function getDialogPlaygroundModel(state) {
   ].filter(Boolean)
 
   return {
-    dialogProps: { dismissable: state.dismissable },
+    dialogProps: {
+      closeOnInteractOutside: state.closeOnInteractOutside,
+      closeOnEscape: state.closeOnEscape,
+    },
     showCloseButton: state.showCloseButton,
     showFooter: state.showFooter,
     jsx: [
       '<DialogTrigger>',
       '  <button type="button">Open dialog</button>',
-      `  <Dialog${state.dismissable ? ' dismissable' : ''}>`,
+      `  <Dialog${state.closeOnInteractOutside ? ' closeOnInteractOutside' : ''}${state.closeOnEscape ? '' : ' closeOnEscape={false}'}>`,
       ...parts,
       '  </Dialog>',
       '</DialogTrigger>',

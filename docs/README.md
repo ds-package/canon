@@ -11,7 +11,7 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 | --- | --- | --- |
 | [color.md](./color.md) | 컬러 foundation과 현재 토큰 계약 | Figma 변수는 설계 값과 이름의 정본이고 `packages/tokens`는 코드 배포 정본이다. 이 문서는 둘의 대응과 선택 규칙을 설명한다. |
 | [typography.md](./typography.md) | 타이포 foundation과 Figma 바인딩 규칙 | Figma 텍스트 스타일은 설계 정본이고 `packages/tokens`는 코드 토큰 정본이다. |
-| [components.md](./components.md) | Figma 컴포넌트 프로퍼티 규칙과 현재 상태의 스냅샷 | `@canon/react`는 Preview로 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공한다. React interface의 정본은 패키지의 TypeScript다. |
+| [components.md](./components.md) | React public interface, runtime 상태, Figma authoring property와 playground state의 분리 원칙 | `@canon/react`의 TypeScript가 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField props의 정본이다. Figma property는 설계 편집의 정본이며 둘은 mapping으로 연결한다. |
 | [icons.md](./icons.md) | 아이콘 foundation, Phosphor 채택 결정, Figma 적용 현황 | Phosphor 원본과 Canon Figma 컴포넌트가 현재 근거다. 코드 icon package 계약은 아직 없다. |
 | [workflow.md](./workflow.md) | Figma contributing 절차 | Figma MCP 제약과 실제 마이그레이션에서 검증한 순서를 기록한다. |
 | [decisions/interaction-foundation.md](./decisions/interaction-foundation.md) | React Aria Components 채택 결정 | interaction foundation의 이유, 책임 경계, 재검토 조건의 정본이다. |

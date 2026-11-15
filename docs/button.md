@@ -34,6 +34,8 @@ Button은 현재 화면에서 동작을 실행한다. 다른 위치로 이동하
 
 `Button`의 기본값은 `variant="primary"`, `size="md"`, `type="button"`이다. form을 제출할 때만 `type="submit"`을 명시한다. `pending`은 동작을 막지만 focus와 기존 label을 유지하고 progressbar를 노출한다. 서비스 언어가 영어가 아니면 `pendingLabel`을 번역해 제공한다.
 
+React Aria 동작 중에는 `onPress`, `type`, `form`, `name`, `value`와 접근 가능한 이름·설명 속성만 공개한다. 나머지 React Aria props는 Canon interface로 자동 노출하지 않는다.
+
 ## 접근성 계약
 
 - 텍스트 Button은 화면에 보이는 동작 이름을 children으로 제공한다.

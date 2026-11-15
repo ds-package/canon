@@ -51,6 +51,13 @@ test('packed packages work from a consumer project', async (t) => {
   )
   run('pnpm', ['install', '--ignore-scripts'], consumerDir)
 
+  const reactTypes = await readFile(path.join(consumerDir, 'node_modules/@canon/react/dist/index.d.ts'), 'utf8')
+  assert.doesNotMatch(reactTypes, /type (?:Aria|Select|TextField)BehaviorProps = Omit/)
+  assert.match(reactTypes, /onValueChange/)
+  assert.match(reactTypes, /closeOnInteractOutside/)
+  assert.match(reactTypes, /closeOnEscape/)
+  assert.doesNotMatch(reactTypes, /dismissable|keyboardDismissDisabled/)
+
   assert.equal(
     run(
       'node',

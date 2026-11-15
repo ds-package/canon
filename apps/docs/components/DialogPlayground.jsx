@@ -38,7 +38,8 @@ export function DialogPlayground() {
       <div className="playground-layout">
         <div className="playground-controls">
           {[
-            ['dismissable', 'Dismissable'],
+            ['closeOnInteractOutside', 'Close on outside interaction'],
+            ['closeOnEscape', 'Close on Escape'],
             ['showCloseButton', 'Close button'],
             ['showFooter', 'Footer'],
           ].map(([option, label]) => (

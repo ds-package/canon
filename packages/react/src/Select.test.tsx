@@ -1,12 +1,22 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test, vi } from 'vitest'
 
-import { Select, SelectItem } from './index'
+import { Select, SelectItem, type SelectProps } from './index'
 
 afterEach(cleanup)
 
-function fruitSelect(props: Partial<React.ComponentProps<typeof Select>> = {}) {
+interface FruitSelectProps {
+  placeholder?: string
+  description?: React.ReactNode
+  errorMessage?: React.ReactNode
+  invalid?: boolean
+  name?: string
+  defaultValue?: string | null
+  required?: boolean
+}
+
+function fruitSelect(props: FruitSelectProps = {}) {
   return (
     <Select label="Fruit" placeholder="Choose fruit" {...props}>
       <SelectItem id="apple">Apple</SelectItem>
@@ -47,15 +57,20 @@ test('supports keyboard opening and typeahead selection', async () => {
 
 test('reports controlled changes without replacing product state', async () => {
   const user = userEvent.setup()
-  const onChange = vi.fn()
-  render(fruitSelect({ value: 'apple', onChange }))
+  const onValueChange = vi.fn()
+  render(
+    <Select label="Fruit" value="apple" onValueChange={onValueChange}>
+      <SelectItem id="apple">Apple</SelectItem>
+      <SelectItem id="banana">Banana</SelectItem>
+    </Select>,
+  )
 
   const trigger = screen.getByRole('button', { name: /Fruit/ })
   expect(trigger.textContent).toContain('Apple')
   await user.click(trigger)
   await user.click(screen.getByRole('option', { name: 'Banana' }))
 
-  expect(onChange).toHaveBeenCalledWith('banana')
+  expect(onValueChange).toHaveBeenCalledWith('banana')
   expect(trigger.textContent).toContain('Apple')
 })
 
@@ -103,6 +118,23 @@ test('submits the selected key through the native form seam', () => {
   expect(new FormData(form).get('fruit')).toBe('banana')
 })
 
+test('forwards the explicit focus integration props', () => {
+  const onFocus = vi.fn()
+  const onBlur = vi.fn()
+  render(
+    <Select label="Fruit" autoFocus onFocus={onFocus} onBlur={onBlur}>
+      <SelectItem id="apple">Apple</SelectItem>
+    </Select>,
+  )
+
+  const trigger = screen.getByRole('button', { name: /Fruit/ })
+  expect(document.activeElement).toBe(trigger)
+  fireEvent.focus(trigger)
+  fireEvent.blur(trigger)
+  expect(onFocus).toHaveBeenCalled()
+  expect(onBlur).toHaveBeenCalledOnce()
+})
+
 test('requires textValue when option content is not plain text', () => {
   expect(() => render(
     <Select label="Fruit">
@@ -117,10 +149,28 @@ test('requires textValue when option content is not plain text', () => {
   )).toThrow('SelectItem requires a non-empty string id')
 })
 
-test('requires a visible label at the runtime boundary', () => {
+test('rejects inaccessible runtime input', () => {
   expect(() => render(
     <Select label="">
       <SelectItem id="apple">Apple</SelectItem>
     </Select>,
   )).toThrow('Select requires a visible label')
+  expect(() => render(
+    <Select label="Fruit" invalid><SelectItem id="apple">Apple</SelectItem></Select>,
+  )).toThrow('Select requires errorMessage when invalid is true')
+})
+
+test('rejects ambiguous or incomplete controlled state at runtime', () => {
+  const ambiguous = { label: 'Fruit', value: 'apple', defaultValue: 'banana', onValueChange: () => {} } as unknown as SelectProps
+  const incomplete = { label: 'Fruit', value: 'apple' } as unknown as SelectProps
+  expect(() => render(
+    <Select {...ambiguous}><SelectItem id="apple">Apple</SelectItem></Select>,
+  )).toThrow(
+    'Select cannot use value and defaultValue together',
+  )
+  expect(() => render(
+    <Select {...incomplete}><SelectItem id="apple">Apple</SelectItem></Select>,
+  )).toThrow(
+    'Controlled Select requires onValueChange',
+  )
 })

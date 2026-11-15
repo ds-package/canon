@@ -14,6 +14,7 @@ const RUNTIME_STATUS_COMPONENTS = ['Button', 'IconButton', 'Checkbox', 'Dialog',
 const REQUIRED_DESIGN_ROUTES = [
   ['token naming', '컬러 토큰의 이름', './docs/color.md'],
   ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],
+  ['component property model', 'React props, runtime 상태, Figma property의 책임과 이름을 정한다', './docs/components.md'],
   ['interaction decision', 'interaction foundation', './docs/decisions/interaction-foundation.md'],
   ['docs platform decision', 'docs web, search, playground', './docs/decisions/docs-platform.md'],
   ['component selection', '제품 상황에 맞는 컴포넌트를 고른다', './docs/guides/README.md'],

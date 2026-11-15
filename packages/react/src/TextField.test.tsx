@@ -1,8 +1,8 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, expect, test, vi } from 'vitest'
 
-import { TextField } from './index'
+import { TextField, type TextFieldProps } from './index'
 
 afterEach(cleanup)
 
@@ -19,13 +19,13 @@ test('accepts text through a visibly labelled input', async () => {
 
 test('reports controlled edits without replacing product state', async () => {
   const user = userEvent.setup()
-  const onChange = vi.fn()
-  render(<TextField label="Name" value="Lou" onChange={onChange} />)
+  const onValueChange = vi.fn()
+  render(<TextField label="Name" value="Lou" onValueChange={onValueChange} />)
 
   const input = screen.getByRole('textbox', { name: 'Name' }) as HTMLInputElement
   await user.type(input, 'ise')
 
-  expect(onChange).toHaveBeenCalled()
+  expect(onValueChange).toHaveBeenCalled()
   expect(input.value).toBe('Lou')
 })
 
@@ -48,6 +48,34 @@ test('submits native field attributes and its value', () => {
   expect(input.required).toBe(true)
   expect(input.autocomplete).toBe('email')
   expect(new FormData(form).get('email')).toBe('lou@example.com')
+})
+
+test('forwards the explicit focus and native input allowlist', () => {
+  const onFocus = vi.fn()
+  const onBlur = vi.fn()
+  render(
+    <TextField
+      label="Postal code"
+      autoFocus
+      onFocus={onFocus}
+      onBlur={onBlur}
+      inputMode="numeric"
+      pattern="[0-9]*"
+      minLength={5}
+      maxLength={6}
+    />,
+  )
+
+  const input = screen.getByRole('textbox', { name: 'Postal code' }) as HTMLInputElement
+  expect(document.activeElement).toBe(input)
+  expect(input.inputMode).toBe('numeric')
+  expect(input.pattern).toBe('[0-9]*')
+  expect(input.minLength).toBe(5)
+  expect(input.maxLength).toBe(6)
+  fireEvent.focus(input)
+  fireEvent.blur(input)
+  expect(onFocus).toHaveBeenCalled()
+  expect(onBlur).toHaveBeenCalledOnce()
 })
 
 test('distinguishes disabled fields from read-only submitted values', async () => {
@@ -96,11 +124,19 @@ test('exposes every documented size through the DOM contract', () => {
 })
 
 test('rejects inaccessible or unsupported runtime input', () => {
+  const ambiguous = { label: 'Name', value: 'Lou', defaultValue: 'Minhee', onValueChange: () => {} } as unknown as TextFieldProps
+  const incomplete = { label: 'Name', value: 'Lou' } as unknown as TextFieldProps
   expect(() => render(<TextField label="" />)).toThrow('TextField requires a visible label')
   expect(() => render(<TextField label="Email" invalid />)).toThrow(
     'TextField requires errorMessage when invalid is true',
   )
   expect(() => render(<TextField label="Amount" type={'number' as never} />)).toThrow(
     'TextField does not support type="number"',
+  )
+  expect(() => render(<TextField {...ambiguous} />)).toThrow(
+    'TextField cannot use value and defaultValue together',
+  )
+  expect(() => render(<TextField {...incomplete} />)).toThrow(
+    'Controlled TextField requires onValueChange',
   )
 })

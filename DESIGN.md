@@ -1,5 +1,5 @@
 ---
-verified: 2026-11-01
+verified: 2026-11-15
 ---
 # Canon 디자인 문서 안내
 
@@ -23,7 +23,7 @@ verified: 2026-11-01
 | 타이포 역할과 Figma 텍스트 스타일을 정한다 | [타이포그래피](./docs/typography.md) |
 | 아이콘 규격과 Phosphor 사용 방식을 정한다 | [아이콘](./docs/icons.md) |
 | Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Figma 작업 방식](./docs/workflow.md) |
-| 컴포넌트 프로퍼티, variant, intent, boolean 이름을 정한다 | [컴포넌트](./docs/components.md) |
+| React props, runtime 상태, Figma property의 책임과 이름을 정한다 | [컴포넌트 프로퍼티 모델](./docs/components.md) |
 | interaction foundation으로 React Aria Components를 선택한 이유와 책임 경계를 확인한다 | [Interaction foundation 결정](./docs/decisions/interaction-foundation.md) |
 | docs web, search, playground의 구조와 범위를 정한다 | [Docs platform 결정](./docs/decisions/docs-platform.md) |
 | 제품 상황에 맞는 컴포넌트를 고른다 | [컴포넌트 선택 가이드](./docs/guides/README.md) |

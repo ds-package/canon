@@ -97,20 +97,22 @@ test('maps authored source paths and relative Markdown links to stable web route
 
 test('Dialog playground preview settings and copied JSX share the Canon public interface', () => {
   const model = getDialogPlaygroundModel(initialDialogPlaygroundState)
-  assert.deepEqual(model.dialogProps, { dismissable: true })
-  assert.match(model.jsx, /<Dialog dismissable>/)
+  assert.deepEqual(model.dialogProps, { closeOnInteractOutside: true, closeOnEscape: true })
+  assert.match(model.jsx, /<Dialog closeOnInteractOutside>/)
   assert.match(model.jsx, /<DialogClose aria-label="Close dialog" \/>/)
   assert.match(model.jsx, /<DialogDescription>/)
   assert.match(model.jsx, /<DialogFooter>/)
   assert.doesNotMatch(model.jsx, /react-aria-components|ModalOverlay|slot=/)
 
   const reset = getDialogPlaygroundModel({
-    dismissable: false,
+    closeOnInteractOutside: false,
+    closeOnEscape: false,
     showCloseButton: false,
     showFooter: false,
   })
-  assert.deepEqual(reset.dialogProps, { dismissable: false })
-  assert.doesNotMatch(reset.jsx, /dismissable|DialogClose|DialogFooter/)
+  assert.deepEqual(reset.dialogProps, { closeOnInteractOutside: false, closeOnEscape: false })
+  assert.match(reset.jsx, /<Dialog closeOnEscape=\{false\}>/)
+  assert.doesNotMatch(reset.jsx, /closeOnInteractOutside|DialogClose|DialogFooter/)
 })
 
 test('Button playground preview settings and copied JSX share the Canon public interface', () => {
@@ -414,5 +416,5 @@ test('indexes every Canon source and ranks title, headings, then body matches', 
   ]
   assert.deepEqual(searchDocuments(fixtures, 'React Aria').map(({ route }) => route), ['/title', '/heading', '/body'])
   assert.equal(searchDocuments(documents, 'React Aria Components 책임 경계')[0]?.route, '/docs/decisions/interaction-foundation')
-  assert.equal(searchDocuments(documents, 'keyboardDismissDisabled')[0]?.route, '/docs/dialog')
+  assert.equal(searchDocuments(documents, 'closeOnEscape')[0]?.route, '/docs/dialog')
 })

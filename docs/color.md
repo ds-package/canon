@@ -116,7 +116,7 @@ Figma 변수는 `primitive`, `semantic`, `shape`, `brand`, `tint` 다섯 컬렉�
 | `overlay/pressed` | blackAlpha/300 | whiteAlpha/300 |
 | `overlay/scrim` | blackAlpha/500 | blackAlpha/700 |
 
-`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 intent를 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
+`control/*`, `surface/*`, `status/*`, `border/status-*`는 같은 네 의미 역할을 쓴다. `{c}`는 informative blue, positive green, negative red이고 notice만 yellow다.
 
 | 키 | 라이트 | 다크 |
 | --- | --- | --- |
@@ -138,4 +138,4 @@ Figma 변수는 `primitive`, `semantic`, `shape`, `brand`, `tint` 다섯 컬렉�
 ## 4. 변수 이름 규칙
 
 - 변수 이름에 `.`을 쓸 수 없다. 소수는 `_`로 쓴다(`line-height/4_5`).
-- 의미색 이름은 컴포넌트 `intent` 값과 같다. `intent=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.
+- 의미색 이름은 feedback 컴포넌트에서 검토할 `status` 값과 같은 어휘를 쓴다. `status=notice`는 `control/notice/*`, `surface/notice`, `status/notice`를 쓰고, 값이 다른 테두리만 `border/status-notice`를 쓴다.

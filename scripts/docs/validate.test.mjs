@@ -9,6 +9,7 @@ import { validateDocs } from './validate.mjs'
 const REQUIRED_DESIGN = [
   '컬러 토큰의 이름을 정한다 [Color](./docs/color.md)',
   'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/workflow.md)',
+  'React props, runtime 상태, Figma property의 책임과 이름을 정한다 [Components](./docs/components.md)',
   'interaction foundation을 확인한다 [Interaction](./docs/decisions/interaction-foundation.md)',
   'docs web, search, playground의 구조를 정한다 [Docs platform](./docs/decisions/docs-platform.md)',
   '제품 상황에 맞는 컴포넌트를 고른다 [Selection](./docs/guides/README.md)',
@@ -22,6 +23,7 @@ async function fixture(t) {
   await mkdir(path.join(root, 'docs/guides'), { recursive: true })
   await writeFile(path.join(root, 'docs/color.md'), '# Color\n')
   await writeFile(path.join(root, 'docs/workflow.md'), '# Workflow\n')
+  await writeFile(path.join(root, 'docs/components.md'), '# Components\n')
   await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n')
   await writeFile(
     path.join(root, 'docs/decisions/interaction-foundation.md'),
@@ -164,6 +166,7 @@ test('requires the six Canon design routing seams', async (t) => {
   assert.deepEqual(await validateDocs(root), [
     'DESIGN.md: missing token naming route ./docs/color.md',
     'DESIGN.md: missing Figma migration route ./docs/workflow.md',
+    'DESIGN.md: missing component property model route ./docs/components.md',
     'DESIGN.md: missing interaction decision route ./docs/decisions/interaction-foundation.md',
     'DESIGN.md: missing docs platform decision route ./docs/decisions/docs-platform.md',
     'DESIGN.md: missing component selection route ./docs/guides/README.md',
@@ -178,6 +181,7 @@ test('requires each design question and target on the same line', async (t) => {
     [
       '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/workflow.md) |',
       '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/color.md) |',
+      '| React props, runtime 상태, Figma property의 책임과 이름을 정한다 | [Components](./docs/components.md) |',
       '| interaction foundation을 확인한다 | [Interaction](./docs/decisions/interaction-foundation.md) |',
       '| docs web, search, playground의 구조를 정한다 | [Docs platform](./docs/decisions/docs-platform.md) |',
       '| 제품 상황에 맞는 컴포넌트를 고른다 | [Selection](./docs/guides/README.md) |',

@@ -8,12 +8,7 @@ import {
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'destructive'
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
 
-type AriaBehaviorProps = Omit<
-  AriaButtonProps,
-  'children' | 'className' | 'style' | 'slot' | 'isDisabled' | 'isPending'
->
-
-export interface ButtonProps extends AriaBehaviorProps {
+export interface ButtonProps {
   children: ReactNode
   variant?: ButtonVariant
   size?: ButtonSize
@@ -23,6 +18,16 @@ export interface ButtonProps extends AriaBehaviorProps {
   pending?: boolean
   pendingLabel?: string
   className?: string
+  id?: string
+  form?: string
+  name?: string
+  value?: string
+  type?: 'button' | 'submit' | 'reset'
+  autoFocus?: boolean
+  onPress?: AriaButtonProps['onPress']
+  'aria-label'?: string
+  'aria-labelledby'?: string
+  'aria-describedby'?: string
 }
 
 export function Button({

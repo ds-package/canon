@@ -27,7 +27,7 @@ Canon의 React runtime 컴포넌트는 `react-aria-components`를 interaction fo
 | Canon | 공개 props와 variant, 노출할 part, 토큰과 스타일, motion, Figma와 코드의 대응, React Aria 고유 어휘를 감출 범위, foundation behavior를 보존하는 통합과 검증 |
 | Canon을 사용하는 앱 | 데이터와 비즈니스 상태, 권한, 요청과 오류 처리, 제품별 콘텐츠 |
 
-React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다.
+React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다. React Aria props 전체를 `Omit`으로 상속하지 않고 Canon이 지원하고 테스트하는 동작만 명시한다. controlled state는 [컴포넌트 프로퍼티 모델](../components.md)의 `value`, `checked`, `open` 문법으로 번역하고 hover, press, focus 같은 interaction은 runtime-derived state로 남긴다.
 
 ## 검토한 대안
 

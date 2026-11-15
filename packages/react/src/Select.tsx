@@ -15,29 +15,7 @@ import {
 
 export type SelectSize = 'sm' | 'md' | 'lg'
 
-type SelectBehaviorProps = Omit<
-  AriaSelectProps<object>,
-  | 'aria-label'
-  | 'aria-labelledby'
-  | 'children'
-  | 'className'
-  | 'isDisabled'
-  | 'isInvalid'
-  | 'isRequired'
-  | 'defaultSelectedKey'
-  | 'defaultValue'
-  | 'disabledKeys'
-  | 'onChange'
-  | 'onSelectionChange'
-  | 'placeholder'
-  | 'selectedKey'
-  | 'selectionMode'
-  | 'slot'
-  | 'style'
-  | 'value'
->
-
-export interface SelectProps extends SelectBehaviorProps {
+interface SelectBaseProps {
   children: ReactElement<SelectItemProps> | ReactElement<SelectItemProps>[]
   label: ReactNode
   description?: ReactNode
@@ -47,10 +25,26 @@ export interface SelectProps extends SelectBehaviorProps {
   disabled?: boolean
   required?: boolean
   invalid?: boolean
-  value?: string | null
-  defaultValue?: string | null
-  onChange?: (value: string | null) => void
+  name?: string
+  form?: string
+  autoFocus?: AriaSelectProps<object>['autoFocus']
+  onFocus?: AriaSelectProps<object>['onFocus']
+  onBlur?: AriaSelectProps<object>['onBlur']
 }
+
+type SelectControlledProps = {
+  value: string | null
+  defaultValue?: never
+  onValueChange: (value: string | null) => void
+}
+
+type SelectUncontrolledProps = {
+  value?: never
+  defaultValue?: string | null
+  onValueChange?: (value: string | null) => void
+}
+
+export type SelectProps = SelectBaseProps & (SelectControlledProps | SelectUncontrolledProps)
 
 export function Select({
   children,
@@ -64,16 +58,28 @@ export function Select({
   invalid,
   value,
   defaultValue,
-  onChange,
-  ...props
+  onValueChange,
+  name,
+  form,
+  autoFocus,
+  onFocus,
+  onBlur,
 }: SelectProps) {
   if (label == null || label === false || (typeof label === 'string' && !label.trim())) {
     throw new Error('Select requires a visible label')
   }
+  if (invalid && (errorMessage == null || errorMessage === false || (typeof errorMessage === 'string' && !errorMessage.trim()))) {
+    throw new Error('Select requires errorMessage when invalid is true')
+  }
+  if (value !== undefined && defaultValue !== undefined) {
+    throw new Error('Select cannot use value and defaultValue together')
+  }
+  if (value !== undefined && typeof onValueChange !== 'function') {
+    throw new Error('Controlled Select requires onValueChange')
+  }
 
   return (
     <AriaSelect
-      {...props}
       className="canon-select"
       data-size={size}
       isDisabled={disabled}
@@ -82,7 +88,12 @@ export function Select({
       placeholder={placeholder}
       value={value}
       defaultValue={defaultValue}
-      onChange={(nextValue) => onChange?.(nextValue as string | null)}
+      onChange={(nextValue) => onValueChange?.(nextValue as string | null)}
+      name={name}
+      form={form}
+      autoFocus={autoFocus}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       <Label className="canon-select-label">{label}</Label>
       <Button className="canon-select-trigger" data-size={size}>

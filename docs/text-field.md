@@ -22,6 +22,8 @@ TextField는 사용자가 한 줄의 텍스트를 직접 입력하는 form field
 
 `label`은 화면에 보이며 필수다. `md`가 기본 크기이고 `sm`, `lg`를 제공한다. `description`은 입력 조건을 미리 설명하고, `invalid`와 `errorMessage`는 사용자가 해결할 수 있는 오류를 함께 전달한다.
 
+초기값은 `defaultValue`, 외부 상태로 제어할 때는 `value`와 `onValueChange`를 함께 사용한다. `readOnly`로 값을 표시할 때는 callback을 생략할 수 있다.
+
 ## 선택
 
 - 정해진 목록에서 하나를 고르면 Select를 사용한다.
@@ -42,3 +44,4 @@ TextField는 사용자가 한 줄의 텍스트를 직접 입력하는 form field
 2. 숫자 입력에 `type="number"`를 만들지 않고 NumberField를 선택한다.
 3. 여러 줄 입력에 TextField를 사용하지 않는다.
 4. prefix·suffix가 필요하다고 임의 wrapper를 만들지 않고 아직 미지원임을 알린다.
+5. `readOnly`가 아닌 상태에서 `value`를 쓰면 `onValueChange`도 함께 제공한다.
