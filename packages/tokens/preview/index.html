@@ -55,7 +55,7 @@
       </div>
       <p class="sample-note">현재 코드 기준 미리보기예요. Dark에서는 현재 코드상 Cool과 Warm이 같은 중립색을 사용해요.</p>
       <h3 class="comparison-heading">Figma 기록과 현재 코드</h3>
-      <p class="preview-subtitle"><code>docs/color.md · 2026-11-01</code>에 기록된 Figma 참조 이름과 현재 코드의 계산된 색을 비교해요. 기록에는 색조별 값이 없으며, 현재 Figma 원문은 미확인이에요.</p>
+      <p class="preview-subtitle"><code>Figma · 2026-11-16</code>에서 읽은 별칭과 현재 코드의 계산된 색을 비교해요. Light의 중립색은 Cool 기준이에요.</p>
       <div class="comparison-grid" id="color-comparison"></div>
     </section>
 
@@ -93,23 +93,16 @@
       { name: 'black-alpha', label: 'blackAlpha', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
     ]
 
-    const controlSteps = ['solid', 'solid-hover', 'solid-pressed', 'on-solid']
     const semanticGroups = {
-      background: ['base', 'inverse'],
-      surface: ['default', 'raised', 'overlay', 'muted', 'informative', 'positive', 'notice', 'negative', 'accent'],
-      text: ['primary', 'secondary', 'tertiary', 'placeholder', 'helper', 'disabled', 'inverse', 'link', 'accent'],
-      icon: ['primary', 'secondary', 'disabled', 'inverse'],
-      status: ['informative', 'positive', 'notice', 'negative'],
-      border: ['default', 'emphasis', 'focus', 'disabled', 'selected', 'selected-hover', 'selected-pressed', 'accent', 'status-informative', 'status-positive', 'status-notice', 'status-negative', 'status-informative-subtle', 'status-positive-subtle', 'status-notice-subtle', 'status-negative-subtle'],
-      'control/neutral': [...controlSteps, 'subtle'],
-      'control/accent': controlSteps,
-      'control/informative': controlSteps,
-      'control/positive': controlSteps,
-      'control/notice': controlSteps,
-      'control/negative': controlSteps,
-      control: ['disabled'],
-      overlay: ['hover', 'pressed', 'scrim'],
+      background: ['default', 'inverse', 'low'],
+      surface: ['default', 'raised', 'overlay', 'tinted', 'accent'],
+      text: ['default', 'low', 'lowest', 'disabled', 'inverse', 'link', 'placeholder', 'helper', 'on-status'],
+      icon: ['default', 'low', 'disabled', 'inverse'],
+      border: ['default', 'emphasis', 'focus', 'disabled'],
+      control: ['neutral', 'accent', 'disabled', 'selected', 'selected-hover', 'selected-pressed', 'inverse'],
+      overlay: ['hover', 'pressed', 'scrim', 'pressed-inverse', 'hover-inverse'],
       static: ['white', 'black'],
+      status: ['informative/low', 'informative/emphasis', 'informative/default', 'positive/low', 'positive/emphasis', 'positive/default', 'notice/low', 'notice/emphasis', 'notice/default', 'negative/low', 'negative/emphasis', 'negative/default'],
     }
 
     const typographyStyles = [
@@ -251,11 +244,11 @@
     function renderComparison() {
       const dark = document.documentElement.dataset.theme === 'dark' ||
         (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches)
-      // Historical aliases from docs/color.md (2026-11-01), not a live Figma read.
+      // Snapshot aliases read from Figma variables on 2026-11-16 (light uses cool tint).
       const comparisons = [
-        { label: 'background/base', figma: dark ? 'gray/1100' : 'gray/50' },
-        { label: 'control/disabled', figma: dark ? 'gray/950' : 'gray/100' },
-        { label: 'overlay/pressed', figma: dark ? 'whiteAlpha/300' : 'blackAlpha/300' },
+        { label: 'background/default', figma: dark ? 'gray/1000' : 'white' },
+        { label: 'control/disabled', figma: dark ? 'gray/1000' : 'tint/control/disabled' },
+        { label: 'overlay/pressed', figma: dark ? 'whiteAlpha/50' : 'blackAlpha/50' },
       ]
       const grid = document.getElementById('color-comparison')
       grid.replaceChildren()
@@ -266,7 +259,7 @@
         title.textContent = label
         card.append(title)
         const variable = `--semantic-${label.replaceAll('/', '-')}`
-        ;[['Figma (2026-11-01)', figma], ['코드', variableValue(variable)]].forEach(([source, value]) => {
+        ;[['Figma (2026-11-16)', figma], ['코드', variableValue(variable)]].forEach(([source, value]) => {
           const row = document.createElement('div')
           row.className = 'comparison-row'
           if (source === '코드') {
@@ -333,7 +326,7 @@
       grid.className = 'shape-grid'
       section.append(heading, grid)
       shapeGroups.appendChild(section)
-      ;['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'].forEach((name) => {
+      ;['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full'].forEach((name) => {
         const item = document.createElement('div')
         item.className = 'shape-item'
         const sample = document.createElement('div')

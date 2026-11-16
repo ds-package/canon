@@ -44,8 +44,8 @@ test('dev rebuilds CSS and Tailwind after JSON edits and JS/types after TypeScri
     assert.fail(`dev did not rebuild ${relative}\n${output}`)
   }
 
-  await waitFor('dist/css/variables.css', /--spacing-4: 16px;/)
-  await waitFor('dist/index.mjs', /semantic-text-primary/)
+  await waitFor('dist/css/variables.css', /--spacing-200: 16px;/)
+  await waitFor('dist/index.mjs', /semantic-text-default/)
   const spacingPath = path.join(temp, 'tokens/spacing.json')
   const spacing = JSON.parse(await readFile(spacingPath, 'utf8'))
   spacing.spacing.watchTest = { $type: 'dimension', $value: '123px' }

@@ -62,7 +62,7 @@ function openPreview(stylesheet) {
 }
 
 test('code comparison displays the loaded semantic CSS value after a token changes', () => {
-  const changed = css.replace('--semantic-control-disabled: var(--color-gray-100);', '--semantic-control-disabled: #123456;')
+  const changed = css.replace('--semantic-control-disabled: var(--tint-control-disabled);', '--semantic-control-disabled: #123456;')
   assert.notEqual(changed, css, 'fixture must change an actual generated CSS declaration')
   const preview = openPreview(changed)
   const card = preview.comparison().find((item) => item.children[0].textContent === 'control/disabled')
@@ -71,16 +71,16 @@ test('code comparison displays the loaded semantic CSS value after a token chang
 })
 
 test('theme controls refresh code values and show the dated Figma alias for that mode', () => {
-  const changed = css.replaceAll('--semantic-control-disabled: var(--color-gray-950);', '--semantic-control-disabled: #654321;')
+  const changed = css.replaceAll('--semantic-control-disabled: var(--color-gray-1000);', '--semantic-control-disabled: #654321;')
   assert.notEqual(changed, css)
   const preview = openPreview(changed)
   preview.setTheme('dark')
   const card = preview.comparison().find((item) => item.children[0].textContent === 'control/disabled')
-  assert.equal(card.children[1].children[0].textContent, 'Figma (2026-11-01) · gray/950')
+  assert.equal(card.children[1].children[0].textContent, 'Figma (2026-11-16) · gray/1000')
   assert.equal(card.children[2].children[1].textContent, '코드 · #654321')
   preview.setTheme('light')
   const lightCard = preview.comparison().find((item) => item.children[0].textContent === 'control/disabled')
-  assert.equal(lightCard.children[2].children[1].textContent, '코드 · #e9eaec')
+  assert.equal(lightCard.children[2].children[1].textContent, '코드 · #f5f5f5')
 })
 
 test('every comparison card shows a code value in light and dark', () => {

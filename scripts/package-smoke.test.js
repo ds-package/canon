@@ -67,19 +67,19 @@ test('packed tokens expose the originals and CSS/TS/Tailwind public imports', as
     import preset from '@canon/tokens/tailwind';
     const require = createRequire(import.meta.url);
     const commonjs = require('@canon/tokens');
-    assert.equal(commonjs.tokens.spacing[4], 'var(--spacing-4)');
+    assert.equal(commonjs.tokens.spacing[200], 'var(--spacing-200)');
     const original = JSON.parse(readFileSync(require.resolve('@canon/tokens/tokens/color.json')));
     assert.equal(original.color.white.$value, '#ffffff');
-    assert.equal(tokens.semantic.text.primary, 'var(--semantic-text-primary)');
-    assert.equal(preset.theme.extend.colors.semantic.text.primary, 'var(--semantic-text-primary)');
-    assert.match(readFileSync(require.resolve('@canon/tokens/css'), 'utf8'), /--semantic-text-primary:/);
+    assert.equal(tokens.semantic.text.default, 'var(--semantic-text-default)');
+    assert.equal(preset.theme.extend.colors.semantic.text.default, 'var(--semantic-text-default)');
+    assert.match(readFileSync(require.resolve('@canon/tokens/css'), 'utf8'), /--semantic-text-default:/);
     console.log('packed imports passed');
   `], consumer)
   assert.match(output, /packed imports passed/)
   await assert.rejects(readFile(path.join(consumer, 'node_modules/@canon/tokens/dist/js/tokens.js')), { code: 'ENOENT' })
   await writeFile(path.join(consumer, 'consumer.ts'), `
     import { tokens, type Tokens } from '@canon/tokens'
-    const spacing: Tokens['spacing'][4] = tokens.spacing[4]
+    const spacing: Tokens['spacing'][200] = tokens.spacing[200]
     // @ts-expect-error token references are strings, not raw numbers
     const invalid: number = spacing
   `)
