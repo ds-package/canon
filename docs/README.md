@@ -75,24 +75,3 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 `canon eject`는 소비 프로젝트에 설치된 `@canon/tokens`에서 JSON을 `canon/tokens/`로 복사하고 `canon/build.mjs`를 만든다. `pnpm add -D 'style-dictionary@^4.1.4'` 후 `node canon/build.mjs`를 실행하면 빌드 산출물(CSS, Tailwind 프리셋)은 `canon/dist/`에 모이고, CSS만 `src/styles/canon-variables.css`로 복사된다. 이 CSS를 제품에서 가져온다. `src/styles`의 다른 파일은 건드리지 않는다.
 
 복사한 JSON은 직접 수정한다. CSS 이름과 테마 규칙을 유지하기 위해 빌드 도구는 `@canon/tokens/build`를 계속 사용하므로 `@canon/tokens` 설치와 잠금 파일을 유지한다. 이전 CLI가 만든 `style-dictionary.config.json`은 새 빌드에 쓰지 않으며 자동 삭제하지 않는다.
-
-### 옛 시멘틱 토큰 대응
-
-2026-11-16 Figma 동기화로 이름이 바뀌었다. 호환 별칭은 남기지 않았다. 이전 이름을 쓰던 곳은 아래처럼 옮긴다.
-
-| 이전 이름 | 새 이름 |
-| --- | --- |
-| `background/base` | `background/default` (값이 흰색으로 바뀜) |
-| `surface/muted` | `surface/tinted` |
-| `surface/{의미}` | `status/{의미}/low` |
-| `status/{의미}` | `status/{의미}/emphasis` |
-| `control/{의미}/solid`, `border/status-{의미}` | `status/{의미}/default` |
-| `control/accent/solid` | `control/accent` |
-| `control/neutral/solid*`, `border/selected*` | `control/selected*` |
-| `control/neutral/subtle` | `control/neutral` |
-| `control/*/solid-hover`, `solid-pressed` | 채움 위에 `overlay/hover-inverse`, `overlay/pressed-inverse` |
-| `control/*/on-solid` | `text/on-status`, `text/inverse`, notice는 `static/black` |
-| `text/primary`, `secondary`, `tertiary` | `text/default`, `low`, `lowest` |
-| `icon/primary`, `secondary` | `icon/default`, `low` |
-| `text/accent`, `border/accent`, `border/status-*-subtle` | 삭제. 쓰던 곳이 없었다. |
-| `--spacing-{4px 배수}`, `--radius-xl` 이상 | [color.md](./color.md) 「4. 크기 토큰」의 새 단계 |
