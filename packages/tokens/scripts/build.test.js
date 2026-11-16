@@ -93,7 +93,7 @@ test('solid labels meet WCAG AA on Figma fills with hover and pressed overlays',
 })
 
 test('Figma gray and black alpha primitives retain their synchronized values', () => {
-  const gray = { 50: '#f5f5f5', 100: '#efefef', 200: '#e7e7e7', 300: '#dcdcdc', 400: '#cbcbcb', 500: '#b7b7b7', 600: '#a1a1a1', 700: '#767676', 800: '#717171', 900: '#595959', 950: '#434343', 1000: '#2d2d2d', 1100: '#1a1a1a' }
+  const gray = { 50: '#f5f5f5', 100: '#efefef', 200: '#e7e7e7', 300: '#dcdcdc', 400: '#cbcbcb', 500: '#b7b7b7', 600: '#a1a1a1', 700: '#8a8a8a', 800: '#717171', 900: '#595959', 950: '#434343', 1000: '#2d2d2d', 1100: '#1a1a1a' }
   for (const [step, value] of Object.entries(gray)) {
     assert.equal(rootVariables.get(`--color-gray-${step}`), value)
   }
@@ -141,7 +141,7 @@ test('readable text meets WCAG AA on its supported surfaces', () => {
   const defaultSurfaceText = ['default', 'low', 'lowest', 'placeholder', 'helper']
   const cases = [
     ['light cool', rootVariables, defaultSurfaceText],
-    ['light warm', warmVariables, ['default']],
+    ['light warm', warmVariables, ['default', 'low']],
     ['dark', darkVariables, defaultSurfaceText],
   ]
 
@@ -164,7 +164,7 @@ test('readable text meets WCAG AA on its supported surfaces', () => {
 
 test('known AA shortfalls in warm tint retain their contrast floor (알려진 AA 미달)', () => {
   // Figma 확인 필요(warm tint 대비), docs/color.md 6절.
-  const floors = { low: 4.482353, placeholder: 4.482353, helper: 4.482353, lowest: 4.171486 }
+  const floors = { placeholder: 4.482353, helper: 4.482353, lowest: 4.482353 }
   for (const [text, floor] of Object.entries(floors)) {
     assert.ok(
       contrastRatio(warmVariables, `--semantic-text-${text}`, '--semantic-surface-default') >= floor,

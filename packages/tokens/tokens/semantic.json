@@ -19,8 +19,8 @@
       },
       "text": {
         "default": { "$value": "{color.gray.1000}" },
-        "low": { "$value": "{color.gray.800}" },
-        "lowest": { "$value": "{color.gray.700}" },
+        "low": { "$value": "{color.gray.900}" },
+        "lowest": { "$value": "{color.gray.800}" },
         "disabled": { "$value": "{color.gray.500}" },
         "inverse": { "$value": "{color.white}" },
         "link": { "$value": "{brand.default.600}" },
@@ -30,7 +30,7 @@
       },
       "icon": {
         "default": { "$value": "{color.gray.1000}" },
-        "low": { "$value": "{color.gray.800}" },
+        "low": { "$value": "{color.gray.900}" },
         "disabled": { "$value": "{color.gray.500}" },
         "inverse": { "$value": "{color.white}" }
       },

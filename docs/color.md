@@ -31,6 +31,8 @@ Figma 변수는 다섯 컬렉션이다.
   - `50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000`
 - `gray`와 `warm`은 중립색이고 별도 램프다.
   - `gray`는 색조가 없는 중립 회색이다.
+  - 명도는 단계마다 `warm`과 0.02 안쪽으로 맞춘다. tint를 바꿔도 대비가 거의 그대로다.
+  - 글자 대비를 맞추려고 램프 값을 끌어내리지 않는다. 대비가 모자라면 시멘틱 토큰이 더 진한 단계를 고른다(2026-11-16, `gray/700` `#767676`→`#8a8a8a`).
   - 다크 배경용으로 `gray/1100`(`#1a1a1a`)을 하나 더 둔다.
 - 각 색에 알파 토큰 `alpha-100`, `alpha-200`, `alpha-300`이 있다.
   - 값은 해당 색 `600`에 불투명도 8%, 16%, 24%를 준 것이다.
@@ -169,16 +171,16 @@ light 값은 `tint=cool` 기준이다. `*` 표시는 「5. Figma와 다른 값�
 | 토큰 | light | dark |
 | --- | --- | --- |
 | `text/default` | gray/1000 | white |
-| `text/low` | gray/800 | gray/300 * |
-| `text/lowest` | gray/700 | gray/600 |
-| `text/placeholder` | gray/800 * | gray/600 |
-| `text/helper` | gray/800 * | gray/500 |
+| `text/low` | gray/900 | gray/300 * |
+| `text/lowest` | gray/800 | gray/600 |
+| `text/placeholder` | gray/800 | gray/600 |
+| `text/helper` | gray/800 | gray/500 |
 | `text/link` | brand/600 | brand/400 |
 | `text/disabled` | gray/500 | gray/800 |
 | `text/inverse` | white | gray/1000 |
 | `text/on-status` | white | white |
 | `icon/default` | gray/1000 | gray/100 |
-| `icon/low` | gray/800 | gray/500 |
+| `icon/low` | gray/900 | gray/500 |
 | `icon/disabled` | gray/500 | gray/800 |
 | `icon/inverse` | white | black |
 
@@ -238,9 +240,7 @@ Figma `semantic`에는 색 말고 크기 토큰도 있다. 코드 CSS 변수에�
 
 | 토큰 | 코드 | Figma | 이유 |
 | --- | --- | --- | --- |
-| `text/placeholder` light | gray/800 | gray/700 | 2026-11-15 대비 계약(지원 글자 4.5:1) |
-| `text/helper` light | gray/800 | gray/700 | 같음 |
-| `text/low` dark | gray/300 | gray/400 | 같음 |
+| `text/low` dark | gray/300 | gray/400 | 2026-11-15 대비 계약(지원 글자 4.5:1) |
 | `border/focus` dark | brand/300 | brand/400 | focus 표시 3:1 |
 | `surface/accent` | brand/50, brand/950 | 없음 | SelectItem 선택 배경과 docs 내비 활성 배경이 쓴다 |
 | notice 채움 위 글자 | `static/black` | `text/on-status`(흰색) | 노란 바탕 흰 글자 대비 부족 |
@@ -255,9 +255,6 @@ dark 값은 light를 기준으로 나중에 보정한다(2026-11-16 결정). 아
   - 면이 바탕과 구분되지 않는다.
 - dark 면 단계가 가파르다. `surface/default` `#2d2d2d`에서 `surface/overlay` `#595959`까지 올라간다.
 - `surface/tinted`를 `gray/50`으로 내리면서 `background/low`, `control/neutral`과 같은 값이 됐다(2026-11-16 결정).
-
-- `gray/700`(`#767676`)과 `gray/800`(`#717171`)이 거의 같은 색이다.
-  - 그래서 `text/lowest`와 `text/low`가 눈으로 구분되지 않는다.
 - `overlay/hover`와 `overlay/pressed` 값이 같다(`blackAlpha/50`, 3%).
   - hover와 pressed가 구분되지 않는다.
   - 진한 채움 위의 hover도 거의 보이지 않는다.
@@ -266,9 +263,8 @@ dark 값은 light를 기준으로 나중에 보정한다(2026-11-16 결정). 아
 - `control/neutral`이 `background/low`와 같은 `gray/50`이다.
   - 꺼진 Switch 트랙이 바탕과 구분되지 않는다.
 - `tint=warm`에서 보조 글자 대비가 4.5:1에 못 미친다.
-  - `text/low`, `text/placeholder`, `text/helper`(gray/800)는 `warm/50` 위에서 4.48:1이다.
-  - `text/lowest`(gray/700)는 4.17:1이다.
-  - 코드 테스트는 이 네 조합을 알려진 미달로 두고 현재 값을 하한으로 고정한다.
+  - `text/lowest`, `text/placeholder`, `text/helper`(gray/800)는 `warm/50` 위에서 4.48:1이다.
+  - 코드 테스트는 이 세 조합을 알려진 미달로 두고 현재 값을 하한으로 고정한다.
 - `primitive`에 `space/*`와 따로 떨어진 `spacing/7`(28px)이 함께 있다.
 
 ## 7. 컴포넌트 바인딩
