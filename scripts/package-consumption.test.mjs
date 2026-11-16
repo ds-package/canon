@@ -61,14 +61,14 @@ test('packed packages work from a consumer project', async (t) => {
   assert.equal(
     run(
       'node',
-      ['--input-type=module', '-e', "import { tokens } from '@canon/tokens'; process.stdout.write(tokens.semantic.status.informative)"],
+      ['--input-type=module', '-e', "import { tokens } from '@canon/tokens'; process.stdout.write(tokens.semantic.status.informative.default)"],
       consumerDir,
     ),
-    'var(--semantic-status-informative)',
+    'var(--semantic-status-informative-default)',
   )
   assert.equal(
-    run('node', ['-e', "process.stdout.write(require('@canon/tokens').tokens.semantic.status.informative)"], consumerDir),
-    'var(--semantic-status-informative)',
+    run('node', ['-e', "process.stdout.write(require('@canon/tokens').tokens.semantic.status.informative.default)"], consumerDir),
+    'var(--semantic-status-informative-default)',
   )
 
   assert.equal(
@@ -209,7 +209,7 @@ test('packed packages work from a consumer project', async (t) => {
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
     consumerDir,
   )
-  assert.match(await readFile(cssPath, 'utf8'), /--semantic-status-informative:/)
+  assert.match(await readFile(cssPath, 'utf8'), /--semantic-status-informative-default:/)
 
   const reactCssPath = run(
     'node',
@@ -243,16 +243,20 @@ test('packed packages work from a consumer project', async (t) => {
   run('pnpm', ['exec', 'canon', 'eject'], consumerDir)
   const ejectedTokens = await readdir(path.join(consumerDir, 'canon/tokens'))
   assert.deepEqual(ejectedTokens.sort(), [
+    'border.json',
     'brand.json',
     'color.json',
+    'control.json',
+    'icon.json',
     'semantic.json',
     'shadow.json',
     'shape.json',
+    'size.json',
     'spacing.json',
     'tint.json',
     'typography.json',
   ])
-  assert.match(await readFile(path.join(consumerDir, 'canon/tokens/semantic.json'), 'utf8'), /"status-informative"/)
+  assert.match(await readFile(path.join(consumerDir, 'canon/tokens/semantic.json'), 'utf8'), /"informative"/)
   run('node', ['canon/build.mjs'], consumerDir)
   assert.equal(await readFile(path.join(consumerDir, 'src/styles/canon-variables.css'), 'utf8'), await readFile(cssPath, 'utf8'))
 })

@@ -8,10 +8,11 @@
         "sm": { "$value": "4px" },
         "md": { "$value": "6px" },
         "lg": { "$value": "8px" },
-        "xl": { "$value": "12px" },
-        "2xl": { "$value": "16px" },
-        "3xl": { "$value": "24px" },
-        "full": { "$value": "9999px" }
+        "xl": { "$value": "10px" },
+        "2xl": { "$value": "12px" },
+        "3xl": { "$value": "16px" },
+        "full": { "$value": "9999px" },
+        "4xl": { "$value": "24px" }
       }
     },
     "sharp": {
@@ -23,8 +24,9 @@
         "lg": { "$value": "4px" },
         "xl": { "$value": "6px" },
         "2xl": { "$value": "8px" },
-        "3xl": { "$value": "12px" },
-        "full": { "$value": "9999px" }
+        "3xl": { "$value": "10px" },
+        "full": { "$value": "9999px" },
+        "4xl": { "$value": "12px" }
       }
     },
     "soft": {
@@ -33,11 +35,12 @@
         "xs": { "$value": "4px" },
         "sm": { "$value": "6px" },
         "md": { "$value": "8px" },
-        "lg": { "$value": "12px" },
-        "xl": { "$value": "16px" },
-        "2xl": { "$value": "24px" },
+        "lg": { "$value": "10px" },
+        "xl": { "$value": "12px" },
+        "2xl": { "$value": "16px" },
         "3xl": { "$value": "24px" },
-        "full": { "$value": "9999px" }
+        "full": { "$value": "9999px" },
+        "4xl": { "$value": "24px" }
       }
     }
   }

@@ -1,0 +1,11 @@
+{
+  "border": {
+    "$type": "dimension",
+    "width": {
+      "default": { "$value": "1px" },
+      "strong": { "$value": "2px" },
+      "selected": { "$value": "2px" },
+      "focus": { "$value": "2px" }
+    }
+  }
+}
