@@ -170,6 +170,40 @@ async function validateRuntimeStatus(root, errors) {
   }
 }
 
+const EXCLUDED_CONTRACT_COLUMN = '사용하지 않는 조건'
+
+// Names a React public prop may use: backticked names in the table cells of `## 공통 계약` and
+// `### React`. Prose and the 사용하지 않는 조건 column name forbidden or adapter-internal names
+// (`isOpen`, `onClick`, `state`), and the iOS·Android table names other platforms' APIs.
+function readContractNames(source, errors) {
+  const sections = [
+    source.match(/(?:^|\n)## 공통 계약[ \t]*\n([\s\S]*?)(?=\n## |$)/)?.[1],
+    source.match(/(?:^|\n)### React[ \t]*\n([\s\S]*?)(?=\n## |\n### |$)/)?.[1],
+  ]
+  if (sections.some((section) => section === undefined)) {
+    errors.push('docs/components.md: missing 공통 계약 or 플랫폼 번역 React section')
+    return null
+  }
+
+  const names = new Set()
+  for (const section of sections) {
+    for (const table of section.match(/(?:^\|.*\n?)+/gm) ?? []) {
+      const [header, , ...rows] = table.trimEnd().split('\n').map((line) => line.split(/(?<!\\)\|/).slice(1, -1))
+      const included = header.map((cell) => cell.trim() !== EXCLUDED_CONTRACT_COLUMN)
+      for (const cells of rows) {
+        cells
+          .filter((_, column) => included[column])
+          .forEach((cell) => [...cell.matchAll(/`([^`]+)`/g)].forEach((name) => names.add(name[1])))
+      }
+    }
+  }
+  if (!names.size) {
+    errors.push('docs/components.md: 공통 계약 and React 번역 tables name no props')
+    return null
+  }
+  return names
+}
+
 async function validatePropertyCoverage(root, errors) {
   const indexPath = path.join(root, 'packages/react/src/index.ts')
   const componentsPath = path.join(root, 'docs/components.md')
@@ -212,7 +246,14 @@ async function validatePropertyCoverage(root, errors) {
       checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(symbol)).map((prop) => prop.name).sort(),
     ])
 
+  const contractNames = readContractNames(componentsSource.replace(/\r\n/g, '\n'), errors)
+
   for (const [typeName, props] of publicProps) {
+    if (contractNames) {
+      for (const prop of props.filter((name) => !contractNames.has(name))) {
+        errors.push(`docs/components.md: ${typeName}.${prop} has no 공통 계약 or React 번역 entry`)
+      }
+    }
     const documentedProps = documented.get(typeName)
     if (!documentedProps) {
       errors.push(`docs/components.md: missing ${typeName} coverage`)
