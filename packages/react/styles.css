@@ -652,15 +652,13 @@
 .canon-checkbox-button[data-selected][data-hovered] .canon-checkbox-control,
 .canon-checkbox-button[data-indeterminate][data-hovered] .canon-checkbox-control {
   border-color: var(--semantic-control-selected-hover);
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-hover-inverse), var(--semantic-overlay-hover-inverse));
+  background: var(--semantic-control-selected-hover);
 }
 
 .canon-checkbox-button[data-selected][data-pressed] .canon-checkbox-control,
 .canon-checkbox-button[data-indeterminate][data-pressed] .canon-checkbox-control {
   border-color: var(--semantic-control-selected-pressed);
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-pressed-inverse), var(--semantic-overlay-pressed-inverse));
+  background: var(--semantic-control-selected-pressed);
 }
 
 .canon-checkbox-button[data-focus-visible] .canon-checkbox-control {
@@ -740,13 +738,11 @@
 }
 
 .canon-switch-button[data-selected][data-hovered] .canon-switch-control {
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-hover-inverse), var(--semantic-overlay-hover-inverse));
+  background: var(--semantic-control-selected-hover);
 }
 
 .canon-switch-button[data-selected][data-pressed] .canon-switch-control {
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-pressed-inverse), var(--semantic-overlay-pressed-inverse));
+  background: var(--semantic-control-selected-pressed);
 }
 
 .canon-switch-button[data-focus-visible] .canon-switch-control {
@@ -858,8 +854,7 @@
 }
 
 .canon-radio-option-button[data-selected][data-hovered] .canon-radio-option-dot {
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-hover-inverse), var(--semantic-overlay-hover-inverse));
+  background: var(--semantic-control-selected-hover);
 }
 
 .canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-control {
@@ -867,8 +862,7 @@
 }
 
 .canon-radio-option-button[data-selected][data-pressed] .canon-radio-option-dot {
-  background-color: var(--semantic-control-selected);
-  background-image: linear-gradient(var(--semantic-overlay-pressed-inverse), var(--semantic-overlay-pressed-inverse));
+  background: var(--semantic-control-selected-pressed);
 }
 
 .canon-radio-option-button[data-focus-visible] .canon-radio-option-control {
