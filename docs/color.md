@@ -157,7 +157,7 @@ light 값은 `tint=cool` 기준이다. `*` 표시는 「5. Figma와 다른 값�
 | `surface/default` | white | gray/1000 |
 | `surface/raised` | white | gray/950 |
 | `surface/overlay` | white | gray/900 |
-| `surface/tinted` | gray/100 | gray/950 |
+| `surface/tinted` | gray/50 | gray/950 |
 | `control/neutral` | gray/50 | gray/950 |
 | `control/accent` | brand/600 | brand/600 |
 | `control/selected` | gray/1000 | gray/50 |
@@ -248,6 +248,13 @@ Figma `semantic`에는 색 말고 크기 토큰도 있다. 코드 CSS 변수에�
 ## 6. Figma에서 확인할 것
 
 Figma 원문에서 의도인지 실수인지 판단이 필요한 값이다. 2026-11-16 확인.
+
+dark 값은 light를 기준으로 나중에 보정한다(2026-11-16 결정). 아래 dark 항목은 그 보정 때 함께 본다.
+
+- dark에서 `background/default`와 `surface/default`가 같은 `gray/1000`이다.
+  - 면이 바탕과 구분되지 않는다.
+- dark 면 단계가 가파르다. `surface/default` `#2d2d2d`에서 `surface/overlay` `#595959`까지 올라간다.
+- `surface/tinted`를 `gray/50`으로 내리면서 `background/low`, `control/neutral`과 같은 값이 됐다(2026-11-16 결정).
 
 - `gray/700`(`#767676`)과 `gray/800`(`#717171`)이 거의 같은 색이다.
   - 그래서 `text/lowest`와 `text/low`가 눈으로 구분되지 않는다.

@@ -9,7 +9,7 @@
         "default": { "$value": "{color.white}" },
         "raised": { "$value": "{color.white}" },
         "overlay": { "$value": "{color.white}" },
-        "tinted": { "$value": "{color.gray.100}" }
+        "tinted": { "$value": "{color.gray.50}" }
       },
       "border": {
         "default": { "$value": "{color.gray.200}" },
@@ -29,7 +29,7 @@
         "default": { "$value": "{color.warm.50}" },
         "raised": { "$value": "{color.warm.50}" },
         "overlay": { "$value": "{color.warm.50}" },
-        "tinted": { "$value": "{color.warm.100}" }
+        "tinted": { "$value": "{color.warm.50}" }
       },
       "border": {
         "default": { "$value": "{color.warm.200}" },
