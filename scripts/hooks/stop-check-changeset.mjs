@@ -15,7 +15,8 @@ if (missing.length > 0) {
   process.stderr.write(
     `배포 패키지를 바꿨지만 changeset이 없습니다. 이대로 병합하면 아래 변경은 npm에 배포되지 않습니다.\n${lines}\n\n` +
       `.changeset/<짧은-이름>.md 파일을 직접 만들어 주세요(\`pnpm changeset\`은 대화형이라 쓰지 않습니다). 예:\n\n---\n"${missing[0].name}": patch\n---\n\n사용자가 알아야 할 변경 내용을 한두 문장으로 적는다.\n\n` +
-      '새 기능은 minor, 버그 수정은 patch, 호환성이 깨지면 major입니다. changeset 외의 파일은 더 고치지 마세요.\n',
+      '새 기능은 minor, 버그 수정은 patch, 호환성이 깨지면 major입니다. changeset 외의 파일은 더 고치지 마세요.\n' +
+      '최종 답변에는 이 안내에 대한 답만 적지 말고, 이번 작업 전체에서 무엇을 바꿨고 어떻게 확인했는지를 다시 적어 주세요.\n',
   )
   process.exit(2)
 }
