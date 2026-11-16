@@ -58,8 +58,8 @@ import '@canon/react/styles.css'
 | `ModalContent Next` | `DialogTitle`, `DialogDescription`, `DialogBody`, `DialogFooter` | header, body, footer anatomy가 일치한다. |
 | `showCloseButton` | `DialogClose` 포함 여부 | composition으로 표현한다. |
 | `showFooter` | `DialogFooter` 포함 여부 | composition으로 표현한다. |
-| `surface/default`, `overlay/scrim`, `text/primary` | 같은 semantic CSS variable | 일치한다. |
-| `space/24`, `space/16`, `space/12`, `space/8` | `spacing-6`, `spacing-4`, `spacing-3`, `spacing-2` | 값이 각각 24px, 16px, 12px, 8px로 일치한다. |
+| `surface/default`, `overlay/scrim`, `text/default` | 같은 semantic CSS variable | 일치한다. 2026-11-16 이름 동기화 반영. |
+| `space/24`, `space/16`, `space/12`, `space/8` | `spacing-300`, `spacing-200`, `spacing-150`, `spacing-100` | 값이 각각 24px, 16px, 12px, 8px로 일치한다. 2026-11-16 이름 동기화 반영. |
 | `radius/6` | `radius-md` | 값이 6px로 일치한다. |
 
 Figma footer의 `_ModalActions`와 코드의 `DialogFooter`는 Button 조합을 담는다. `DialogFooter`는 action children의 배치만 소유하고 Button variant를 대신 정하지 않는다.

@@ -37,23 +37,24 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 
 ## 원칙
 
-1. **Figma가 설계 정본이다.** `packages/tokens`는 Figma를 따라가며, 아래 동기화 상태를 함께 관리한다.
+1. **토큰 이름과 값의 기준은 Figma 변수다.** `packages/tokens`는 Figma를 따라간다. 코드가 일부러 다르게 둔 값은 [color.md](./color.md) 「5. Figma와 다른 값」에만 둔다.
 2. **컴포넌트의 컬러는 시멘틱 토큰만 바인딩한다.** 컬러 프리미티브(`color/gray/200`)를 컴포넌트에 직접 연결하지 않는다. 직접 연결하면 다크 모드가 안 된다. 간격·모서리·타이포그래피에는 해당 토큰을 사용한다.
-3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `control/informative/solid`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
+3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `status/informative/default`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
 4. **참고는 선별한다.** 다른 시스템의 규칙은 근거가 코드나 표준에 있는 것만 가져오고, 통째로 따르지 않는다. 기준은 [references.md](./references.md)에 있다.
 5. **바꿀 때는 추가, 재바인딩, 검증, 삭제 순서로 한다.** 옛것을 먼저 지우지 않는다. 자세한 절차는 [workflow.md](./workflow.md)에 있다.
 
 ## 코드 토큰과 Figma 동기화 상태
 
-아래는 2026-11-01에 `packages/tokens`를 Figma 정본에 맞춘 기록이다. 이후 Figma 변경까지 자동 검증하는 상태 표가 아니다. 프리뷰의 비교값은 해당 시점의 문서 기록이며, 현재 Figma 값은 원문을 다시 확인해야 한다.
+아래는 2026-11-16에 `packages/tokens`를 Figma 변수 404개에 맞춘 기록이다. 이후 Figma 변경을 자동으로 검사하지는 않는다. 다시 맞출 때는 Figma 원문을 읽어 대조한다.
 
 | 영역 | 동기화 결과 |
 | --- | --- |
-| 시멘틱 컬러 | `semantic` 컬러를 적용 대상 중심의 `background`, `surface`, `control`, `text`, `icon`, `border`, `status`, `overlay`, `static` 구조로 제공한다. `status/*`는 글자·아이콘이 함께 쓰는 의미색이고, 대상별 값이나 역할이 다를 때만 `border/status-*`처럼 대상 그룹에 예외를 둔다. light와 dark가 같은 CSS 변수명을 공유한다. |
-| 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha를 제공한다. 10색 값은 `ramps.py` 출력과 같다. |
+| 시멘틱 컬러 | Figma `semantic`의 색 50개와 이름·값을 맞췄다. 구조와 강도 어휘는 [color.md](./color.md) 「2. 시멘틱 이름 규칙」에 있다. light와 dark가 같은 CSS 변수명을 쓴다. |
+| 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha다. gray는 중립 회색이다. 10색 값은 `ramps.py` 출력과 같다. |
+| 크기 | spacing, control 높이, icon 크기, 테두리 두께, radius 단계를 Figma 이름으로 맞췄다. |
 | 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
-| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. |
-| 코드 전용 토큰 | spacing, radius, shadow는 이번 Figma 동기화 범위가 아니어서 기존 값을 유지한다. |
+| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. Figma `font`, `line-height` 변수와의 대조는 아직 하지 않았다. |
+| 코드 전용 토큰 | shadow는 Figma 변수에 없어 기존 값을 유지한다. |
 
 테마 속성은 문서 최상위 `html`에만 설정한다. 다크 모드는 `data-theme="dark"`에서 명시적으로 적용하고, 테마 속성이 없으면 `prefers-color-scheme: dark`를 따른다. `data-theme="light"`는 시스템 다크보다 우선한다.
 
@@ -77,14 +78,21 @@ Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문�
 
 ### 옛 시멘틱 토큰 대응
 
-옛 이름의 호환 별칭은 남기지 않았다. 사용 맥락에 따라 아래 새 토큰으로 옮긴다.
+2026-11-16 Figma 동기화로 이름이 바뀌었다. 호환 별칭은 남기지 않았다. 이전 이름을 쓰던 곳은 아래처럼 옮긴다.
 
-| 옛 그룹 | 새 토큰 |
+| 이전 이름 | 새 이름 |
 | --- | --- |
-| `color/bg/strong*` | `control/neutral/solid`, `control/neutral/solid-hover`, `control/neutral/solid-pressed` |
-| `color/bg/base`, `base-hover`, `faint`, `disabled` | `surface/default`, `overlay/hover`, `surface/muted`, `control/disabled` |
-| `color/bg/brand`, `danger`, `success`, `info` | `control/informative`, `control/negative`, `control/positive`의 `solid`와 `surface/*` 상태 면 |
-| `color/text/strong`, `base`, `faint`, `disabled` | `text/primary`, `text/secondary`, `text/tertiary`, `text/disabled` |
-| `color/text/brand`, `danger`, `success` | `text/link`, `text/accent` 또는 해당 `status/*` 의미색 |
-| `color/border/base*`, `faint`, `disabled` | `border/default`, `border/emphasis`, `border/disabled` |
-| `color/border/danger*` | `border/status-negative`, `border/status-negative-subtle` 또는 상태 오버레이 |
+| `background/base` | `background/default` (값이 흰색으로 바뀜) |
+| `surface/muted` | `surface/tinted` |
+| `surface/{의미}` | `status/{의미}/low` |
+| `status/{의미}` | `status/{의미}/emphasis` |
+| `control/{의미}/solid`, `border/status-{의미}` | `status/{의미}/default` |
+| `control/accent/solid` | `control/accent` |
+| `control/neutral/solid*`, `border/selected*` | `control/selected*` |
+| `control/neutral/subtle` | `control/neutral` |
+| `control/*/solid-hover`, `solid-pressed` | 채움 위에 `overlay/hover-inverse`, `overlay/pressed-inverse` |
+| `control/*/on-solid` | `text/on-status`, `text/inverse`, notice는 `static/black` |
+| `text/primary`, `secondary`, `tertiary` | `text/default`, `low`, `lowest` |
+| `icon/primary`, `secondary` | `icon/default`, `low` |
+| `text/accent`, `border/accent`, `border/status-*-subtle` | 삭제. 쓰던 곳이 없었다. |
+| `--spacing-{4px 배수}`, `--radius-xl` 이상 | [color.md](./color.md) 「4. 크기 토큰」의 새 단계 |

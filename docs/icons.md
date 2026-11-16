@@ -58,7 +58,7 @@ Figma의 Phosphor 라이브러리(`Phosphor Icons (Community)`)를 팀 라이브
    - 예외: 모든 아이콘의 `fill`이 "채운 같은 모양"은 아니다. `x`, `check`, `minus`, `plus`의 `fill`은 모서리가 둥근 사각 박스 안에 기호를 뺀 모양이고, `caret-*`의 `fill`은 속이 찬 삼각형이다. 닫기, 체크, 확장 표시처럼 모양이 바뀌면 안 되는 곳에서는 `fill`을 쓰지 않는다. 원형(`info`, `warning`, `check-circle`, `x-circle`)과 `magnifying-glass`는 자연스럽게 채워진다.
 2. **`thin`, `light`, `duotone`은 쓰지 않는다.**
    - 이유: 작은 크기에서 0.5px 아래로 내려가고, duotone은 면 색을 따로 정해야 해서 `icon/*` 토큰 구조와 맞지 않는다.
-3. **색은 `currentColor`를 상속한다.** 라벨이 있는 컴포넌트의 아이콘은 라벨 글자와 같은 토큰을 쓰고([color.md](./color.md) 규칙 5), 독립 아이콘만 `icon/primary`, `icon/secondary`, `icon/disabled`, `icon/inverse`를 쓴다.
+3. **색은 `currentColor`를 상속한다.** 라벨이 있는 컴포넌트의 아이콘은 라벨 글자와 같은 토큰을 쓰고, 독립 아이콘만 `icon/default`, `icon/low`, `icon/disabled`, `icon/inverse`를 쓴다([color.md](./color.md) 「2. 시멘틱 이름 규칙」).
 4. **크기는 `Icon` 래퍼가 `size` prop으로 명시해서 넘긴다.** `IconContext`로 일괄 지정하지 않는다.
    - 이유: SSR 엔트리(`/ssr`)의 아이콘은 Context를 쓰지 않아서 상속이 안 된다.
 5. **아이콘은 개별 경로로 import한다**(`@phosphor-icons/react/dist/csr/<Name>` 또는 Next의 `optimizePackageImports`).
