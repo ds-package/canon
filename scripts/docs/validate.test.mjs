@@ -18,15 +18,18 @@ const REQUIRED_DESIGN = [
 
 const CONTRACT = [
   '## 공통 계약\n',
-  '| 이름 | 사용하지 않는 조건 |',
+  '| 이름 | 뜻과 값 | 사용하지 않는 조건 |',
+  '| --- | --- | --- |',
+  '| `label` | `ghostProp` 타입, 기본 `md` | `isOpen`을 만들지 않는다. |\n',
+  '| 상태 | Controlled |',
   '| --- | --- |',
-  '| `label` | `isOpen`을 만들지 않는다. |\n',
+  '| 선택 여부 | `checked` |\n',
   '`onClick`은 노출하지 않는다.\n',
   '## 플랫폼 번역\n',
   '### React\n',
   '| 이름 | 지원 범위 |',
   '| --- | --- |',
-  '| `value` | Field |\n',
+  '| `value` | Field, `isOpen` 아님 |\n',
   '### iOS와 Android\n',
   '| 공통 계약 | Compose |',
   '| --- | --- |',
@@ -273,7 +276,7 @@ test('requires every public component export in the coverage matrix', async (t) 
   ])
 })
 
-test('accepts props only from common contract and React translation table cells', async (t) => {
+test('accepts props only from the 이름 column of common contract and React translation tables', async (t) => {
   const root = await fixture(t)
   await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
@@ -281,13 +284,16 @@ test('accepts props only from common contract and React translation table cells'
   await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
   await writeFile(
     path.join(root, 'packages/react/src/Field.tsx'),
-    'export interface FieldProps { label: string; isOpen?: boolean; onClick?: () => void }\nexport function Field(_props: FieldProps) { return null }\n',
+    'export interface FieldProps { label: string; checked?: boolean; ghostProp?: string; isOpen?: boolean; md?: boolean; onClick?: () => void }\nexport function Field(_props: FieldProps) { return null }\n',
   )
-  const matrix = '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `isOpen`, `onClick` |\n'
+  const matrix = '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `checked`, `ghostProp`, `isOpen`, `md`, `onClick` |\n'
 
   await writeFile(path.join(root, 'docs/components.md'), `${CONTRACT}${matrix}`)
   assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: FieldProps.checked has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.ghostProp has no 공통 계약 or React 번역 entry',
     'docs/components.md: FieldProps.isOpen has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.md has no 공통 계약 or React 번역 entry',
     'docs/components.md: FieldProps.onClick has no 공통 계약 or React 번역 entry',
   ])
 

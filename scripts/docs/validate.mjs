@@ -170,11 +170,11 @@ async function validateRuntimeStatus(root, errors) {
   }
 }
 
-const EXCLUDED_CONTRACT_COLUMN = '사용하지 않는 조건'
+const CONTRACT_NAME_COLUMN = '이름'
 
-// Names a React public prop may use: backticked names in the table cells of `## 공통 계약` and
-// `### React`. Prose and the 사용하지 않는 조건 column name forbidden or adapter-internal names
-// (`isOpen`, `onClick`, `state`), and the iOS·Android table names other platforms' APIs.
+// Names a React public prop may use: backticked names in the 이름 column of the tables in `## 공통 계약`
+// and `### React`. Other columns hold types, defaults, and forbidden or adapter-internal names
+// (`'md'`, `string | undefined`, `isOpen`). Prose and the iOS·Android table are not read.
 function readContractNames(source, errors) {
   const sections = [
     source.match(/(?:^|\n)## 공통 계약[ \t]*\n([\s\S]*?)(?=\n## |$)/)?.[1],
@@ -189,16 +189,15 @@ function readContractNames(source, errors) {
   for (const section of sections) {
     for (const table of section.match(/(?:^\|.*\n?)+/gm) ?? []) {
       const [header, , ...rows] = table.trimEnd().split('\n').map((line) => line.split(/(?<!\\)\|/).slice(1, -1))
-      const included = header.map((cell) => cell.trim() !== EXCLUDED_CONTRACT_COLUMN)
+      const column = header.findIndex((cell) => cell.trim() === CONTRACT_NAME_COLUMN)
+      if (column === -1) continue
       for (const cells of rows) {
-        cells
-          .filter((_, column) => included[column])
-          .forEach((cell) => [...cell.matchAll(/`([^`]+)`/g)].forEach((name) => names.add(name[1])))
+        for (const name of (cells[column] ?? '').matchAll(/`([^`]+)`/g)) names.add(name[1])
       }
     }
   }
   if (!names.size) {
-    errors.push('docs/components.md: 공통 계약 and React 번역 tables name no props')
+    errors.push('docs/components.md: 공통 계약 and React 번역 tables name no props in an 이름 column')
     return null
   }
   return names

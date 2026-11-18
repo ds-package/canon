@@ -23,6 +23,8 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 공통 계약의 타입은 플랫폼 중립 표현으로 쓴다. 텍스트는 보이는 문자열, rich content는 플랫폼이 허용하는 구성 콘텐츠, icon은 장식 icon, action은 사용자가 실행하는 동작, 선택 key는 저장해도 되는 안정적인 식별자다. 각 플랫폼의 실제 타입은 플랫폼 번역이 정한다.
 
+공통 계약과 React 번역 표에서 public prop 이름은 `이름` 열에만 쓰고, `이름` 열의 backtick에는 prop 이름만 쓴다. docs validator는 이 열의 backtick 이름만 허용된 React prop으로 읽으므로, 타입, 기본값, 금지 이름은 다른 열에 쓴다.
+
 ### 선택과 구조
 
 | 이름 | 뜻과 값 | 기본값 | 사용 | 사용하지 않는 조건 |
@@ -50,11 +52,11 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 공통 계약은 현재 값과 변경 알림의 의미만 정한다. 초기값만 받아 컴포넌트가 상태를 갖는 방식과 상태 전달 방식은 플랫폼 번역이 정한다.
 
-| 상태 | 값 | 현재 값 | 변경 알림 | 사용하지 않는 조건 |
-| --- | --- | --- | --- | --- |
-| 일반 값 | text는 텍스트, NumberField는 숫자 또는 빈 값, Select와 RadioGroup은 선택 key 또는 미선택 | `value` | `onValueChange` | boolean 선택 여부나 overlay 열림에 쓰지 않는다. |
-| 선택 여부 | boolean | `checked` | `onCheckedChange` | RadioGroup과 Select의 단일 선택 key에 쓰지 않는다. |
-| 열림 여부 | boolean | `open` | `onOpenChange` | 단순 visibility나 interaction state에 쓰지 않는다. |
+| 이름 | 상태 | 값 | 사용하지 않는 조건 |
+| --- | --- | --- | --- |
+| `value`, `onValueChange` | 일반 값의 현재 값과 변경 알림 | text는 텍스트, NumberField는 숫자 또는 빈 값, Select와 RadioGroup은 선택 key 또는 미선택 | boolean 선택 여부나 overlay 열림에 쓰지 않는다. |
+| `checked`, `onCheckedChange` | 선택 여부의 현재 값과 변경 알림 | boolean | RadioGroup과 Select의 단일 선택 key에 쓰지 않는다. |
+| `open`, `onOpenChange` | 열림 여부의 현재 값과 변경 알림 | boolean | 단순 visibility나 interaction state에 쓰지 않는다. |
 
 - 값을 바꿀 수 있는 control은 변경 알림을 제공한다. `readOnly` field만 변경 알림을 생략할 수 있다.
 - NumberField의 빈 값은 `0`이 아니라 빈 값이다.
@@ -114,11 +116,11 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 
 #### 초기값과 controlled 상태
 
-| 상태 | Controlled | Uncontrolled와 생략 기본값 | 변경 알림 |
-| --- | --- | --- | --- |
-| 일반 값 | `value` | `defaultValue`, 생략하면 빈 값 또는 미선택 | `onValueChange` |
-| 선택 여부 | `checked` | `defaultChecked`, 생략하면 `false` | `onCheckedChange` |
-| 열림 여부 | `open` | `defaultOpen`, 생략하면 `false` | `onOpenChange` |
+| 이름 | Uncontrolled 초기값의 짝 | 생략 기본값 |
+| --- | --- | --- |
+| `defaultValue` | controlled `value`, 변경 알림 `onValueChange` | 빈 값 또는 미선택 |
+| `defaultChecked` | controlled `checked`, 변경 알림 `onCheckedChange` | `false` |
+| `defaultOpen` | controlled `open`, 변경 알림 `onOpenChange` | `false` |
 
 - controlled 값과 default 값은 함께 받지 않는다.
 - controlled 값에는 변경 알림이 필요하다. `readOnly` field만 callback을 생략할 수 있다.
@@ -155,7 +157,7 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 | `onPress` | action closure | `onClick` |
 | 접근 가능한 이름 | `accessibilityLabel` | `contentDescription`, semantics |
 | form 제출 연결 | 없다. | 없다. |
-| Dialog | 플랫폼 기본 alert. title, message, button만 담는다. | Material3 `AlertDialog`. title, text, button만 담는다. |
+| Dialog | 미정. 플랫폼 기본 alert는 Dialog가 아니라 후속 AlertDialog에 대응한다. | 미정. Material3 `AlertDialog`는 Dialog가 아니라 후속 AlertDialog에 대응한다. |
 | 터치 영역 하한 | 44pt | 48dp |
 | `size` | 최소 높이와 밀도. Dynamic Type에 따라 높이가 늘어난다. | 최소 높이와 밀도. 글꼴 크기 설정에 따라 높이가 늘어난다. |
 
