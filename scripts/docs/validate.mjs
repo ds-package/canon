@@ -186,6 +186,7 @@ function readContractNames(source, errors) {
   }
 
   const names = new Set()
+  // shortcut: reads unindented pipe tables only, use a Markdown parser when tables move into lists or code fences.
   for (const section of sections) {
     for (const table of section.match(/(?:^\|.*\n?)+/gm) ?? []) {
       const [header, , ...rows] = table.trimEnd().split('\n').map((line) => line.split(/(?<!\\)\|/).slice(1, -1))

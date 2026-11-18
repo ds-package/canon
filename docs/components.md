@@ -23,17 +23,17 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 공통 계약의 타입은 플랫폼 중립 표현으로 쓴다. 텍스트는 보이는 문자열, rich content는 플랫폼이 허용하는 구성 콘텐츠, icon은 장식 icon, action은 사용자가 실행하는 동작, 선택 key는 저장해도 되는 안정적인 식별자다. 각 플랫폼의 실제 타입은 플랫폼 번역이 정한다.
 
-공통 계약과 React 번역 표에서 public prop 이름은 `이름` 열에만 쓰고, `이름` 열의 backtick에는 prop 이름만 쓴다. docs validator는 이 열의 backtick 이름만 허용된 React prop으로 읽으므로, 타입, 기본값, 금지 이름은 다른 열에 쓴다.
+공통 계약과 React 번역 표에서 public prop 이름은 `이름` 열에만 쓰고, `이름` 열의 backtick에는 prop 이름만 쓴다. docs validator는 이 열의 backtick 이름만 허용된 React prop으로 읽으므로, 타입, 기본값, 금지 이름은 다른 열에 쓴다. 아직 구현하지 않은 후보는 `이름` 열이 없는 `구현 전 후보` 표에만 쓴다.
 
 ### 선택과 구조
 
 | 이름 | 뜻과 값 | 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- | --- |
 | `variant` | Button 계열 `'primary' \| 'secondary' \| 'quiet' \| 'destructive'` | Button `primary`, IconButton `quiet` | Button, IconButton | 범용 variant 목록, token 이름, Figma 면 처리 축을 복사하지 않는다. |
-| `status` | 구현 전 후보는 `'informative' \| 'positive' \| 'notice' \| 'negative'` | 확정 기본값 없음 | 구현된 컴포넌트 없음 | Alert와 Badge가 구현되기 전에는 예상 public prop으로 만들지 않는다. |
 | `size` | 밀도. Button은 `'xs' \| 'sm' \| 'md' \| 'lg'`, field는 `'sm' \| 'md' \| 'lg'` | 모두 `md` | Button 계열, Select, TextField, TextArea, NumberField | 의미, icon 형태, 반응형 breakpoint를 값에 넣지 않는다. |
 | `orientation` | `'horizontal' \| 'vertical'`, 선택지 배치와 탐색 순서 | `vertical` | RadioGroup | 단순 정렬만 바꾸는 prop으로 쓰지 않는다. |
 | `shape` | `'square' \| 'round'`, 같은 역할의 외곽 형태 | `square` | IconButton | Button의 의미나 icon 종류를 표현하지 않는다. |
+| `id` | 선택 key. 비어 있지 않고 같은 목록 안에서 고유하다 | 필수, 기본값 없음 | SelectItem | 표시 순서나 label 텍스트로 대신하지 않는다. 화면 요소 식별자로 쓰지 않는다. |
 
 `variant` 값은 컴포넌트마다 다를 수 있다. Button의 `destructive`는 되돌리기 어려운 행동의 결과이므로 feedback `status`가 아니라 Button variant다.
 
@@ -42,10 +42,10 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 | 이름 | 값과 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- |
 | `disabled` | boolean, 기본 `false` | 사용할 수 없는 interactive component | hover, focus 같은 순간 interaction을 대신하지 않는다. |
-| `readOnly` | boolean, 기본 `false` | 값을 보여주고 focus할 수 있지만 수정할 수 없는 field | Select처럼 플랫폼에 안정적인 read-only 동작이 없으면 노출하지 않는다. |
+| `readOnly` | boolean, 기본 `false` | 값을 보여주고 focus할 수 있지만 수정할 수 없는 field와 choice control | Select처럼 플랫폼에 안정적인 read-only 동작이 없으면 노출하지 않는다. |
 | `required` | boolean, 기본 `false` | 제출 전 값이 필요한 form control | Switch의 즉시 적용 설정, Button, Dialog에 쓰지 않는다. |
 | `invalid` | boolean, 기본 `false` | 검증 실패를 명시하는 form control | 시각적 강조나 warning status를 대신하지 않는다. `errorMessage`와 함께 쓴다. |
-| `pending` | boolean, 기본 `false` | 비동기 action 중인 Button | 모든 loading 표현이나 field validation 상태로 일반화하지 않는다. |
+| `pending` | boolean, 기본 `false` | 비동기 action 중인 Button, IconButton | 모든 loading 표현이나 field validation 상태로 일반화하지 않는다. |
 | `indeterminate` | boolean, 기본 `false` | 일부 하위 항목만 선택된 Checkbox | 세 번째 form value나 일반적인 mixed style로 쓰지 않는다. |
 
 ### 지속 상태
@@ -66,7 +66,7 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 | 이름 | 값과 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- |
-| `children` | Button과 Dialog anatomy는 필수 rich content; Checkbox, Switch, RadioOption은 필수 텍스트; RadioGroup은 RadioOption만, Select는 SelectItem만 받는다 | 해당 컴포넌트 | 생략 기본값은 없다. 보임을 위한 별도 `showChildren`을 만들지 않는다. |
+| `children` | Button과 Dialog anatomy는 필수 rich content, DialogClose는 선택 rich content; Checkbox, Switch, RadioOption은 필수 텍스트; SelectItem은 필수 rich content; RadioGroup은 RadioOption만, Select는 SelectItem만, DialogTrigger는 trigger와 Dialog 두 element만 받는다 | 해당 컴포넌트 | DialogClose는 생략하면 닫기 icon을 쓰고, 나머지는 생략 기본값이 없다. 보임을 위한 별도 `showChildren`을 만들지 않는다. |
 | `label` | 필수 rich content | Select, TextField, TextArea, NumberField, RadioGroup | `placeholder`나 주변 문맥으로 대신하지 않는다. |
 | `placeholder` | 텍스트, 기본 없음 | Select, TextField, TextArea | label이나 입력 조건 설명을 대신하지 않는다. |
 | `description` | rich content, 기본 없음 | 설명을 연결하는 field와 choice control | label이나 오류를 반복하지 않는다. |
@@ -74,9 +74,7 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 | `leadingIcon` | icon, 기본 없음 | Button | 콘텐츠 존재로 보임을 정한다. `showLeadingIcon`을 함께 만들지 않는다. |
 | `trailingIcon` | icon, 기본 없음 | Button | 콘텐츠 존재로 보임을 정한다. `showTrailingIcon`을 함께 만들지 않는다. |
 | `icon` | 필수 icon | IconButton | 접근 가능한 이름 없이 쓰지 않는다. |
-| `leadingSlot` | 구현된 타입과 기본값 없음 | 구현된 컴포넌트 없음 | Figma InputGroup의 instance swap만 보고 prop을 만들지 않는다. |
-| `trailingSlot` | 구현된 타입과 기본값 없음 | 구현된 컴포넌트 없음 | 실제 runtime 사용 사례와 접근성 계약이 생길 때 결정한다. |
-| `pendingLabel` | 비어 있지 않은 텍스트, 기본 `Loading` | Button의 진행 상태 이름 | 보이는 Button label을 대체하지 않는다. |
+| `pendingLabel` | 비어 있지 않은 텍스트, 기본 `Loading` | Button, IconButton의 진행 상태 이름 | 보이는 Button label을 대체하지 않는다. |
 
 Checkbox, Switch, RadioOption의 `children`은 단일한 보이는 label이므로 텍스트로 제한한다. SelectItem은 rich content를 허용하지만 텍스트가 아니면 검색과 보조 기술용 `textValue`가 필요하다. 이 차이는 같은 의미의 이름 불일치가 아니라 역할별 콘텐츠 제약이다.
 
@@ -84,7 +82,7 @@ Checkbox, Switch, RadioOption의 `children`은 단일한 보이는 label이므�
 
 | 이름 | 값과 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- |
-| `onPress` | action, 기본 없음 | Button, IconButton | 화면 이동에 쓰지 않는다. |
+| `onPress` | action, 기본 없음 | Button, IconButton | 링크 이동에 쓰지 않는다. |
 | 접근 가능한 이름 | 텍스트. IconButton은 필수 | Button 계열 | 보이는 label이 있는 곳에 중복 이름을 만들지 않는다. |
 | `minValue`, `maxValue`, `step` | 숫자, 기본 없음 | NumberField | 비유한 숫자 식별자에 쓰지 않는다. |
 | `formatOptions` | locale에 맞는 숫자 표시 규칙, 기본 없음 | NumberField | 통화·단위 문자열을 직접 붙이는 데 쓰지 않는다. |
@@ -97,6 +95,16 @@ Checkbox, Switch, RadioOption의 `children`은 단일한 보이는 label이므�
 - 보이는 `size`는 터치 영역의 하한을 낮추지 않는다. 하한 값은 플랫폼 번역이 정한다.
 - Dialog를 닫는 방식은 플랫폼 번역이 정한다. 공통 계약은 열림 여부와 변경 알림만 정한다.
 - 위치에는 `leading`, `trailing`을 쓴다. `left`, `right`나 token 이름을 public prop으로 만들지 않는다.
+
+### 구현 전 후보
+
+아래 이름은 확정 계약이 아니다. 구현이 결정되면 해당 표의 `이름` 열로 옮기고, 그 전에는 public prop으로 만들지 않는다.
+
+| 후보 | 구현 전 값 | 결정 조건 |
+| --- | --- | --- |
+| `status` | `'informative' \| 'positive' \| 'notice' \| 'negative'`, 확정 기본값 없음 | Alert와 Badge가 구현될 때 정한다. |
+| `leadingSlot` | 구현된 타입과 기본값 없음 | Figma InputGroup의 instance swap만 보고 만들지 않는다. |
+| `trailingSlot` | 구현된 타입과 기본값 없음 | 실제 runtime 사용 사례와 접근성 계약이 생길 때 정한다. |
 
 ## 플랫폼 번역
 
@@ -136,9 +144,10 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 | `id` | `string \| undefined`, 기본 `undefined` | Button, IconButton의 DOM id | SelectItem의 선택 key `id`와 혼동하지 않는다. |
 | `autoFocus` | `boolean \| undefined`, 기본 `false` | Button, IconButton, Select, TextField | 검증하지 않은 control로 일괄 확대하지 않는다. |
 | `onFocus`, `onBlur` | React Aria focus handler 또는 `undefined`, 기본 `undefined` | Select, TextField | DOM 상태를 제어하는 prop으로 쓰지 않는다. |
-| `aria-label`, `aria-labelledby`, `aria-describedby` | `string \| undefined`, 기본 `undefined`; IconButton의 `aria-label`은 필수 | Button 계열, DialogClose | 보이는 label이 있는 곳에 중복 이름을 만들지 않는다. |
+| `aria-label`, `aria-labelledby`, `aria-describedby` | `string \| undefined`, 기본 `undefined`; IconButton의 `aria-label`은 필수 | Button 계열. DialogClose는 `aria-label`만 받고 children이 없으면 필수다. | 보이는 label이 있는 곳에 중복 이름을 만들지 않는다. |
 | `className` | `string \| undefined`, 기본 `undefined` | Button, IconButton | 공통 escape hatch로 가정하지 않는다. |
 | `autoComplete`, `inputMode`, `pattern`, `minLength`, `maxLength` | native input props. 앞의 셋은 string 계열, length는 `number \| undefined`; 모두 기본 `undefined` | TextField | 검증한 allowlist 밖 native prop을 추가하지 않는다. |
+| `type` | TextField 입력 종류 `'text' \| 'search' \| 'email' \| 'password' \| 'url' \| 'tel'`, 기본 `text` | TextField | 숫자 입력에 `type="number"`를 만들지 않고 NumberField를 쓴다. |
 | `textValue` | `string \| undefined` | SelectItem | 텍스트 children에는 필요 없다. |
 | `closeOnInteractOutside`, `closeOnEscape` | `boolean`, outside 기본 `false`, Escape 기본 `true` | Dialog | 범용 layout prop으로 확대하지 않는다. |
 | `readOnly` 제출 | `disabled`와 달리 값이 form에 제출된다 | field와 choice control | 수정 불가 표시만을 위해 `disabled`를 대신 쓰지 않는다. |

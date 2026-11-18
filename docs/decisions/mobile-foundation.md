@@ -32,15 +32,16 @@ Canon은 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, Numb
 
 | 주체 | 소유하는 것 |
 | --- | --- |
-| 공통 계약 | 제품이 결정하는 상태와 콘텐츠의 의미, 필수 조건, variant 의미, 터치 영역 하한 |
-| 플랫폼 번역 | 플랫폼 관례 이름과 타입, 상태 전달 방식, 표시 방식, 접근성 API 대응 |
+| 공통 계약 | 제품이 결정하는 상태와 콘텐츠의 의미, 필수 조건, variant 의미, 보이는 `size`가 터치 영역 하한을 낮추지 않는다는 규칙 |
+| 플랫폼 번역 | 플랫폼 관례 이름과 타입, 상태 전달 방식, 표시 방식, 접근성 API 대응, 터치 영역 하한 값 |
 | SwiftUI와 Compose | focus, pressed, 시스템 back과 dismiss, Dynamic Type과 글꼴 크기 계산, 보조 기술 동작 |
 | Canon을 사용하는 앱 | 데이터와 비즈니스 상태, 권한, 요청과 오류 처리, 제품별 콘텐츠 |
 
 ## 결과와 제약
 
 - iOS 16을 지원하므로 iOS 17 API에 의존하지 않는다. 상태 관리는 `@Observable` 대신 `ObservableObject`를 쓰고, Checkbox의 접근성은 `.isToggle` trait 대신 button trait과 `accessibilityValue`로 표현한다. `performAccessibilityAudit` 같은 접근성 감사는 최소 지원 버전과 별개로 iOS 17 이상 simulator에서 실행할 수 있다.
-- 플랫폼 alert는 title, message, button만 담고 닫기는 alert button과 시스템 동작이 맡는다. 그래서 React Dialog의 `DialogBody` rich content, 아이콘만 있는 `DialogClose`, `closeOnInteractOutside`, `closeOnEscape`를 표현할 수 없다. 이 차이 때문에 alert를 Dialog의 번역으로 두지 않고 AlertDialog로 분리한다.
+- iOS `.alert`의 message는 서식 없는 텍스트만 받고, action은 `Text` label을 가진 control만 받는다. 그래서 React Dialog의 `DialogBody` rich content와 아이콘만 있는 `DialogClose`를 표현할 수 없다.
+- Compose Material3 `AlertDialog`는 `icon`, `title`, `text`를 composable slot으로 받고, `DialogProperties`의 `dismissOnClickOutside`, `dismissOnBackPress`로 닫기 조건을 정할 수 있어 Dialog의 내용 대부분을 표현할 수 있다. 그래도 두 플랫폼에서 같은 이름이 같은 의미를 갖도록, iOS alert와 짝을 이루는 Compose `AlertDialog`도 Dialog의 번역으로 두지 않고 AlertDialog에 대응시킨다. Compose에서 Dialog를 `AlertDialog`, `BasicAlertDialog`, `Dialog` 중 무엇으로 구현할지는 Dialog의 모바일 표현과 함께 정한다.
 - 모바일에는 HTML form이 없으므로 form 제출 연결 prop을 만들지 않는다.
 - 공통 계약의 `size` 값 중 모바일에서 `xs`를 제공할지는 Button 구현 때 정한다.
 - 모바일 토큰 결정 문서는 Swift와 Kotlin 출력 형식, pt·dp·sp 단위와 행간·자간 변환, 다크 appearance, brand·tint 테마 전달, shadow와 elevation 대응, Pretendard 번들링과 Dynamic Type 스케일 곡선을 다룬다.
@@ -67,6 +68,9 @@ Canon은 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, Numb
 
 - 2026-11-16 Canon Mobile 협업 방향 검토에서 사용자가 확정한 결정
 - [컴포넌트 프로퍼티 모델](../components.md), [Interaction foundation](./interaction-foundation.md)
-- [Human Interface Guidelines: Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility): 최소 터치 영역 44pt
+- [Human Interface Guidelines: Accessibility](https://developer.apple.com/design/human-interface-guidelines/accessibility): iOS 기본 control 크기 44x44pt, 최소 control 크기 28x28pt. Canon은 기본값 44pt를 터치 영역 하한으로 채택한다.
 - [Android accessibility: touch target size](https://developer.android.com/guide/topics/ui/accessibility/apps#large-controls): 최소 터치 영역 48dp
-- [Swift Package Manager: Package.swift](https://docs.swift.org/swiftpm/documentation/packagedescription/): 저장소 루트 manifest와 semantic version tag
+- [SwiftUI `alert(_:isPresented:actions:message:)`](https://developer.apple.com/documentation/swiftui/view/alert%28_:ispresented:actions:message:%29): iOS alert의 action과 message 제약
+- [Compose Material3 `AlertDialog`](https://developer.android.com/reference/kotlin/androidx/compose/material3/package-summary): composable slot과 `DialogProperties`
+- [Swift Package Manager: Releasing and publishing a Swift package](https://docs.swift.org/latest/documentation/packagemanagerdocs/releasingpublishingapackage): 저장소 루트의 `Package.swift` manifest와 major·minor·patch를 모두 갖춘 semantic version tag
+- [SwiftPM `Version(tag:)`](https://github.com/swiftlang/swift-package-manager/blob/main/Sources/Basics/Version%2BExtensions.swift): tag 앞의 `v`를 떼고 버전을 읽는다
