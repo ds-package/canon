@@ -77,7 +77,7 @@ test('authored navigation metadata covers the complete left navigation corpus', 
       { key: 'foundation', routes: ['/docs/color', '/docs/typography', '/docs/icons'] },
       {
         key: 'architecture',
-        routes: ['/docs/decisions/docs-platform', '/docs/decisions/interaction-foundation'],
+        routes: ['/docs/decisions/docs-platform', '/docs/decisions/interaction-foundation', '/docs/decisions/mobile-foundation'],
       },
     ],
   )

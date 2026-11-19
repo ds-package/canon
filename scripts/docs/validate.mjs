@@ -170,6 +170,40 @@ async function validateRuntimeStatus(root, errors) {
   }
 }
 
+const CONTRACT_NAME_COLUMN = '이름'
+
+// Names a React public prop may use: backticked names in the 이름 column of the tables in `## 공통 계약`
+// and `### React`. Other columns hold types, defaults, and forbidden or adapter-internal names
+// (`'md'`, `string | undefined`, `isOpen`). Prose and the iOS·Android table are not read.
+function readContractNames(source, errors) {
+  const sections = [
+    source.match(/(?:^|\n)## 공통 계약[ \t]*\n([\s\S]*?)(?=\n## |$)/)?.[1],
+    source.match(/(?:^|\n)### React[ \t]*\n([\s\S]*?)(?=\n## |\n### |$)/)?.[1],
+  ]
+  if (sections.some((section) => section === undefined)) {
+    errors.push('docs/components.md: missing 공통 계약 or 플랫폼 번역 React section')
+    return null
+  }
+
+  const names = new Set()
+  // shortcut: reads unindented pipe tables only, use a Markdown parser when tables move into lists or code fences.
+  for (const section of sections) {
+    for (const table of section.match(/(?:^\|.*\n?)+/gm) ?? []) {
+      const [header, , ...rows] = table.trimEnd().split('\n').map((line) => line.split(/(?<!\\)\|/).slice(1, -1))
+      const column = header.findIndex((cell) => cell.trim() === CONTRACT_NAME_COLUMN)
+      if (column === -1) continue
+      for (const cells of rows) {
+        for (const name of (cells[column] ?? '').matchAll(/`([^`]+)`/g)) names.add(name[1])
+      }
+    }
+  }
+  if (!names.size) {
+    errors.push('docs/components.md: 공통 계약 and React 번역 tables name no props in an 이름 column')
+    return null
+  }
+  return names
+}
+
 async function validatePropertyCoverage(root, errors) {
   const indexPath = path.join(root, 'packages/react/src/index.ts')
   const componentsPath = path.join(root, 'docs/components.md')
@@ -212,7 +246,14 @@ async function validatePropertyCoverage(root, errors) {
       checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(symbol)).map((prop) => prop.name).sort(),
     ])
 
+  const contractNames = readContractNames(componentsSource.replace(/\r\n/g, '\n'), errors)
+
   for (const [typeName, props] of publicProps) {
+    if (contractNames) {
+      for (const prop of props.filter((name) => !contractNames.has(name))) {
+        errors.push(`docs/components.md: ${typeName}.${prop} has no 공통 계약 or React 번역 entry`)
+      }
+    }
     const documentedProps = documented.get(typeName)
     if (!documentedProps) {
       errors.push(`docs/components.md: missing ${typeName} coverage`)

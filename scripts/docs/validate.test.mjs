@@ -16,6 +16,36 @@ const REQUIRED_DESIGN = [
   '문서화되지 않은 질문은 추정하지 않고 미확인으로 남긴다.',
 ].join('\n')
 
+const CONTRACT = [
+  '## 공통 계약\n',
+  '| 이름 | 뜻과 값 | 사용하지 않는 조건 |',
+  '| --- | --- | --- |',
+  '| `label` | `ghostProp` 타입, 기본 `md` | `isOpen`을 만들지 않는다. |\n',
+  '| 상태 | Controlled |',
+  '| --- | --- |',
+  '| 선택 여부 | `checked` |\n',
+  '| 후보 | 결정 조건 |',
+  '| --- | --- |',
+  '| `status` | 구현될 때 정한다. |\n',
+  '| 표시 이름 | 이름 |',
+  '| --- | --- |',
+  '| `wide` \\| `x` | `extra` |\n',
+  '`onClick`은 노출하지 않는다.\n',
+  '## 플랫폼 번역\n',
+  '### React\n',
+  '| 이름 | 지원 범위 |',
+  '| --- | --- |',
+  '| `value` | Field, `isOpen` 아님 |\n',
+  '#### 초기값\n',
+  '| 이름 | 짝 |',
+  '| --- | --- |',
+  '| `hint`, `note` | `value` |\n',
+  '### iOS와 Android\n',
+  '| 이름 | Compose |',
+  '| --- | --- |',
+  '| `onClick` | action |\n\n',
+].join('\n')
+
 async function fixture(t) {
   const root = await mkdtemp(path.join(tmpdir(), 'canon-docs-'))
   t.after(() => rm(root, { recursive: true, force: true }))
@@ -228,7 +258,7 @@ test('keeps documented property coverage aligned with public TypeScript props', 
   )
   await writeFile(
     path.join(root, 'docs/components.md'),
-    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `state` |\n',
+    `${CONTRACT}## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | \`FieldProps\` | \`label\`, \`state\` |\n`,
   )
 
   assert.deepEqual(await validateDocs(root), [
@@ -248,10 +278,53 @@ test('requires every public component export in the coverage matrix', async (t) 
   )
   await writeFile(
     path.join(root, 'docs/components.md'),
-    '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Field | `FieldProps` | `label` |\n',
+    `${CONTRACT}## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Field | \`FieldProps\` | \`label\` |\n`,
   )
 
   assert.deepEqual(await validateDocs(root), [
     'docs/components.md: missing public component Field coverage',
+  ])
+})
+
+test('accepts props only from the 이름 column of common contract and React translation tables', async (t) => {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    'export interface FieldProps { label: string; checked?: boolean; ghostProp?: string; isOpen?: boolean; md?: boolean; onClick?: () => void; status?: string; hint?: string; note?: string; wide?: string; extra?: string }\nexport function Field(_props: FieldProps) { return null }\n',
+  )
+  const matrix = '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `checked`, `ghostProp`, `isOpen`, `md`, `onClick`, `status`, `hint`, `note`, `wide`, `extra` |\n'
+
+  const rejected = [
+    'docs/components.md: FieldProps.checked has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.ghostProp has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.isOpen has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.md has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.onClick has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.status has no 공통 계약 or React 번역 entry',
+    'docs/components.md: FieldProps.wide has no 공통 계약 or React 번역 entry',
+  ]
+  await writeFile(path.join(root, 'docs/components.md'), `${CONTRACT}${matrix}`)
+  assert.deepEqual(await validateDocs(root), rejected)
+
+  await writeFile(path.join(root, 'docs/components.md'), `${CONTRACT}${matrix}`.replace(/\n/g, '\r\n'))
+  assert.deepEqual(await validateDocs(root), rejected)
+
+  for (const source of [matrix, `${CONTRACT.replace('### React\n', '### React 번역\n')}${matrix}`]) {
+    await writeFile(path.join(root, 'docs/components.md'), source)
+    assert.deepEqual(await validateDocs(root), [
+      'docs/components.md: missing 공통 계약 or 플랫폼 번역 React section',
+    ])
+  }
+
+  await writeFile(
+    path.join(root, 'docs/components.md'),
+    `## 공통 계약\n\n| 상태 | 값 |\n| --- | --- |\n| 선택 여부 | \`label\` |\n\n## 플랫폼 번역\n\n### React\n\n${matrix}`,
+  )
+  assert.deepEqual(await validateDocs(root), [
+    'docs/components.md: 공통 계약 and React 번역 tables name no props in an 이름 column',
   ])
 })

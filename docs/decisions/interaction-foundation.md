@@ -52,7 +52,7 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 1. 필요한 DOM이나 part 구성을 React Aria Components로 표현할 수 없다.
 2. Canon interface를 유지하기 위해 React Aria의 focus, keyboard, ARIA behavior를 반복해서 우회한다.
 3. SSR, hydration, bundle, portal 또는 중첩 overlay 문제가 Canon의 지원 환경에서 재현된다.
-4. React 이외의 runtime 구현을 같은 interaction model로 제공해야 한다.
+4. React 이외의 runtime 구현을 같은 interaction model로 제공해야 한다. 2026-11-16 모바일은 같은 interaction model을 쓰지 않기로 하고 [Mobile foundation](./mobile-foundation.md)으로 분리했으므로 이 결정은 React runtime에만 적용한다.
 5. Dialog와 Select의 keyboard·screen reader 검증에서 foundation 수준의 결함이 반복된다.
 
 ## 근거
