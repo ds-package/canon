@@ -58,7 +58,6 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 | `checked`, `onCheckedChange` | 선택 여부의 현재 값과 변경 알림 | boolean | RadioGroup과 Select의 단일 선택 key에 쓰지 않는다. |
 | `open`, `onOpenChange` | 열림 여부의 현재 값과 변경 알림 | boolean | 단순 visibility나 interaction state에 쓰지 않는다. |
 
-- 값을 바꿀 수 있는 control은 변경 알림을 제공한다. `readOnly` field만 변경 알림을 생략할 수 있다.
 - NumberField의 빈 값은 `0`이 아니라 빈 값이다.
 - 선택 key는 SelectItem의 `id`와 RadioOption의 `value`로 정한다.
 
@@ -66,7 +65,7 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 | 이름 | 값과 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- |
-| `children` | Button과 Dialog anatomy는 필수 rich content, DialogClose는 선택 rich content; Checkbox, Switch, RadioOption은 필수 텍스트; SelectItem은 필수 rich content; RadioGroup은 RadioOption만, Select는 SelectItem만, DialogTrigger는 trigger와 Dialog 두 element만 받는다 | 해당 컴포넌트 | DialogClose는 생략하면 닫기 icon을 쓰고, 나머지는 생략 기본값이 없다. 보임을 위한 별도 `showChildren`을 만들지 않는다. |
+| `children` | Button과 SelectItem에는 rich content가 필요하다. Dialog의 제목, 설명, 본문과 동작에는 rich content를 쓸 수 있다. Checkbox, Switch, RadioOption에는 텍스트가 필요하다. RadioGroup은 RadioOption만 받고 Select는 SelectItem만 받는다. | 해당 컴포넌트 | 보임을 위한 별도 `showChildren`을 만들지 않는다. |
 | `label` | 필수 rich content | Select, TextField, TextArea, NumberField, RadioGroup | `placeholder`나 주변 문맥으로 대신하지 않는다. |
 | `placeholder` | 텍스트, 기본 없음 | Select, TextField, TextArea | label이나 입력 조건 설명을 대신하지 않는다. |
 | `description` | rich content, 기본 없음 | 설명을 연결하는 field와 choice control | label이나 오류를 반복하지 않는다. |
@@ -131,7 +130,8 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 | `defaultOpen` | controlled `open`, 변경 알림 `onOpenChange` | `false` |
 
 - controlled 값과 default 값은 함께 받지 않는다.
-- controlled 값에는 변경 알림이 필요하다. `readOnly` field만 callback을 생략할 수 있다.
+- `readOnly`가 `true`인 controlled field와 choice control은 변경 알림을 받지 않는다.
+- 나머지 controlled 상태에는 변경 알림이 필요하다.
 - uncontrolled 변경 알림은 선택 사항이다.
 
 #### Native form, focus, dismissal, escape hatch
@@ -153,6 +153,13 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 | `readOnly` 제출 | `disabled`와 달리 값이 form에 제출된다 | field와 choice control | 수정 불가 표시만을 위해 `disabled`를 대신 쓰지 않는다. |
 
 지원되지 않는 focus·form prop은 누락이 아니라 아직 검증되지 않은 interface다.
+
+#### Dialog 구성
+
+- `DialogTrigger`는 트리거(native `button` 또는 Canon `Button`)와 `Dialog`만 이 순서로 받는다.
+- `Dialog`와 제목, 설명, 본문, 푸터를 구성하는 각 요소에는 rich `children`이 필요하다.
+- `DialogClose`의 `children`은 선택 사항이다.
+- `DialogClose`에 콘텐츠를 전달하지 않으면 닫기 아이콘을 표시한다.
 
 ### iOS와 Android
 
