@@ -88,16 +88,6 @@ test('requires runtime status docs to acknowledge the public React package', asy
 
   assert.deepEqual(await validateDocs(root), [
     'docs/README.md: missing @canon/react runtime status',
-    'docs/README.md: missing Button runtime status',
-    'docs/README.md: missing IconButton runtime status',
-    'docs/README.md: missing Checkbox runtime status',
-    'docs/README.md: missing Dialog runtime status',
-    'docs/README.md: missing NumberField runtime status',
-    'docs/README.md: missing RadioGroup runtime status',
-    'docs/README.md: missing Select runtime status',
-    'docs/README.md: missing Switch runtime status',
-    'docs/README.md: missing TextField runtime status',
-    'docs/README.md: missing TextArea runtime status',
     'docs/guides/README.md: missing @canon/react runtime status',
     'docs/guides/README.md: missing Button runtime status',
     'docs/guides/README.md: missing IconButton runtime status',

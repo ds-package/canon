@@ -164,6 +164,8 @@ async function validateRuntimeStatus(root, errors) {
       source = await readFile(path.join(root, file), 'utf8')
     } catch {}
     if (!source.includes('@canon/react')) errors.push(`${file}: missing @canon/react runtime status`)
+    // The getting-started guide shows one example. Runtime references list the full inventory.
+    if (file === 'docs/README.md') continue
     for (const component of RUNTIME_STATUS_COMPONENTS) {
       if (!source.includes(component)) errors.push(`${file}: missing ${component} runtime status`)
     }
