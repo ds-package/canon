@@ -16,7 +16,7 @@ verified: 2026-11-23
 2. property와 값을 추가하기 전에 제품 사용 사례와 각 값의 시각 차이를 확인합니다.
 3. 기본값은 컴포넌트별로 정하고 모든 조합을 자동으로 만들지 않습니다.
 4. 실제 디자인과 runtime에 있는 조합만 허용합니다.
-   - Button과 IconButton은 `variant` 하나만 씁니다. 값은 `primary`, `secondary`, `quiet`, `destructive`이고 기본값은 `variant=secondary`, `size=lg`입니다.
+   - Button과 IconButton은 `variant` 하나만 씁니다. 값은 `primary`, `secondary`, `quiet`, `destructive`이고 IconButton은 `destructive`를 두지 않습니다. 기본값은 `variant=secondary`, `size=lg`입니다.
    - 스타일 축 규칙은 [Component Properties](../../foundations/properties.md)를 따릅니다.
 5. 콘텐츠의 존재 여부는 콘텐츠로 표현합니다. `showLeadingIcon`처럼 중복 boolean을 추가하지 않습니다.
 6. hover, pressed, focus, filled는 runtime에서 파생합니다. public `state` prop으로 복사하지 않습니다.

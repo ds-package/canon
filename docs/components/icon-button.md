@@ -18,10 +18,10 @@ import { IconButton } from '@canon/react'
 <IconButton icon={<XIcon />} aria-label="Close" />
 
 <IconButton
-  icon={<TrashIcon />}
-  aria-label="Delete item"
-  variant="destructive"
-  onPress={remove}
+  icon={<MoreIcon />}
+  aria-label="More actions"
+  variant="quiet"
+  onPress={openMenu}
 />
 ```
 

@@ -26,7 +26,7 @@ prop은 제품이 정하는 의미를 드러냅니다. interaction 중에 바뀌
 
 스타일 축은 컴포넌트 종류에 따라 정합니다.
 
-1. 동작 컴포넌트(Button, IconButton)는 `variant` 하나로 고릅니다. 값은 `primary`, `secondary`, `quiet`, `destructive`이며 `primary`는 한 영역에 하나만 둡니다.
+1. 동작 컴포넌트(Button, IconButton)는 `variant` 하나로 고릅니다. 값은 `primary`, `secondary`, `quiet`, `destructive`이며 `primary`는 한 영역에 하나만 둡니다. IconButton은 `destructive`를 두지 않습니다. 아이콘만 있는 위험 동작은 잘못 누르기 쉬워서 label이 있는 Button을 씁니다.
 2. 상태 표시 컴포넌트(Badge, Tag, Alert)는 `variant`와 `tone`을 함께 씁니다. 면 처리와 의미색이 독립적으로 조합되기 때문입니다.
 3. 색이 의미를 갖지 않는 컴포넌트(Checkbox, Radio, Switch)에는 색 축을 두지 않습니다.
 
@@ -92,7 +92,7 @@ Checkbox, Switch, RadioOption의 `children`은 보이는 단일 label이므로 �
 | 항목 | 공통 계약 | 현재 React | Figma | 상태 |
 | --- | --- | --- | --- | --- |
 | Button `variant` | `primary`, `secondary`, `quiet`, `destructive`. 기본 `secondary` | 계약과 같음 | 같은 네 값. 기본 `primary` | Figma 기본값만 다름 |
-| IconButton `variant` | Button과 같은 네 값. 기본 `secondary` | 계약과 같음 | `primary`, `secondary`, `quiet`. `destructive` 없음. 기본 `primary` | Figma `destructive`와 기본값 결정 필요 |
+| IconButton `variant` | `primary`, `secondary`, `quiet`. 기본 `secondary` | Button과 같은 네 값. `destructive`도 허용 | 계약과 같음. 기본 `primary` | React migration. Figma 기본값만 다름 |
 | Button과 IconButton 기본 `size` | `lg` | 계약과 같음 | `xl` | Figma 기본값만 다름 |
 | `secondary` 모양 | 회색 보조 버튼 | `surface/default` 배경과 `border/default` 테두리 | `control/neutral` 회색 채움 | React가 Figma를 따라야 함 |
 | Button 아이콘 | `leadingIcon`, `trailingIcon` 콘텐츠로 표현 | 계약과 같음 | `showLeadingIcon`, `showTrailingIcon` boolean | Figma authoring 전용 |
