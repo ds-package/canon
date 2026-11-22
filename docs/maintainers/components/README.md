@@ -21,6 +21,7 @@ verified: 2026-11-23
 5. 콘텐츠의 존재 여부는 콘텐츠로 표현합니다. `showLeadingIcon`처럼 중복 boolean을 추가하지 않습니다.
 6. hover, pressed, focus, filled는 runtime에서 파생합니다. public `state` prop으로 복사하지 않습니다.
 7. React public API는 구현 파일, export, CSS, component 문서가 같은 값을 가리키는지 확인합니다. React Aria 전체 props를 상속하지 않습니다.
+8. 컴포넌트 선택 기준은 `docs/components/<component>.md`의 `## 선택` 절이 정본입니다. 생성 대상은 절 안의 `### 언제 쓰나`, `### 쓰지 않는 경우` 한 줄 목록뿐입니다. `@canon/react` JSDoc의 `<!-- canon:selection -->` 영역은 이 절에서 생성한 사본이므로 손으로 고치지 않고 문서를 고친 뒤 `pnpm sync:comments`를 실행합니다. 문서가 있는 공개 컴포넌트는 이 영역이 있어야 `pnpm test:docs`를 통과합니다.
 
 ## Figma component set structure
 

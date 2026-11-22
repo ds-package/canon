@@ -46,6 +46,8 @@ const CONTRACT = [
   '| `onClick` | action |\n\n',
 ].join('\n')
 
+const FIELD_JSDOC = '/**\n * 필드다.\n *\n * <!-- canon:selection source=docs/components/field.md -->\n * ### 언제 쓰나\n * - 값을 입력할 때 쓴다.\n *\n * ### 쓰지 않는 경우\n * - 목록에서 고르면 Select를 쓴다.\n * <!-- /canon:selection -->\n */\n'
+
 async function fixture(t) {
   const root = await mkdtemp(path.join(tmpdir(), 'canon-docs-'))
   t.after(() => rm(root, { recursive: true, force: true }))
@@ -248,7 +250,7 @@ test('keeps documented property coverage aligned with public TypeScript props', 
   await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
   await writeFile(
     path.join(root, 'packages/react/src/Field.tsx'),
-    'export interface FieldProps { label: string; value?: string }\nexport function Field(_props: FieldProps) { return null }\n',
+    'export interface FieldProps { label: string; value?: string }\n' + FIELD_JSDOC + 'export function Field(_props: FieldProps) { return null }\n',
   )
   await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
   await writeFile(
@@ -269,7 +271,7 @@ test('requires every public component export in the coverage matrix', async (t) 
   await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
   await writeFile(
     path.join(root, 'packages/react/src/Field.tsx'),
-    'export interface FieldProps { label: string }\nexport function Field(_props: FieldProps) { return null }\n',
+    'export interface FieldProps { label: string }\n' + FIELD_JSDOC + 'export function Field(_props: FieldProps) { return null }\n',
   )
   await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
   await writeFile(
@@ -291,7 +293,7 @@ test('accepts props only from the 이름 column of common contract and React tra
   await writeFile(path.join(root, 'packages/react/src/index.ts'), "export { Field } from './Field'\nexport type { FieldProps } from './Field'\n")
   await writeFile(
     path.join(root, 'packages/react/src/Field.tsx'),
-    'export interface FieldProps { label: string; checked?: boolean; ghostProp?: string; isOpen?: boolean; md?: boolean; onClick?: () => void; status?: string; hint?: string; note?: string; wide?: string; extra?: string }\nexport function Field(_props: FieldProps) { return null }\n',
+    'export interface FieldProps { label: string; checked?: boolean; ghostProp?: string; isOpen?: boolean; md?: boolean; onClick?: () => void; status?: string; hint?: string; note?: string; wide?: string; extra?: string }\n' + FIELD_JSDOC + 'export function Field(_props: FieldProps) { return null }\n',
   )
   const matrix = '## Implementation coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `checked`, `ghostProp`, `isOpen`, `md`, `onClick`, `status`, `hint`, `note`, `wide`, `extra` |\n'
 
@@ -324,5 +326,57 @@ test('accepts props only from the 이름 column of common contract and React tra
   )
   assert.deepEqual(await validateDocs(root), [
     'docs/foundations/properties.md: Shared contract and React translation tables name no props in an 이름 column',
+  ])
+})
+
+async function componentFixture(t, components, documented = []) {
+  const root = await fixture(t)
+  await writeFile(path.join(root, 'DESIGN.md'), REQUIRED_DESIGN)
+  await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
+  await mkdir(path.join(root, 'packages/react/src'), { recursive: true })
+  const names = Object.keys(components)
+  await writeFile(path.join(root, 'packages/react/src/index.ts'), `export { ${names.join(', ')} } from './Field'\n`)
+  await writeFile(
+    path.join(root, 'packages/react/src/Field.tsx'),
+    Object.entries(components).map(([name, doc]) => `${doc}export function ${name}() { return null }\n`).join(''),
+  )
+  for (const doc of documented) await writeFile(path.join(root, `docs/components/${doc}.md`), `# ${doc}\n`)
+  const rows = names.map((name) => `| ${name} | 내부 타입 | \`children\` |`).join('\n')
+  await writeFile(
+    path.join(root, 'docs/components/README.md'),
+    `## Implementation coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n${rows}\n`,
+  )
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
+  return root
+}
+
+test('requires the selection region only for components that have a doc', async (t) => {
+  const root = await componentFixture(
+    t,
+    { Field: FIELD_JSDOC, SelectItem: '/**\n * 선택지 하나다.\n */\n' },
+    ['field'],
+  )
+
+  assert.deepEqual(await validateDocs(root), [])
+})
+
+test('requires the selection region in the JSDoc of documented public components', async (t) => {
+  const root = await componentFixture(
+    t,
+    {
+      Field: '/**\n * 필드다.\n *\n * ### 언제 쓰나\n * - 값을 입력할 때 쓴다.\n */\n',
+      IconField: '/**\n * 필드다.\n *\n * <!-- canon:selection source=docs/components/icon-field.md -->\n * ### 언제 쓰나\n * - 값을 입력할 때 쓴다.\n */\n',
+      Other: '',
+      SelectItem: '',
+    },
+    ['field', 'icon-field'],
+  )
+
+  const missing = (doc) => `JSDoc is missing the <!-- canon:selection source=docs/components/${doc}.md --> selection region`
+  assert.deepEqual(await validateDocs(root), [
+    `packages/react/src/index.ts: public component Field ${missing('field')}`,
+    `packages/react/src/index.ts: public component IconField ${missing('icon-field')}`,
+    'packages/react/src/index.ts: public component Other has no JSDoc',
+    'packages/react/src/index.ts: public component SelectItem has no JSDoc',
   ])
 })

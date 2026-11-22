@@ -63,6 +63,26 @@ function getOptionValues(children: ReactNode): string[] {
   })
 }
 
+/**
+ * 서로 배타적인 선택지 중 하나를 고르는 group이다.
+ *
+ * ### 제약
+ * - 자식은 {@link RadioOption}만 받고, 하나 이상이어야 하며 `value`가 겹치면 안 된다(throw).
+ * - `label`은 보이는 group 이름이며 비어 있으면 안 된다(throw).
+ * - `invalid`에는 비어 있지 않은 `errorMessage`가 필요하다(throw).
+ * - `value`와 `defaultValue`는 함께 쓸 수 없다(throw). `readOnly`가 아닌 controlled `value`에는 `onValueChange`가 필요하다(throw).
+ * - 사용자가 선택을 해제할 수 없으므로 `onValueChange`는 `null`을 전달하지 않는다.
+ * - `orientation`은 배치와 방향키 탐색 방향을 함께 정하며 기본값은 `vertical`이다.
+ * - form 안에서는 선택된 option의 `value`가 group의 `name`으로 제출된다.
+ *
+ * ### 예시
+ * ```tsx
+ * <RadioGroup label="Plan" name="plan" defaultValue="free">
+ *   <RadioOption value="free">Free</RadioOption>
+ *   <RadioOption value="pro">Pro</RadioOption>
+ * </RadioGroup>
+ * ```
+ */
 export function RadioGroup({
   children,
   label,
@@ -126,6 +146,14 @@ export interface RadioOptionProps {
   disabled?: boolean
 }
 
+/**
+ * {@link RadioGroup} 안의 선택지 하나다.
+ *
+ * ### 제약
+ * - {@link RadioGroup}의 자식으로만 쓴다.
+ * - `value`는 선택 key이며 비어 있지 않은 문자열이어야 한다(throw). group 안에서 고유하다.
+ * - `children`은 보이는 label이며 비어 있지 않은 텍스트여야 한다(throw).
+ */
 export function RadioOption({ value, children, description, disabled }: RadioOptionProps) {
   if (typeof value !== 'string' || !value.trim()) {
     throw new Error('RadioOption requires a non-empty string value')

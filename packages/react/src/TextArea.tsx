@@ -50,6 +50,22 @@ function isEmptyContent(content: ReactNode) {
   return content == null || content === false || (typeof content === 'string' && !content.trim())
 }
 
+/**
+ * 사용자가 여러 줄의 자유로운 텍스트를 입력하는 form field다.
+ *
+ * ### 제약
+ * - `rows`는 처음 보이는 줄 수만 정하고 입력 길이를 제한하지 않는다. 양의 정수여야 하며(throw) 기본값은 `4`다.
+ * - `label`은 보이며 필수다(throw). `placeholder`로 대신하지 않는다.
+ * - `invalid`에는 비어 있지 않은 `errorMessage`가 필요하다(throw).
+ * - `value`와 `defaultValue`는 함께 쓸 수 없다(throw). `readOnly`가 아닌 controlled `value`에는 `onValueChange`가 필요하다(throw).
+ * - `disabled`는 입력과 form 제출을 막고, `readOnly`는 focus와 form 제출을 유지한다.
+ * - 자동 높이, 글자 수 표시, rich text와 Markdown 편집은 지원하지 않는다.
+ *
+ * ### 예시
+ * ```tsx
+ * <TextArea label="Message" name="message" rows={4} required />
+ * ```
+ */
 export function TextArea({
   label,
   description,

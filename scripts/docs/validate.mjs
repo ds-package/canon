@@ -3,6 +3,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'typescript'
 
+import { SELECTION_END, SELECTION_START_PREFIX, selectionDocPath } from './sync-comments.mjs'
+
 const REQUIRED_DECISION_FIELDS = ['id', 'status', 'verified']
 const DECISION_STATUSES = new Set(['proposed', 'adopted', 'superseded', 'deprecated'])
 const ROUTE_DOCUMENTS = ['DESIGN.md', 'docs/README.md']
@@ -52,6 +54,8 @@ function localLinks(source) {
   for (const match of source.matchAll(pattern)) links.push(match[1] ?? match[2])
   return links.filter((link) => !link.startsWith('#') && !/^[A-Za-z][A-Za-z\d+.-]*:/.test(link))
 }
+
+const isFile = (file) => stat(file).then((stats) => stats.isFile(), () => false)
 
 async function validateRouteLinks(root, errors) {
   for (const relativeSource of ROUTE_DOCUMENTS) {
@@ -287,13 +291,31 @@ async function validatePropertyCoverage(root, errors) {
       .filter((cell) => cell && !/^-+$/.test(cell) && cell !== 'Component')
       .flatMap((cell) => cell.split(',').map((name) => name.trim())),
   )
-  const publicComponents = checker
+  const componentSymbols = checker
     .getExportsOfModule(module)
-    .filter((symbol) => {
-      const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol
-      return target.declarations?.some((declaration) => ts.isFunctionDeclaration(declaration))
-    })
-    .map((symbol) => symbol.name)
+    .map((symbol) => [symbol.name, symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol])
+    .filter(([, target]) => target.declarations?.some((declaration) => ts.isFunctionDeclaration(declaration)))
+  const publicComponents = componentSymbols.map(([name]) => name)
+
+  for (const [component, target] of componentSymbols) {
+    const documentation = ts.displayPartsToString(target.getDocumentationComment(checker))
+    if (!documentation.trim()) {
+      errors.push(`packages/react/src/index.ts: public component ${component} has no JSDoc`)
+      continue
+    }
+    // 에이전트가 배포된 .d.ts에서 읽는 선택 기준이다. 문서가 있는 컴포넌트는 그 문서의 `## 선택`에서
+    // 생성하는 영역 표식이 있어야 한다. 문서가 없는 컴포넌트는 요약과 제약만 둔다.
+    // 영역 내용의 최신성은 `node scripts/docs/sync-comments.mjs --check`가 검사한다.
+    const docPath = selectionDocPath(component)
+    if (!(await isFile(path.join(root, docPath)))) continue
+    const lines = documentation.split('\n').map((line) => line.trim())
+    const marked =
+      lines.some((line) => line.startsWith(SELECTION_START_PREFIX) && line.endsWith('-->')) &&
+      lines.includes(SELECTION_END)
+    if (!marked) {
+      errors.push(`packages/react/src/index.ts: public component ${component} JSDoc is missing the ${SELECTION_START_PREFIX}${docPath} --> selection region`)
+    }
+  }
 
   for (const component of publicComponents) {
     if (!documentedComponents.delete(component)) {

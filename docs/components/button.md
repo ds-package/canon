@@ -11,6 +11,24 @@ Button은 현재 화면에서 동작을 실행합니다. 다른 위치로 이동
 
 Figma와 다른 값은 [Component Properties](../foundations/properties.md)의 「React differences」 표를 봅니다.
 
+## 선택
+
+이 절은 Button 선택 기준의 정본입니다. `@canon/react` JSDoc의 같은 목록은 `pnpm sync:comments`가 이 절에서 생성합니다.
+
+### 언제 쓰나
+
+- 화면의 대표 동작이면 `variant="primary"`를 씁니다. 한 영역에 하나만 둡니다.
+- 대표 동작보다 낮은 위계의 동작이면 기본값 `variant="secondary"`를 씁니다.
+- 툴바처럼 배경 강조가 필요 없는 동작이면 `variant="quiet"`를 씁니다.
+- 삭제처럼 되돌리기 어려운 동작이면 `variant="destructive"`를 씁니다.
+
+### 쓰지 않는 경우
+
+- 아이콘만 보이면 [IconButton](./icon-button.md)을 씁니다.
+- 다른 위치로 이동하면 Link를 씁니다(Canon에 아직 없습니다).
+- 선택 가능한 toggle을 Button으로 만들지 않습니다.
+- 색이나 정보·성공·주의 상태를 표현하면 해당 feedback 컴포넌트를 씁니다(Canon에 아직 없습니다).
+
 ## Basic usage
 
 ```tsx
