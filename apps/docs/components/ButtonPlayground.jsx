@@ -13,8 +13,8 @@ function XIcon() {
   )
 }
 
-export function ButtonPlayground() {
-  const [state, setState] = useState(initialButtonPlaygroundState)
+export function ButtonPlayground({ initialComponent = 'button' }) {
+  const [state, setState] = useState(() => ({ ...initialButtonPlaygroundState, component: initialComponent }))
   const [copyStatus, setCopyStatus] = useState('Copy JSX')
   const model = getButtonPlaygroundModel(state)
 
@@ -90,7 +90,7 @@ export function ButtonPlayground() {
             </label>
           ))}
           <div className="playground-actions">
-            <button type="button" onClick={() => { setState(initialButtonPlaygroundState); setCopyStatus('Copy JSX') }}>Reset</button>
+            <button type="button" onClick={() => { setState({ ...initialButtonPlaygroundState, component: initialComponent }); setCopyStatus('Copy JSX') }}>Reset</button>
             <button type="button" onClick={copyJsx}>{copyStatus}</button>
             <span className="sr-only" role="status" aria-live="polite">
               {copyStatus === 'Copy JSX' ? '' : copyStatus}
@@ -114,4 +114,8 @@ export function ButtonPlayground() {
       <pre className="playground-code"><code>{model.jsx}</code></pre>
     </section>
   )
+}
+
+export function IconButtonPlayground() {
+  return <ButtonPlayground initialComponent="icon" />
 }

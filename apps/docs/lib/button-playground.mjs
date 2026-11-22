@@ -1,7 +1,7 @@
 export const initialButtonPlaygroundState = Object.freeze({
   component: 'button',
-  variant: 'primary',
-  size: 'md',
+  variant: 'secondary',
+  size: 'lg',
   disabled: false,
   pending: false,
   shape: 'square',

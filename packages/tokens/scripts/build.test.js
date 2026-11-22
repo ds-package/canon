@@ -163,7 +163,7 @@ test('readable text meets WCAG AA on its supported surfaces', () => {
 })
 
 test('known AA shortfalls in warm tint retain their contrast floor (알려진 AA 미달)', () => {
-  // Figma 확인 필요(warm tint 대비), docs/color.md 6절.
+  // Figma 확인 필요(warm tint 대비), docs/foundations/color.md 6절.
   const floors = { placeholder: 4.482353, helper: 4.482353, lowest: 4.482353 }
   for (const [text, floor] of Object.entries(floors)) {
     assert.ok(

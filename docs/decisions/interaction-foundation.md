@@ -1,25 +1,25 @@
 ---
 id: interaction-foundation
 status: adopted
-verified: 2026-11-15
+verified: 2026-11-23
 navigation: architecture
 navigationOrder: 2
 ---
 # Interaction foundation
 
-## 맥락
+## Context
 
-Canon은 현재 `@canon/react`에서 Preview Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공한다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
+Canon은 현재 `@canon/react`에서 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공한다. 2026-11-23부터 사용 문서와 Playground는 Button과 IconButton에만 있고, 나머지 컴포넌트는 React 구현만 있다. Figma variant와 component property는 설계 상태를 표현하지만, 브라우저의 focus, keyboard, dismissal, collection behavior를 실행하지 않는다.
 
 Dialog, Select, ComboBox처럼 상호작용이 복잡한 컴포넌트의 행동 계층을 처음부터 직접 구현하면 focus 복귀, 중첩 overlay, typeahead, form 연동, 국제화와 보조 기술 동작을 Canon이 계속 유지해야 한다.
 
-## 결정
+## Decision
 
 Canon의 React runtime 컴포넌트는 `react-aria-components`를 interaction foundation으로 사용한다.
 
 처음에는 낮은 수준의 `@react-aria/*`, `@react-stately/*` hook을 직접 조합하지 않는다. React Aria Components에서 표현할 수 없는 확인된 요구가 생겼을 때만 낮은 수준의 구현을 검토한다. 컴포넌트마다 Base UI, Radix, Ark UI를 섞지 않는다. 예외가 필요하면 이 결정의 재검토 조건과 근거를 먼저 기록한다.
 
-## 책임 경계
+## Responsibility boundaries
 
 | 주체 | 소유하는 것 |
 | --- | --- |
@@ -27,9 +27,9 @@ Canon의 React runtime 컴포넌트는 `react-aria-components`를 interaction fo
 | Canon | 공개 props와 variant, 노출할 part, 토큰과 스타일, motion, Figma와 코드의 대응, React Aria 고유 어휘를 감출 범위, foundation behavior를 보존하는 통합과 검증 |
 | Canon을 사용하는 앱 | 데이터와 비즈니스 상태, 권한, 요청과 오류 처리, 제품별 콘텐츠 |
 
-React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다. React Aria props 전체를 `Omit`으로 상속하지 않고 Canon이 지원하고 테스트하는 동작만 명시한다. controlled state는 [컴포넌트 프로퍼티 모델](../components.md)의 `value`, `checked`, `open` 문법으로 번역하고 hover, press, focus 같은 interaction은 runtime-derived state로 남긴다.
+React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자동으로 노출하지 않는다. 호출자가 알아야 할 이유가 확인된 항목만 Canon interface로 올린다. React Aria props 전체를 `Omit`으로 상속하지 않고 Canon이 지원하고 테스트하는 동작만 명시한다. controlled state는 [Component Properties](../foundations/properties.md)의 `value`, `checked`, `open` 문법으로 번역하고 hover, press, focus 같은 interaction은 runtime-derived state로 남긴다.
 
-## 검토한 대안
+## Alternatives considered
 
 | 대안 | 선택하지 않은 이유 |
 | --- | --- |
@@ -38,14 +38,14 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 | Ark UI와 Zag | 명시적인 finite state machine이 장점이지만 현재 Canon에 필요한 것보다 계층과 interface가 크고, React 외 framework adapter가 필요하지 않다. |
 | 브라우저 primitive 직접 구현 | 의존성은 줄지만 focus, dismissal, roving focus, typeahead, ARIA와 브라우저 차이의 구현·검증 책임이 Canon으로 이동한다. |
 
-## 결과와 제약
+## Consequences and constraints
 
 - Canon은 상호작용 동작을 복제하지 않고 공개 interface와 시각 계약에 집중할 수 있다.
 - React Aria Components의 접근성·collection 모델을 사용하지만 Canon 문서와 props가 해당 라이브러리의 복사본이 되지 않게 유지해야 한다.
 - 첫 runtime 검증 대상으로 press와 form 기본값을 확인하는 Button, overlay와 focus를 확인하는 Dialog, collection과 form behavior를 확인하는 Select를 구현했다.
 - 채택만으로 접근성이 보장되지는 않는다. Canon wrapper의 DOM, label, error, motion을 실제 keyboard와 보조 기술로 검증해야 한다.
 
-## 재검토 조건
+## Revisit when
 
 다음 중 하나가 실제 구현이나 검증에서 발생하면 이 결정을 다시 검토한다.
 
@@ -55,7 +55,7 @@ React Aria의 slot, collection, render prop을 Canon의 공개 interface에 자�
 4. React 이외의 runtime 구현을 같은 interaction model로 제공해야 한다. 2026-11-16 모바일은 같은 interaction model을 쓰지 않기로 하고 [Mobile foundation](./mobile-foundation.md)으로 분리했으므로 이 결정은 React runtime에만 적용한다.
 5. Dialog와 Select의 keyboard·screen reader 검증에서 foundation 수준의 결함이 반복된다.
 
-## 근거
+## Rationale
 
 - [React Aria Components](https://react-aria.adobe.com/): 접근성, 국제화, adaptive interaction과 unstyled component 범위
 - [Modal](https://react-aria.adobe.com/Modal): controlled state, focus containment, dismissal behavior

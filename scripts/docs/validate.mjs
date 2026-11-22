@@ -13,9 +13,9 @@ const RUNTIME_STATUS_DOCUMENTS = [
 ]
 const RUNTIME_STATUS_COMPONENTS = ['Button', 'IconButton', 'Checkbox', 'Dialog', 'NumberField', 'RadioGroup', 'Select', 'Switch', 'TextField', 'TextArea']
 const REQUIRED_DESIGN_ROUTES = [
-  ['token naming', '컬러 토큰의 이름', './docs/color.md'],
-  ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/workflow.md'],
-  ['component property model', 'React props, runtime 상태, Figma property의 책임과 이름을 정한다', './docs/components.md'],
+  ['token naming', '컬러 토큰의 이름', './docs/foundations/color.md'],
+  ['Figma migration', 'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다', './docs/maintainers/figma-workflow.md'],
+  ['component property model', 'React props, runtime 상태, Figma property의 책임과 이름을 정한다', './docs/foundations/properties.md'],
   ['interaction decision', 'interaction foundation', './docs/decisions/interaction-foundation.md'],
   ['docs platform decision', 'docs web, search, playground', './docs/decisions/docs-platform.md'],
   ['component selection', '제품 상황에 맞는 컴포넌트를 고른다', './docs/guides/README.md'],
@@ -174,16 +174,16 @@ async function validateRuntimeStatus(root, errors) {
 
 const CONTRACT_NAME_COLUMN = '이름'
 
-// Names a React public prop may use: backticked names in the 이름 column of the tables in `## 공통 계약`
+// Names a React public prop may use: backticked names in the 이름 column of the tables in `## Shared contract`
 // and `### React`. Other columns hold types, defaults, and forbidden or adapter-internal names
 // (`'md'`, `string | undefined`, `isOpen`). Prose and the iOS·Android table are not read.
 function readContractNames(source, errors) {
   const sections = [
-    source.match(/(?:^|\n)## 공통 계약[ \t]*\n([\s\S]*?)(?=\n## |$)/)?.[1],
+    source.match(/(?:^|\n)## Shared contract[ \t]*\n([\s\S]*?)(?=\n## |$)/)?.[1],
     source.match(/(?:^|\n)### React[ \t]*\n([\s\S]*?)(?=\n## |\n### |$)/)?.[1],
   ]
   if (sections.some((section) => section === undefined)) {
-    errors.push('docs/components.md: missing 공통 계약 or 플랫폼 번역 React section')
+    errors.push('docs/foundations/properties.md: missing Shared contract or Platform translations React section')
     return null
   }
 
@@ -200,7 +200,7 @@ function readContractNames(source, errors) {
     }
   }
   if (!names.size) {
-    errors.push('docs/components.md: 공통 계약 and React 번역 tables name no props in an 이름 column')
+    errors.push('docs/foundations/properties.md: Shared contract and React translation tables name no props in an 이름 column')
     return null
   }
   return names
@@ -208,7 +208,7 @@ function readContractNames(source, errors) {
 
 async function validatePropertyCoverage(root, errors) {
   const indexPath = path.join(root, 'packages/react/src/index.ts')
-  const componentsPath = path.join(root, 'docs/components.md')
+  const componentsPath = path.join(root, 'docs/components/README.md')
   let componentsSource
   try {
     await stat(indexPath)
@@ -248,17 +248,18 @@ async function validatePropertyCoverage(root, errors) {
       checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(symbol)).map((prop) => prop.name).sort(),
     ])
 
-  const contractNames = readContractNames(componentsSource.replace(/\r\n/g, '\n'), errors)
+  const propertiesSource = await readFile(path.join(root, 'docs/foundations/properties.md'), 'utf8').catch(() => '')
+  const contractNames = readContractNames(propertiesSource.replace(/\r\n/g, '\n'), errors)
 
   for (const [typeName, props] of publicProps) {
     if (contractNames) {
       for (const prop of props.filter((name) => !contractNames.has(name))) {
-        errors.push(`docs/components.md: ${typeName}.${prop} has no 공통 계약 or React 번역 entry`)
+        errors.push(`docs/foundations/properties.md: ${typeName}.${prop} has no Shared contract or React translation entry`)
       }
     }
     const documentedProps = documented.get(typeName)
     if (!documentedProps) {
-      errors.push(`docs/components.md: missing ${typeName} coverage`)
+      errors.push(`docs/components/README.md: missing ${typeName} coverage`)
       continue
     }
     const missing = props.filter((prop) => !documentedProps.includes(prop))
@@ -268,19 +269,23 @@ async function validatePropertyCoverage(root, errors) {
         missing.length && `missing: ${missing.join(', ')}`,
         extra.length && `undocumented: ${extra.join(', ')}`,
       ].filter(Boolean).join('; ')
-      errors.push(`docs/components.md: ${typeName} property coverage mismatch (${details})`)
+      errors.push(`docs/components/README.md: ${typeName} property coverage mismatch (${details})`)
     }
     documented.delete(typeName)
   }
 
   for (const typeName of documented.keys()) {
-    errors.push(`docs/components.md: ${typeName} is not a public @canon/react props export`)
+    errors.push(`docs/components/README.md: ${typeName} is not a public @canon/react props export`)
   }
 
-  const matrix = componentsSource.match(/## 구현 coverage matrix([\s\S]*?)(?=\n## |$)/)?.[1] ?? ''
+  const matrix = componentsSource.match(/## Implementation coverage matrix([\s\S]*?)(?=\n## |$)/)?.[1] ?? ''
+  // First cell of each matrix row names the components, with or without a link to their doc.
   const documentedComponents = new Set(
-    [...matrix.matchAll(/\[([^\]]+)\]\(\.\/[^)]+\)/g)]
-      .flatMap((match) => match[1].split(',').map((name) => name.trim())),
+    [...matrix.matchAll(/^\|([^|\n]+)\|([^|\n]*)\|/gm)]
+      .filter((match) => match[2].trim() !== '-') // planned rows are not exports yet
+      .map((match) => match[1].replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').trim())
+      .filter((cell) => cell && !/^-+$/.test(cell) && cell !== 'Component')
+      .flatMap((cell) => cell.split(',').map((name) => name.trim())),
   )
   const publicComponents = checker
     .getExportsOfModule(module)
@@ -292,11 +297,11 @@ async function validatePropertyCoverage(root, errors) {
 
   for (const component of publicComponents) {
     if (!documentedComponents.delete(component)) {
-      errors.push(`docs/components.md: missing public component ${component} coverage`)
+      errors.push(`docs/components/README.md: missing public component ${component} coverage`)
     }
   }
   for (const component of documentedComponents) {
-    errors.push(`docs/components.md: ${component} is not a public @canon/react component export`)
+    errors.push(`docs/components/README.md: ${component} is not a public @canon/react component export`)
   }
 }
 

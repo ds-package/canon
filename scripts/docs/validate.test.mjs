@@ -7,9 +7,9 @@ import test from 'node:test'
 import { validateDocs } from './validate.mjs'
 
 const REQUIRED_DESIGN = [
-  '컬러 토큰의 이름을 정한다 [Color](./docs/color.md)',
-  'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/workflow.md)',
-  'React props, runtime 상태, Figma property의 책임과 이름을 정한다 [Components](./docs/components.md)',
+  '컬러 토큰의 이름을 정한다 [Color](./docs/foundations/color.md)',
+  'Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 [Workflow](./docs/maintainers/figma-workflow.md)',
+  'React props, runtime 상태, Figma property의 책임과 이름을 정한다 [Properties](./docs/foundations/properties.md)',
   'interaction foundation을 확인한다 [Interaction](./docs/decisions/interaction-foundation.md)',
   'docs web, search, playground의 구조를 정한다 [Docs platform](./docs/decisions/docs-platform.md)',
   '제품 상황에 맞는 컴포넌트를 고른다 [Selection](./docs/guides/README.md)',
@@ -17,7 +17,7 @@ const REQUIRED_DESIGN = [
 ].join('\n')
 
 const CONTRACT = [
-  '## 공통 계약\n',
+  '## Shared contract\n',
   '| 이름 | 뜻과 값 | 사용하지 않는 조건 |',
   '| --- | --- | --- |',
   '| `label` | `ghostProp` 타입, 기본 `md` | `isOpen`을 만들지 않는다. |\n',
@@ -31,7 +31,7 @@ const CONTRACT = [
   '| --- | --- |',
   '| `wide` \\| `x` | `extra` |\n',
   '`onClick`은 노출하지 않는다.\n',
-  '## 플랫폼 번역\n',
+  '## Platform translations\n',
   '### React\n',
   '| 이름 | 지원 범위 |',
   '| --- | --- |',
@@ -51,9 +51,13 @@ async function fixture(t) {
   t.after(() => rm(root, { recursive: true, force: true }))
   await mkdir(path.join(root, 'docs/decisions'), { recursive: true })
   await mkdir(path.join(root, 'docs/guides'), { recursive: true })
-  await writeFile(path.join(root, 'docs/color.md'), '# Color\n')
-  await writeFile(path.join(root, 'docs/workflow.md'), '# Workflow\n')
-  await writeFile(path.join(root, 'docs/components.md'), '# Components\n')
+  await mkdir(path.join(root, 'docs/foundations'), { recursive: true })
+  await mkdir(path.join(root, 'docs/components'), { recursive: true })
+  await mkdir(path.join(root, 'docs/maintainers'), { recursive: true })
+  await writeFile(path.join(root, 'docs/foundations/color.md'), '# Color\n')
+  await writeFile(path.join(root, 'docs/maintainers/figma-workflow.md'), '# Workflow\n')
+  await writeFile(path.join(root, 'docs/components/README.md'), '# Components\n')
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), '# Properties\n')
   await writeFile(path.join(root, 'docs/guides/README.md'), '# Guides\n')
   await writeFile(
     path.join(root, 'docs/decisions/interaction-foundation.md'),
@@ -184,9 +188,9 @@ test('requires the six Canon design routing seams', async (t) => {
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
 
   assert.deepEqual(await validateDocs(root), [
-    'DESIGN.md: missing token naming route ./docs/color.md',
-    'DESIGN.md: missing Figma migration route ./docs/workflow.md',
-    'DESIGN.md: missing component property model route ./docs/components.md',
+    'DESIGN.md: missing token naming route ./docs/foundations/color.md',
+    'DESIGN.md: missing Figma migration route ./docs/maintainers/figma-workflow.md',
+    'DESIGN.md: missing component property model route ./docs/foundations/properties.md',
     'DESIGN.md: missing interaction decision route ./docs/decisions/interaction-foundation.md',
     'DESIGN.md: missing docs platform decision route ./docs/decisions/docs-platform.md',
     'DESIGN.md: missing component selection route ./docs/guides/README.md',
@@ -199,9 +203,9 @@ test('requires each design question and target on the same line', async (t) => {
   await writeFile(
     path.join(root, 'DESIGN.md'),
     [
-      '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/workflow.md) |',
-      '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/color.md) |',
-      '| React props, runtime 상태, Figma property의 책임과 이름을 정한다 | [Components](./docs/components.md) |',
+      '| 컬러 토큰의 이름, 값, 계층, 바인딩을 정한다 | [Workflow](./docs/maintainers/figma-workflow.md) |',
+      '| Figma 변수, 스타일, 컴포넌트를 안전하게 변경한다 | [Color](./docs/foundations/color.md) |',
+      '| React props, runtime 상태, Figma property의 책임과 이름을 정한다 | [Properties](./docs/foundations/properties.md) |',
       '| interaction foundation을 확인한다 | [Interaction](./docs/decisions/interaction-foundation.md) |',
       '| docs web, search, playground의 구조를 정한다 | [Docs platform](./docs/decisions/docs-platform.md) |',
       '| 제품 상황에 맞는 컴포넌트를 고른다 | [Selection](./docs/guides/README.md) |',
@@ -211,8 +215,8 @@ test('requires each design question and target on the same line', async (t) => {
   await writeFile(path.join(root, 'docs/README.md'), '# Docs\n')
 
   assert.deepEqual(await validateDocs(root), [
-    'DESIGN.md: missing token naming route ./docs/color.md',
-    'DESIGN.md: missing Figma migration route ./docs/workflow.md',
+    'DESIGN.md: missing token naming route ./docs/foundations/color.md',
+    'DESIGN.md: missing Figma migration route ./docs/maintainers/figma-workflow.md',
   ])
 })
 
@@ -246,13 +250,14 @@ test('keeps documented property coverage aligned with public TypeScript props', 
     path.join(root, 'packages/react/src/Field.tsx'),
     'export interface FieldProps { label: string; value?: string }\nexport function Field(_props: FieldProps) { return null }\n',
   )
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
   await writeFile(
-    path.join(root, 'docs/components.md'),
-    `${CONTRACT}## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | \`FieldProps\` | \`label\`, \`state\` |\n`,
+    path.join(root, 'docs/components/README.md'),
+    `## Implementation coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | \`FieldProps\` | \`label\`, \`state\` |\n| Link | - | - |\n`,
   )
 
   assert.deepEqual(await validateDocs(root), [
-    'docs/components.md: FieldProps property coverage mismatch (missing: value; undocumented: state)',
+    'docs/components/README.md: FieldProps property coverage mismatch (missing: value; undocumented: state)',
   ])
 })
 
@@ -266,13 +271,15 @@ test('requires every public component export in the coverage matrix', async (t) 
     path.join(root, 'packages/react/src/Field.tsx'),
     'export interface FieldProps { label: string }\nexport function Field(_props: FieldProps) { return null }\n',
   )
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
   await writeFile(
-    path.join(root, 'docs/components.md'),
-    `${CONTRACT}## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Field | \`FieldProps\` | \`label\` |\n`,
+    path.join(root, 'docs/components/README.md'),
+    `## Implementation coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| Other | \`FieldProps\` | \`label\` |\n`,
   )
 
   assert.deepEqual(await validateDocs(root), [
-    'docs/components.md: missing public component Field coverage',
+    'docs/components/README.md: missing public component Field coverage',
+    'docs/components/README.md: Other is not a public @canon/react component export',
   ])
 })
 
@@ -286,35 +293,36 @@ test('accepts props only from the 이름 column of common contract and React tra
     path.join(root, 'packages/react/src/Field.tsx'),
     'export interface FieldProps { label: string; checked?: boolean; ghostProp?: string; isOpen?: boolean; md?: boolean; onClick?: () => void; status?: string; hint?: string; note?: string; wide?: string; extra?: string }\nexport function Field(_props: FieldProps) { return null }\n',
   )
-  const matrix = '## 구현 coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `checked`, `ghostProp`, `isOpen`, `md`, `onClick`, `status`, `hint`, `note`, `wide`, `extra` |\n'
+  const matrix = '## Implementation coverage matrix\n\n| Component | Public type | Public props |\n| --- | --- | --- |\n| [Field](./field.md) | `FieldProps` | `label`, `checked`, `ghostProp`, `isOpen`, `md`, `onClick`, `status`, `hint`, `note`, `wide`, `extra` |\n'
 
   const rejected = [
-    'docs/components.md: FieldProps.checked has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.ghostProp has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.isOpen has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.md has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.onClick has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.status has no 공통 계약 or React 번역 entry',
-    'docs/components.md: FieldProps.wide has no 공통 계약 or React 번역 entry',
+    'docs/foundations/properties.md: FieldProps.checked has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.ghostProp has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.isOpen has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.md has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.onClick has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.status has no Shared contract or React translation entry',
+    'docs/foundations/properties.md: FieldProps.wide has no Shared contract or React translation entry',
   ]
-  await writeFile(path.join(root, 'docs/components.md'), `${CONTRACT}${matrix}`)
+  await writeFile(path.join(root, 'docs/components/README.md'), matrix)
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT)
   assert.deepEqual(await validateDocs(root), rejected)
 
-  await writeFile(path.join(root, 'docs/components.md'), `${CONTRACT}${matrix}`.replace(/\n/g, '\r\n'))
+  await writeFile(path.join(root, 'docs/foundations/properties.md'), CONTRACT.replace(/\n/g, '\r\n'))
   assert.deepEqual(await validateDocs(root), rejected)
 
-  for (const source of [matrix, `${CONTRACT.replace('### React\n', '### React 번역\n')}${matrix}`]) {
-    await writeFile(path.join(root, 'docs/components.md'), source)
+  for (const source of ['', CONTRACT.replace('### React\n', '### React 번역\n')]) {
+    await writeFile(path.join(root, 'docs/foundations/properties.md'), source)
     assert.deepEqual(await validateDocs(root), [
-      'docs/components.md: missing 공통 계약 or 플랫폼 번역 React section',
+      'docs/foundations/properties.md: missing Shared contract or Platform translations React section',
     ])
   }
 
   await writeFile(
-    path.join(root, 'docs/components.md'),
-    `## 공통 계약\n\n| 상태 | 값 |\n| --- | --- |\n| 선택 여부 | \`label\` |\n\n## 플랫폼 번역\n\n### React\n\n${matrix}`,
+    path.join(root, 'docs/foundations/properties.md'),
+    `## Shared contract\n\n| 상태 | 값 |\n| --- | --- |\n| 선택 여부 | \`label\` |\n\n## Platform translations\n\n### React\n\n`,
   )
   assert.deepEqual(await validateDocs(root), [
-    'docs/components.md: 공통 계약 and React 번역 tables name no props in an 이름 column',
+    'docs/foundations/properties.md: Shared contract and React translation tables name no props in an 이름 column',
   ])
 })
