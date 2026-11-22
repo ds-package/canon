@@ -116,6 +116,7 @@ test('Button playground preview settings and copied JSX share the Canon public i
     'aria-label': 'Close',
   })
   assert.match(icon.jsx, /<IconButton/)
+  assert.equal(getButtonPlaygroundModel({ ...initialButtonPlaygroundState, component: 'icon', variant: 'destructive' }).componentProps.variant, 'secondary')
   assert.match(icon.jsx, /icon=\{<XIcon \/>\}/)
   assert.match(icon.jsx, /size="xl"/)
   assert.match(icon.jsx, /aria-label="Close"/)

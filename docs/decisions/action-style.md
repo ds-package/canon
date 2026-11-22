@@ -32,7 +32,7 @@ Button과 IconButton의 스타일 축은 세 번 바뀌었다.
 
 - React는 variant 이름을 유지하고 기본값만 `secondary`, `lg`로 바꿨다. IconButton 기본값도 `quiet`에서 `secondary`로 바꿨다(2026-11-23 반영).
 - Figma Button과 IconButton은 2026-11-23에 `tone`을 없애고 다시 묶었다. Button은 네 variant, IconButton은 `destructive`를 뺀 세 variant다.
-- React IconButton은 아직 `destructive`를 받는다. 타입에서 빼는 작업이 남아 있다.
+- React IconButton 타입에서도 `destructive`를 뺐다(2026-11-23).
 - 처음 두 축을 둔 이유인 "의미색과 면 처리의 독립 조합"은 상태 표시 컴포넌트에서 유지한다.
 
 ## Revisit when

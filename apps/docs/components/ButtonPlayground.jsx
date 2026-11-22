@@ -57,7 +57,7 @@ export function ButtonPlayground({ initialComponent = 'button' }) {
           <label>
             Variant
             <select value={state.variant} onChange={(event) => setOption('variant', event.target.value)}>
-              {['primary', 'secondary', 'quiet', 'destructive'].map((variant) => <option key={variant}>{variant}</option>)}
+              {['primary', 'secondary', 'quiet', 'destructive'].filter((variant) => state.component !== 'icon' || variant !== 'destructive').map((variant) => <option key={variant}>{variant}</option>)}
             </select>
           </label>
           <label>

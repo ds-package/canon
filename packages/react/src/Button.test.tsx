@@ -53,6 +53,12 @@ test('keeps decorative icons out of the accessible name and exposes the largest 
   expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).toBeTruthy()
 })
 
+test('does not offer a destructive icon-only button', () => {
+  // @ts-expect-error destructive is not an IconButton variant
+  const props: IconButtonProps = { icon: <svg />, 'aria-label': 'Delete', variant: 'destructive' }
+  expect(props.variant).toBe('destructive')
+})
+
 test('disabled and pending buttons do not run product actions', async () => {
   const user = userEvent.setup()
   const onPress = vi.fn()

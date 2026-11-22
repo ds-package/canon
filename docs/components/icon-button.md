@@ -33,7 +33,7 @@ import { IconButton } from '@canon/react'
 | --- | --- | --- |
 | `icon` | `ReactElement` | 필수 아이콘입니다. |
 | `aria-label` | `string` | 필수이며 비어 있으면 안 됩니다. |
-| `variant` | `'primary' \| 'secondary' \| 'quiet' \| 'destructive'` | `secondary` |
+| `variant` | `'primary' \| 'secondary' \| 'quiet'` | `secondary`. 위험 동작은 label이 있는 Button을 씁니다. |
 | `shape` | `'square' \| 'round'` | `square` |
 | `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `lg`. 크기 기준은 [Button](./button.md)의 「Sizes」와 같습니다. |
 | `disabled` | `boolean` | 누를 수 없게 합니다. |
