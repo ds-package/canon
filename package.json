@@ -8,7 +8,7 @@
     "test:package": "pnpm test",
     "dev": "pnpm -r dev",
     "lint": "pnpm -r lint",
-    "test": "pnpm --filter './packages/*' build && pnpm --filter @canon/react test && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/type-styles/*.test.js scripts/*.test.js scripts/package-consumption.test.mjs",
+    "test": "pnpm --filter './packages/*' build && pnpm --filter @canon/react test && node --test packages/tokens/scripts/*.test.js packages/tokens/preview/*.test.js docs/tools/figma-plugins/*/*.test.js scripts/*.test.js scripts/package-consumption.test.mjs",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "check": "pnpm test && pnpm test:docs && pnpm typecheck",
     "changeset": "changeset",

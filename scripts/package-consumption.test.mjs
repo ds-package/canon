@@ -209,7 +209,9 @@ test('packed packages work from a consumer project', async (t) => {
     ['--input-type=module', '-e', "import { createRequire } from 'node:module'; process.stdout.write(createRequire(import.meta.url).resolve('@canon/tokens/css'))"],
     consumerDir,
   )
-  assert.match(await readFile(cssPath, 'utf8'), /--semantic-status-informative-default:/)
+  const tokenCss = await readFile(cssPath, 'utf8')
+  assert.match(tokenCss, /--semantic-status-informative-default:/)
+  assert.match(tokenCss, /--radius-3xl:\s*14px;/)
 
   const reactCssPath = run(
     'node',
@@ -221,9 +223,13 @@ test('packed packages work from a consumer project', async (t) => {
   for (const variant of ['primary', 'secondary', 'quiet', 'destructive']) {
     assert.match(reactCss, new RegExp(`\\.canon-button\\[data-variant="${variant}"\\]`))
   }
-  for (const size of ['xs', 'sm', 'md', 'lg']) {
+  for (const size of ['xs', 'sm', 'md', 'lg', 'xl']) {
     assert.match(reactCss, new RegExp(`\\.canon-button\\[data-size="${size}"\\]`))
   }
+  assert.match(
+    reactCss,
+    /\.canon-button\[data-size="xl"\]\s*\{\s*height: var\(--size-56\);\s*border-radius: var\(--radius-3xl\);/,
+  )
   for (const selector of ['canon-select-trigger', 'canon-select-popover', 'canon-select-item']) {
     assert.match(reactCss, new RegExp(`\\.${selector}`))
   }

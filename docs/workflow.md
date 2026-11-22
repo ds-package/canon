@@ -26,7 +26,7 @@ Canon Figma 파일을 바꿀 때 필요한 계정, 폰트, 도구의 제약과 �
 
 Pretendard Variable은 npm `pretendard` 1.3.9의 `PretendardVariable.ttf`를 `~/Library/Fonts`에 설치했다. 설치 뒤에는 Figma를 재시작해야 했다. 팀원도 같은 폰트가 필요하다.
 
-텍스트 스타일 플러그인은 [tools/figma-plugins/type-styles](./tools/figma-plugins/type-styles)에 있다. 일회성 이관에 쓴 `replace-text-styles` 플러그인은 2026-10-14에 실행했고 보관하지 않았다.
+텍스트 스타일 플러그인은 [tools/figma-plugins/type-styles](./tools/figma-plugins/type-styles)에 있다. 컴포넌트 세트 정렬 플러그인은 [tools/figma-plugins/component-set-layout](./tools/figma-plugins/component-set-layout)에 있다. 일회성 이관에 쓴 `replace-text-styles` 플러그인은 2026-10-14에 실행했고 보관하지 않았다.
 
 1. **Pretendard Variable을 설치한 뒤 Figma를 재시작한다.**
    - 이유: Figma가 새로 설치한 로컬 폰트를 읽어야 한다.

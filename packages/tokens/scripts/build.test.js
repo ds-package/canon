@@ -127,7 +127,7 @@ test('Figma dimensions use unprefixed paths and preserve every shape mode', () =
   }
   const names = ['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full']
   for (const [mode, values] of Object.entries({
-    default: [0, 2, 4, 6, 8, 10, 12, 16, 24, 9999],
+    default: [0, 2, 4, 6, 8, 10, 12, 14, 24, 9999],
     sharp: [0, 0, 0, 2, 4, 6, 8, 10, 12, 9999],
     soft: [0, 4, 6, 8, 10, 12, 16, 24, 24, 9999],
   })) {

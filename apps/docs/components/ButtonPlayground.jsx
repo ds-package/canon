@@ -63,7 +63,7 @@ export function ButtonPlayground() {
           <label>
             Size
             <select value={state.size} onChange={(event) => setOption('size', event.target.value)}>
-              {['xs', 'sm', 'md', 'lg'].map((size) => <option key={size}>{size}</option>)}
+              {['xs', 'sm', 'md', 'lg', 'xl'].map((size) => <option key={size}>{size}</option>)}
             </select>
           </label>
           {state.component === 'icon' && (

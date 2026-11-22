@@ -33,7 +33,7 @@ test('requires an accessible name for an icon-only button at runtime', () => {
 
 test('exposes every documented variant and size through the public DOM contract', () => {
   for (const variant of ['primary', 'secondary', 'quiet', 'destructive'] as const) {
-    for (const size of ['xs', 'sm', 'md', 'lg'] as const) {
+    for (const size of ['xs', 'sm', 'md', 'lg', 'xl'] as const) {
       const { unmount } = render(<Button variant={variant} size={size}>{variant} {size}</Button>)
       const button = screen.getByRole('button', { name: `${variant} ${size}` })
       expect(button.getAttribute('data-variant')).toBe(variant)
@@ -43,11 +43,12 @@ test('exposes every documented variant and size through the public DOM contract'
   }
 })
 
-test('keeps decorative icons out of the accessible name', () => {
-  render(<IconButton aria-label="Close" icon={<svg data-testid="icon"><title>Hidden icon title</title></svg>} />)
+test('keeps decorative icons out of the accessible name and exposes the largest size', () => {
+  render(<IconButton aria-label="Close" icon={<svg data-testid="icon"><title>Hidden icon title</title></svg>} size="xl" />)
 
   const button = screen.getByRole('button', { name: 'Close' })
   expect(button.getAttribute('data-variant')).toBe('quiet')
+  expect(button.getAttribute('data-size')).toBe('xl')
   expect(button.getAttribute('data-shape')).toBe('square')
   expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).toBeTruthy()
 })

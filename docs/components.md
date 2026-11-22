@@ -30,15 +30,15 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 | 이름 | 뜻과 값 | 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- | --- |
 | `variant` | 컴포넌트의 시각 표현. Button 계열은 `'solid' \| 'subtle' \| 'ghost'` | 컴포넌트별로 정한다. Button `solid`, IconButton `ghost` | 둘 이상의 시각 표현이 필요한 컴포넌트 | 행동의 위계, 색 의미, 외곽 형태, interaction 상태를 값에 섞지 않는다. |
-| `tone` | 색의 의미. action 계열은 `'accent' \| 'neutral' \| 'negative'` | Button `accent`, IconButton `neutral` | 색 의미가 사용 판단을 바꾸는 action component | 표현 강도나 feedback 상태를 대신하지 않는다. `negative`의 강도는 variant로 정한다. |
-| `size` | 밀도. Button은 `'xs' \| 'sm' \| 'md' \| 'lg'`, field는 `'sm' \| 'md' \| 'lg'` | 모두 `md` | Button 계열, Select, TextField, TextArea, NumberField | 의미, icon 형태, 반응형 breakpoint를 값에 넣지 않는다. |
+| `tone` | 색의 의미. action 계열은 `'accent' \| 'neutral' \| 'negative'` | Button과 IconButton `accent` | 색 의미가 사용 판단을 바꾸는 action component | 표현 강도나 feedback 상태를 대신하지 않는다. `negative`의 강도는 variant로 정한다. |
+| `size` | 밀도. Button 계열은 `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'`, field는 `'sm' \| 'md' \| 'lg'` | 모두 `md` | Button 계열, Select, TextField, TextArea, NumberField | 의미, icon 형태, 반응형 breakpoint를 값에 넣지 않는다. |
 | `orientation` | `'horizontal' \| 'vertical'`, 선택지 배치와 탐색 순서 | `vertical` | RadioGroup | 단순 정렬만 바꾸는 prop으로 쓰지 않는다. |
 | `shape` | `'square' \| 'round'`, 같은 역할의 외곽 형태 | `square` | IconButton | Button의 의미나 icon 종류를 표현하지 않는다. |
 | `id` | 선택 key. 비어 있지 않고 같은 목록 안에서 고유하다 | 필수, 기본값 없음 | SelectItem | 표시 순서나 label 텍스트로 대신하지 않는다. 화면 요소 식별자로 쓰지 않는다. |
 
 `variant`, `tone`, `shape`는 서로 다른 선택 축이다. `solid`와 `ghost`는 면 처리, `accent`와 `negative`는 색 의미, `square`와 `round`는 외곽 형태만 정한다. 화면 안의 1차·2차 위계는 `primary`, `secondary` 같은 prop 값으로 고정하지 않고 배치, 개수, 주변 action과의 관계로 정한다.
 
-같은 이름은 모든 컴포넌트에 같은 값 목록을 강제하지 않는다. 각 컴포넌트는 실제 사용 사례와 시각 정의가 있는 값과 조합만 공개한다. Button에서 강한 negative action은 `solid + negative`, 낮은 강조의 negative action은 `subtle + negative` 또는 `ghost + negative`로 표현한다. `accent + negative`처럼 같은 축의 값을 동시에 조합하지 않는다.
+같은 이름은 모든 컴포넌트에 같은 값 목록을 강제하지 않는다. 각 컴포넌트는 실제 사용 사례와 시각 정의가 있는 값과 조합만 공개한다. Button에서 강한 negative action은 `solid + negative`, 낮은 강조의 negative action은 `subtle + negative`로 표현한다. `ghost + negative`는 제공하지 않는다. `accent + negative`처럼 같은 축의 값을 동시에 조합하지 않는다.
 
 ### 호출자가 정하는 조건
 
@@ -206,21 +206,36 @@ TextField와 TextArea는 native input과 textarea가 직접 hover와 focus를 �
 
 ### Figma component set 나열 규칙
 
-- 가로축은 `size`다. 큰 크기에서 작은 크기 순으로 `lg`, `md`, `sm`, `xs`를 놓는다.
+- 가로축은 `size`다. 큰 크기에서 작은 크기 순으로 `xl`, `lg`, `md`, `sm`, `xs`를 놓는다.
 - 세로축은 interaction 검수 순서다. `default`, `hover`, `pressed`, `focus`, `disabled` 순으로 놓는다.
 - `disabled` 행은 `interaction=default`, `disabled=true`로 구성한다. 나머지 interaction 행은 `disabled=false`다.
 - 한 interaction 5행 묶음이 끝나면 다음 `variant` 묶음을 아래에 놓는다. Button은 `solid`, `subtle`, `ghost` 순서다.
-- `tone`이 있으면 variant 묶음보다 바깥 그룹으로 둔다. Button은 `accent`, `neutral`, `negative` 순서다.
+- `tone`이 있으면 variant 묶음보다 바깥 그룹으로 둔다. Button은 `accent`, `negative` 순서로 두고 IconButton은 의도한 `accent`만 둔다.
 - 모든 경우의 수를 채우기 위해 빈 variant를 만들지 않는다. 실제로 제공하는 `tone + variant`의 크기·interaction만 나열한다.
+
+### Figma component set 내부 정렬 규칙
+
+1. 컴포넌트 세트 내부의 variant만 정리하고 세트 자체의 캔버스 위치는 유지한다.
+2. 내부 variant 전체의 좌측 상단 시작점을 세트 기준 `X=200`, `Y=200`으로 맞춘다. 각 variant를 같은 좌표에 겹치지 않고 전체 배치를 한 묶음으로 이동한다.
+3. 기존 행·열 순서, 크기별 정렬, variant 사이 간격, 스타일·상태·형태별 그룹 구분과 그룹 사이 간격을 유지한다. 크기가 다른 variant를 일괄 상단 정렬하거나 등간격으로 다시 배치하지 않는다.
+4. 이동 뒤 세트 너비는 내부 variant의 가장 오른쪽 끝 X에 200을 더하고, 세트 높이는 가장 아래쪽 끝 Y에 200을 더한 값으로 맞춘다.
+5. 내부 그룹 사이 여백은 유지하고 세트 외곽의 불필요한 빈 공간만 제거한다.
+6. 개별 variant의 크기, 디자인, 텍스트, 이름, 속성, 컴포넌트 연결, 변수·스타일 바인딩은 유지한다.
+7. variant를 추가·삭제하거나 연결을 해제하지 않고 정리 대상이 아닌 요소는 변경하지 않는다.
+
+이 규칙은 [Canon Component Set Layout 플러그인](./tools/figma-plugins/component-set-layout)으로 실행한다.
 
 ## 실제 Figma inventory
 
-2026-11-15에 파일 `9GZgtyTnVbm2YfJoadmIjp`의 31개 페이지와 모든 local component property owner를 읽었다. 아래는 구현된 React component에 대응하는 현재 Figma다. 이는 목표 convention이나 정본이 아니라, Figma를 Canon property model에 맞추기 위한 원문 확인 결과다.
+2026-11-15에 파일 `9GZgtyTnVbm2YfJoadmIjp`의 31개 페이지와 모든 local component property owner를 읽었다.
+Button과 IconButton은 2026-11-22에 페이지 `116:51`의 세트를 다시 읽었다.
+아래는 구현된 React component에 대응하는 현재 Figma다.
+이 inventory는 목표 convention이나 정본이 아니라 Figma를 Canon property model에 맞추기 위한 원문 확인 결과다.
 
 | Figma owner | 현재 property와 값 | local instance, override 있음 |
 | --- | --- | --- |
-| Button | TEXT `children=Button`; BOOLEAN `showLeadingIcon=true`, `showTrailingIcon=true`; VARIANT `variant=[quiet], default quiet`, `interaction=[default, focus, hover, pressed], default default`, `size=[lg, md, sm, xs], default md`, `disabled=[false, true], default false` | 26, override key migration 완료 |
-| IconButton | INSTANCE_SWAP `icon`; VARIANT `variant=[quiet], default quiet`, `interaction=[default, hover, pressed, focus], default default`, `size=[lg, md, sm, xs], default md`, `disabled=[false, true], default false`, `shape=[square, round], default square` | local instance 없음 |
+| Button | 125개; TEXT `children=Button`; BOOLEAN `showLeadingIcon=true`, `showTrailingIcon=true`; VARIANT `variant=[solid, subtle, ghost], default solid`, `tone=[accent, negative], default accent`, `interaction=[default, hover, pressed, focus], default default`, `size=[xl, lg, md, sm, xs], default xl`, `disabled=[false, true], default false` | 2026-11-15 file-wide 26; 대상 페이지 0 |
+| IconButton | 150개; INSTANCE_SWAP `icon`; VARIANT `variant=[solid, subtle, ghost], default solid`, `tone=[accent], default accent`, `interaction=[default, hover, pressed, focus], default default`, `size=[xl, lg, md, sm, xs], default xl`, `disabled=[false, true], default false`, `shape=[square, round], default square` | 대상 페이지 0; file-wide 미확인 |
 | Checkbox | TEXT `children=Checkbox Label`; VARIANT `size=[sm, md, lg], default sm`, `interaction=[hover, pressed, focus, default], default default`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `indeterminate=[false, true], default false` | 45, stale `state` override 0 |
 | Switch | VARIANT `size=[sm, md, lg], default sm`, `checked=[false, true], default false`, `disabled=[false, true], default false`, `interaction=[default, hover, pressed, focus], default default` | 30, stale `state` override 0 |
 | Radio | TEXT `children=Radio Label`; VARIANT `size=[sm, md, lg], default sm`, `interaction=[hover, pressed, default, focus], default default`, `disabled=[false, true], default false`, `checked=[false, true], default false`; RadioGroup owner 없음 | local instance 없음 |
@@ -237,7 +252,10 @@ Figma의 boolean 의미가 VARIANT의 문자열 `true|false`로 구현된 경우
 | --- | --- | --- |
 | interaction 검수 축 이름이 `state` | `interaction` | 8개 component set과 local instance를 migration했다. stale `state` override는 0개다. 외부 library 소비 파일은 미확인이다. |
 | Button `state`에 pressed 없음, hover/lg variant 중복 | `default\|hover\|pressed\|focus` 완성 | pressed token을 쓰던 중복 hover를 `pressed`로 바로잡았다. |
-| Figma Button `variant=quiet`, tone 없음 | 공통 계약의 `variant=solid\|subtle\|ghost`, `tone=accent\|neutral\|negative` | 현재 시각은 `subtle + neutral`에 해당한다. Figma와 React 모두 migration 대상이다. |
+| Figma Button의 과거 `variant=quiet`, tone 없음 | `solid\|subtle\|ghost` 표현과 `accent\|negative` 색 의미 | Figma는 5개 실제 조합으로 migration했다. React의 `primary\|secondary\|quiet\|destructive`는 별도 migration 전 public interface다. |
+| IconButton의 `tone=accent`만 제공 | negative 조합 미제공 | 의도한 현재 계약이며 빈 경우의 수를 채우지 않는다. |
+| Button 계열 Figma `size` 기본값이 `xl` | 플랫폼 계약의 기본 `md` | Figma VARIANT 기본값은 좌상단 variant에서 파생된다. `xl`을 첫 열로 두는 물리 순서와 `md` 기본값을 동시에 만족하지 못해 후속 결정이 필요하다. |
+| IconButton Figma `variant` 기본값이 `solid` | 공통 계약의 기본 `ghost` | 이번 요구에서 기본 variant 변경은 확정하지 않아 migration 차이로 남겨두었다. |
 | Figma field에 `appearance=filled\|flushed\|outline\|unstyled`와 `xs` 존재 | 전역 표현 축 이름 `variant`, React field는 `sm\|md\|lg`만 구현 | Figma `appearance`는 `variant`로 옮길 migration 대상이다. 값 목록은 컴포넌트별로 정하므로 Button과 공유하지 않는다. 기본 size는 `md`로 맞췄고 `xs` catalog variant는 React에 노출하지 않는다. |
 | Figma Select에 `readOnly` 존재 | React Select는 `readOnly` 미지원 | 플랫폼에 예측 가능한 read-only 선택 동작이 없어 현재는 mapping하지 않는다. |
 | Badge와 Alert가 feedback 의미를 `intent`로 표현 | 구현 시 `status`를 검토 | React 미구현이므로 아직 확정 계약이 아니다. |
@@ -295,6 +313,6 @@ Figma에 없는 변경 알림, `formatOptions`, `rows`, 접근 가능한 이름�
 - Canon property model 정본: 이 문서에 기록한 사용자와 에이전트의 합의
 - 모바일 번역 원칙: [Mobile foundation 결정](./decisions/mobile-foundation.md), 2026-11-16 사용자 확정
 - Canon runtime 구현 근거: `packages/react/src/*.tsx`, `packages/react/styles.css`
-- Canon Figma 현황 근거: file `9GZgtyTnVbm2YfJoadmIjp`, 2026-11-22 Button 원문 확인. 나머지 inventory는 2026-11-15 확인
+- Canon Figma 현황 근거: file `9GZgtyTnVbm2YfJoadmIjp`, 2026-11-22 Button과 IconButton 원문 확인. 나머지 inventory는 2026-11-15 확인
 - Prism: `packages/liner-prism/rules/`, `packages/design-token/rules/`의 표면 분리와 migration 방식만 비교
 - [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html): interaction과 accessibility behavior, DOM state contract

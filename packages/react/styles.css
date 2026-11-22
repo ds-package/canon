@@ -105,8 +105,8 @@
   animation: canon-button-spin 640ms linear infinite;
 }
 
+.canon-button[data-size="xl"],
 .canon-button[data-size="lg"] {
-  height: var(--control-height-lg);
   padding: 0 var(--spacing-200);
   border-radius: var(--radius-2xl);
   font-family: var(--typography-label-16-font-family);
@@ -115,6 +115,15 @@
   letter-spacing: var(--typography-label-16-letter-spacing);
   line-height: var(--typography-label-16-line-height);
   --canon-button-icon-size: var(--icon-size-20);
+}
+
+.canon-button[data-size="xl"] {
+  height: var(--size-56);
+  border-radius: var(--radius-3xl);
+}
+
+.canon-button[data-size="lg"] {
+  height: var(--control-height-lg);
 }
 
 .canon-button[data-size="md"] {

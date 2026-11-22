@@ -10,7 +10,7 @@
         "lg": { "$value": "8px" },
         "xl": { "$value": "10px" },
         "2xl": { "$value": "12px" },
-        "3xl": { "$value": "16px" },
+        "3xl": { "$value": "14px" },
         "full": { "$value": "9999px" },
         "4xl": { "$value": "24px" }
       }

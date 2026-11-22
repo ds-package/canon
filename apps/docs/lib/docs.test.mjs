@@ -131,7 +131,7 @@ test('Button playground preview settings and copied JSX share the Canon public i
     ...initialButtonPlaygroundState,
     component: 'icon',
     variant: 'quiet',
-    size: 'xs',
+    size: 'xl',
     disabled: true,
     pending: true,
     shape: 'round',
@@ -140,7 +140,7 @@ test('Button playground preview settings and copied JSX share the Canon public i
   assert.equal(icon.component, 'IconButton')
   assert.deepEqual(icon.componentProps, {
     variant: 'quiet',
-    size: 'xs',
+    size: 'xl',
     disabled: true,
     pending: true,
     shape: 'round',
@@ -148,6 +148,7 @@ test('Button playground preview settings and copied JSX share the Canon public i
   })
   assert.match(icon.jsx, /<IconButton/)
   assert.match(icon.jsx, /icon=\{<XIcon \/>\}/)
+  assert.match(icon.jsx, /size="xl"/)
   assert.match(icon.jsx, /aria-label="Close"/)
   assert.match(icon.jsx, /disabled/)
   assert.match(icon.jsx, /pending/)

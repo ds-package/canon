@@ -6,7 +6,7 @@ import {
 } from 'react-aria-components'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'destructive'
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 export interface ButtonProps {
   children: ReactNode

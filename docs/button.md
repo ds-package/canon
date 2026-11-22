@@ -55,7 +55,7 @@ import { Button, IconButton } from '@canon/react'
 | Prop | 타입 | 기본값·의미 |
 | --- | --- | --- |
 | `variant` | `'primary' \| 'secondary' \| 'quiet' \| 'destructive'` | Button은 `primary`, IconButton은 `quiet` |
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg'` | `md` |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | `md` |
 | `disabled` | `boolean` | 누르지 못하게 한다. |
 | `pending` | `boolean` | 진행 표시를 보이고 누르지 못하게 한다. |
 | `pendingLabel` | `string` | `Loading`. `pending` 상태에서 빈 문자열을 허용하지 않는다. |
@@ -99,7 +99,12 @@ Copy JSX는 현재 설정을 `@canon/react` public interface로 복사한다. Da
 
 ## 크기
 
-`md`가 기본이다. `lg`는 넓은 화면의 중요한 동작, `sm`과 `xs`는 밀도 높은 도구 영역에만 사용한다. 작은 크기를 모바일의 주 동작에 사용하지 않는다.
+- `md`가 기본이다.
+- `xl`은 높이 56px과 `radius/3xl`을 사용하며 default shape에서 radius는 14px이다.
+- `xl`은 `lg`의 typography, icon 크기, 좌우 padding을 계승한다.
+- `lg`는 넓은 화면의 중요한 동작에 사용한다.
+- `sm`과 `xs`는 밀도 높은 도구 영역에만 사용한다.
+- 작은 크기를 모바일의 주 동작에 사용하지 않는다.
 
 ## AI 사용 규칙
 
