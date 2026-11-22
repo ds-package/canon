@@ -94,7 +94,6 @@ Checkbox, Switch, RadioOption의 `children`은 보이는 단일 label이므로 �
 | Button `variant` | `primary`, `secondary`, `quiet`, `destructive`. 기본 `secondary` | 계약과 같음 | 같은 네 값. 기본 `primary` | Figma 기본값만 다름 |
 | IconButton `variant` | `primary`, `secondary`, `quiet`. 기본 `secondary` | 계약과 같음 | 계약과 같음. 기본 `primary` | Figma 기본값만 다름 |
 | Button과 IconButton 기본 `size` | `lg` | 계약과 같음 | `xl` | Figma 기본값만 다름 |
-| `secondary` 모양 | 회색 보조 버튼 | `surface/default` 배경과 `border/default` 테두리 | `control/neutral` 회색 채움 | React가 Figma를 따라야 함 |
 | Button 아이콘 | `leadingIcon`, `trailingIcon` 콘텐츠로 표현 | 계약과 같음 | `showLeadingIcon`, `showTrailingIcon` boolean | Figma authoring 전용 |
 
 Button과 IconButton 외 컴포넌트의 Figma는 Chakra UI에서 가져온 초안이며 디자인 정리 전입니다. 이 컴포넌트들의 Figma 값은 아직 비교 기준으로 쓰지 않습니다.
