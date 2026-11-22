@@ -6,15 +6,15 @@ import { Button, IconButton, type IconButtonProps } from './index'
 
 afterEach(cleanup)
 
-test('uses safe primary defaults and handles an accessible press', async () => {
+test('uses secondary and lg defaults and handles an accessible press', async () => {
   const user = userEvent.setup()
   const onPress = vi.fn()
   render(<Button onPress={onPress}>Save</Button>)
 
   const button = screen.getByRole('button', { name: 'Save' })
   expect(button.getAttribute('type')).toBe('button')
-  expect(button.getAttribute('data-variant')).toBe('primary')
-  expect(button.getAttribute('data-size')).toBe('md')
+  expect(button.getAttribute('data-variant')).toBe('secondary')
+  expect(button.getAttribute('data-size')).toBe('lg')
 
   await user.click(button)
   expect(onPress).toHaveBeenCalledOnce()
@@ -47,7 +47,7 @@ test('keeps decorative icons out of the accessible name and exposes the largest 
   render(<IconButton aria-label="Close" icon={<svg data-testid="icon"><title>Hidden icon title</title></svg>} size="xl" />)
 
   const button = screen.getByRole('button', { name: 'Close' })
-  expect(button.getAttribute('data-variant')).toBe('quiet')
+  expect(button.getAttribute('data-variant')).toBe('secondary')
   expect(button.getAttribute('data-size')).toBe('xl')
   expect(button.getAttribute('data-shape')).toBe('square')
   expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).toBeTruthy()

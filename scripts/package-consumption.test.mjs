@@ -90,7 +90,7 @@ test('packed packages work from a consumer project', async (t) => {
     consumerDir,
   )
   assert.match(renderedButton, /class="canon-button"/)
-  assert.match(renderedButton, /data-variant="primary"/)
+  assert.match(renderedButton, /data-variant="secondary"/)
 
   const renderedDialog = run(
     'node',

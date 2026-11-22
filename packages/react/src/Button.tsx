@@ -32,8 +32,8 @@ export interface ButtonProps {
 
 export function Button({
   children,
-  variant = 'primary',
-  size = 'md',
+  variant = 'secondary',
+  size = 'lg',
   leadingIcon,
   trailingIcon,
   disabled,
@@ -75,7 +75,7 @@ export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'leading
 export function IconButton({
   icon,
   'aria-label': ariaLabel,
-  variant = 'quiet',
+  variant = 'secondary',
   shape = 'square',
   className,
   ...props
