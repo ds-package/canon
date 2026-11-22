@@ -4,21 +4,33 @@ navigation: component
 ---
 # Button
 
-> Status: Preview. React public interface와 로컬 playground는 검증했으며 Figma의 `primary`, `secondary`, `destructive` 시각 정의는 아직 동기화되지 않았다.
+> Status: Preview. 공통 계약은 새 `variant`·`tone`을 확정했고, React public interface와 playground는 이전 variant를 유지한 migration 대상이다.
 
 Button은 현재 화면에서 동작을 실행한다. 다른 위치로 이동하는 동작에는 Link를 사용한다.
 
-## 선택
+## 목표 선택
+
+| 시각 표현 | 선택 |
+| --- | --- |
+| 면과 색 대비가 명확한 표현 | `variant="solid"` |
+| 올라온 면으로 낮은 강조를 만드는 표현 | `variant="subtle"` |
+| 지속적인 배경 없이 표시하는 표현 | `variant="ghost"` |
+
+| 색 의미 | 선택 |
+| --- | --- |
+| 제품의 강조색을 쓰는 action | `tone="accent"` |
+| 중립적인 action | `tone="neutral"` |
+| 삭제처럼 부정적 결과를 만드는 action | `tone="negative"` |
 
 | 목적 | 선택 |
 | --- | --- |
-| 화면의 대표 동작 | 기본 `Button`, 즉 `primary` |
-| 대표 동작보다 낮은 위계 | `secondary` |
-| 툴바처럼 배경 강조가 필요 없는 동작 | `quiet` |
-| 삭제처럼 되돌리기 어려운 동작 | `destructive` |
 | 아이콘만 보이는 익숙한 동작 | `IconButton`과 필수 `aria-label` |
 
-색이나 의미 상태를 표현하기 위해 Button을 쓰지 않는다. 정보·성공·주의 상태는 해당 feedback 컴포넌트가 맡는다.
+Button의 표현 강도는 `variant`, action의 색 의미는 `tone`으로 고른다. 화면의 1차·2차 위계는 prop 이름이 아니라 배치와 action 조합으로 만든다. 정보·성공·주의 상태는 해당 feedback 컴포넌트가 맡는다.
+
+## 현재 React migration
+
+현재 `@canon/react`는 아직 `primary`, `secondary`, `quiet`, `destructive`를 노출하며 `tone`을 제공하지 않는다. 아래 예제와 Public interface는 migration 전 실제 코드 계약을 기록한다.
 
 ## 기본 사용
 
@@ -91,7 +103,8 @@ Copy JSX는 현재 설정을 `@canon/react` public interface로 복사한다. Da
 
 ## AI 사용 규칙
 
-1. 별도 지시가 없으면 `<Button>`을 사용한다.
-2. 위험한 파괴 동작에만 `destructive`를 사용한다.
-3. 아이콘만 있으면 `Button` 대신 `IconButton`을 사용하고 동작 이름을 `aria-label`에 쓴다.
-4. 링크 이동, 상태 배지, 선택 가능한 toggle을 Button으로 만들지 않는다.
+1. 새 설계와 migration 목표에는 `variant`로 `solid`, `subtle`, `ghost`만 사용한다.
+2. 색 의미는 `tone`의 `accent`, `neutral`, `negative`로 분리한다.
+3. 현재 제품 코드에는 구현된 public interface만 사용하고 미구현 `tone`을 임의로 추가하지 않는다.
+4. 아이콘만 있으면 `Button` 대신 `IconButton`을 사용하고 동작 이름을 `aria-label`에 쓴다.
+5. 링크 이동, 상태 배지, 선택 가능한 toggle을 Button으로 만들지 않는다.

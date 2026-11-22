@@ -1,5 +1,5 @@
 ---
-verified: 2026-11-15
+verified: 2026-11-22
 navigation: component
 ---
 # 컴포넌트 프로퍼티 모델
@@ -23,19 +23,22 @@ Canon의 표준 언어는 호출자가 정하는 조건과 콘텐츠, runtime이
 
 공통 계약의 타입은 플랫폼 중립 표현으로 쓴다. 텍스트는 보이는 문자열, rich content는 플랫폼이 허용하는 구성 콘텐츠, icon은 장식 icon, action은 사용자가 실행하는 동작, 선택 key는 저장해도 되는 안정적인 식별자다. 각 플랫폼의 실제 타입은 플랫폼 번역이 정한다.
 
-공통 계약과 React 번역 표에서 public prop 이름은 `이름` 열에만 쓰고, `이름` 열의 backtick에는 prop 이름만 쓴다. docs validator는 이 열의 backtick 이름만 허용된 React prop으로 읽으므로, 타입, 기본값, 금지 이름은 다른 열에 쓴다. 아직 구현하지 않은 후보는 `이름` 열이 없는 `구현 전 후보` 표에만 쓴다.
+공통 계약과 React 번역 표에서 public prop 이름은 `이름` 열에만 쓰고, `이름` 열의 backtick에는 prop 이름만 쓴다. docs validator는 이 열의 backtick 이름만 허용된 React prop으로 읽으므로, 타입, 기본값, 금지 이름은 다른 열에 쓴다. 제품 의미가 확정된 계약은 플랫폼 구현 전에도 공통 계약에 둔다. 의미가 미정인 후보만 `이름` 열이 없는 `구현 전 후보` 표에 둔다.
 
 ### 선택과 구조
 
 | 이름 | 뜻과 값 | 기본값 | 사용 | 사용하지 않는 조건 |
 | --- | --- | --- | --- | --- |
-| `variant` | Button 계열 `'primary' \| 'secondary' \| 'quiet' \| 'destructive'` | Button `primary`, IconButton `quiet` | Button, IconButton | 범용 variant 목록, token 이름, Figma 면 처리 축을 복사하지 않는다. |
+| `variant` | 컴포넌트의 시각 표현. Button 계열은 `'solid' \| 'subtle' \| 'ghost'` | 컴포넌트별로 정한다. Button `solid`, IconButton `ghost` | 둘 이상의 시각 표현이 필요한 컴포넌트 | 행동의 위계, 색 의미, 외곽 형태, interaction 상태를 값에 섞지 않는다. |
+| `tone` | 색의 의미. action 계열은 `'accent' \| 'neutral' \| 'negative'` | Button `accent`, IconButton `neutral` | 색 의미가 사용 판단을 바꾸는 action component | 표현 강도나 feedback 상태를 대신하지 않는다. `negative`의 강도는 variant로 정한다. |
 | `size` | 밀도. Button은 `'xs' \| 'sm' \| 'md' \| 'lg'`, field는 `'sm' \| 'md' \| 'lg'` | 모두 `md` | Button 계열, Select, TextField, TextArea, NumberField | 의미, icon 형태, 반응형 breakpoint를 값에 넣지 않는다. |
 | `orientation` | `'horizontal' \| 'vertical'`, 선택지 배치와 탐색 순서 | `vertical` | RadioGroup | 단순 정렬만 바꾸는 prop으로 쓰지 않는다. |
 | `shape` | `'square' \| 'round'`, 같은 역할의 외곽 형태 | `square` | IconButton | Button의 의미나 icon 종류를 표현하지 않는다. |
 | `id` | 선택 key. 비어 있지 않고 같은 목록 안에서 고유하다 | 필수, 기본값 없음 | SelectItem | 표시 순서나 label 텍스트로 대신하지 않는다. 화면 요소 식별자로 쓰지 않는다. |
 
-`variant` 값은 컴포넌트마다 다를 수 있다. Button의 `destructive`는 되돌리기 어려운 행동의 결과이므로 feedback `status`가 아니라 Button variant다.
+`variant`, `tone`, `shape`는 서로 다른 선택 축이다. `solid`와 `ghost`는 면 처리, `accent`와 `negative`는 색 의미, `square`와 `round`는 외곽 형태만 정한다. 화면 안의 1차·2차 위계는 `primary`, `secondary` 같은 prop 값으로 고정하지 않고 배치, 개수, 주변 action과의 관계로 정한다.
+
+같은 이름은 모든 컴포넌트에 같은 값 목록을 강제하지 않는다. 각 컴포넌트는 실제 사용 사례와 시각 정의가 있는 값과 조합만 공개한다. Button에서 강한 negative action은 `solid + negative`, 낮은 강조의 negative action은 `subtle + negative` 또는 `ghost + negative`로 표현한다. `accent + negative`처럼 같은 축의 값을 동시에 조합하지 않는다.
 
 ### 호출자가 정하는 조건
 
@@ -185,6 +188,9 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 
 | 의미 | Figma 목표 표현 | React public interface | 현재 runtime 표현 |
 | --- | --- | --- | --- |
+| 시각 표현 | `variant=solid\|subtle\|ghost` | `variant` | component별 class와 `data-variant` |
+| action 색 의미 | `tone=accent\|neutral\|negative` | `tone` | semantic color token |
+| 외곽 형태 | `shape=square\|round` | 필요한 컴포넌트의 `shape` | radius token과 `data-shape` |
 | hover | `interaction=hover` | 없음 | React Aria `data-hovered` 또는 native `:hover` |
 | pressed | `interaction=pressed` | 없음 | React Aria `data-pressed` |
 | keyboard focus | `interaction=focus` | 없음 | `data-focus-visible`, native `:focus-visible`, composite field의 `data-focus-within` |
@@ -222,8 +228,8 @@ Figma의 boolean 의미가 VARIANT의 문자열 `true|false`로 구현된 경우
 | --- | --- | --- |
 | interaction 검수 축 이름이 `state` | `interaction` | 8개 component set과 local instance를 migration했다. stale `state` override는 0개다. 외부 library 소비 파일은 미확인이다. |
 | Button `state`에 pressed 없음, hover/lg variant 중복 | `default\|hover\|pressed\|focus` 완성 | pressed token을 쓰던 중복 hover를 `pressed`로 바로잡았다. |
-| Figma Button `variant=subtle`, `intent=neutral` | React 행동 의미 `variant` | 기존 표현은 `variant=quiet`로 옮겼다. 단일값 `intent`는 제거했다. `primary`, `secondary`, `destructive` 시각 정의는 아직 없다. |
-| Figma field에 `xs`와 표현 `variant` 존재 | React field는 `sm\|md\|lg`, 표현 variant 없음 | 표현 축은 Figma 전용 `appearance`로 분리했다. 기본 size는 `md`로 맞췄다. `xs` catalog variant는 React에 노출하지 않는다. |
+| Figma Button `variant=quiet`, tone 없음 | 공통 계약의 `variant=solid\|subtle\|ghost`, `tone=accent\|neutral\|negative` | 현재 시각은 `subtle + neutral`에 해당한다. Figma와 React 모두 migration 대상이다. |
+| Figma field에 `appearance=filled\|flushed\|outline\|unstyled`와 `xs` 존재 | 전역 표현 축 이름 `variant`, React field는 `sm\|md\|lg`만 구현 | Figma `appearance`는 `variant`로 옮길 migration 대상이다. 값 목록은 컴포넌트별로 정하므로 Button과 공유하지 않는다. 기본 size는 `md`로 맞췄고 `xs` catalog variant는 React에 노출하지 않는다. |
 | Figma Select에 `readOnly` 존재 | React Select는 `readOnly` 미지원 | 플랫폼에 예측 가능한 read-only 선택 동작이 없어 현재는 mapping하지 않는다. |
 | Badge와 Alert가 feedback 의미를 `intent`로 표현 | 구현 시 `status`를 검토 | React 미구현이므로 아직 확정 계약이 아니다. |
 | `show*` BOOLEAN과 icon INSTANCE_SWAP | 콘텐츠와 composition 존재 | React에는 `show*`를 만들지 않는다. icon은 `leadingIcon`, `trailingIcon` 같은 제한된 콘텐츠 prop으로 번역한다. |
@@ -256,28 +262,30 @@ Figma Plugin API의 property rename을 사용해 기존 component와 local insta
 
 ## Figma에만 있는 property와 코드에만 있는 prop
 
-Figma에만 있는 `interaction`, `appearance`, `showLeadingIcon`, `showFooter`, INSTANCE_SWAP `icon`, component catalog용 `size`는 편집과 시각 검수를 위한 것이다. React에 같은 이름을 자동 추가하지 않는다.
+Figma에만 있는 `interaction`, `showLeadingIcon`, `showFooter`, INSTANCE_SWAP `icon`, component catalog용 `size`는 편집과 시각 검수를 위한 것이다. Figma에만 구현된 `variant`도 React에 자동 추가하지 않고 제품 사용 사례와 runtime 표현을 먼저 검증한다.
 
 Figma에 없는 변경 알림, `formatOptions`, `rows`, 접근 가능한 이름은 공통 계약이지만 실행과 데이터 흐름을 위한 것이다. React에만 있는 native form 연결, focus handler, `default*` 초기값 쌍도 마찬가지다. 둘 다 Figma property로 자동 추가하지 않고 필요한 example이나 annotation으로 검수한다.
 
 ## AI 선택 규칙
 
 1. 먼저 이 문서의 공통 계약과 플랫폼 번역 규칙을 따른다. component 문서와 exported `*Props`는 현재 구현 coverage이며, 정본과 충돌하면 차이를 migration 대상으로 기록한다.
-2. Figma `show*`는 콘텐츠나 composition 존재로 번역한다. React에 같은 boolean을 만들지 않는다.
-3. hover, pressed, focus, filled는 runtime-derived다. public `state`나 각각의 boolean prop을 만들지 않는다.
-4. 값은 `value`, 선택 여부는 `checked`, 열림은 `open` 문법을 쓴다. React에서는 React Aria 이름을 public interface로 새지 않게 한다.
-5. 위치에는 `leading`, `trailing`을 쓴다. `left`, `right`나 token 이름을 public prop으로 만들지 않는다.
-6. 지원되지 않은 native prop이 필요하면 기존 allowlist와 테스트 근거를 먼저 확인한다. React Aria props 전체를 상속하지 않는다.
-7. Figma 현재값과 정본 convention이 다르면 현재값, 정본값, instance migration 영향을 따로 쓴다. 현재 Figma에 맞춰 정본을 바꾸지 않는다.
-8. 미구현 컴포넌트의 예상 props는 확정 계약처럼 쓰지 않는다.
-9. 모바일 interface는 공통 계약과 iOS·Android 번역 원칙에서 출발한다. React prop, form 제출 연결, `default*` 초기값 쌍을 복사하지 않는다.
-10. React에 새 prop을 추가하면 공통 계약이나 React 번역 규칙에 먼저 이름과 의미를 기록한다.
+2. `variant`는 시각 표현, `tone`은 색 의미, `shape`는 외곽 형태만 정한다. 화면 위계나 interaction 상태를 이 값에 섞지 않는다.
+3. 모든 `variant`와 `tone` 조합을 자동 허용하지 않는다. 해당 컴포넌트가 실제로 제공하는 조합만 사용한다.
+4. Figma `show*`는 콘텐츠나 composition 존재로 번역한다. React에 같은 boolean을 만들지 않는다.
+5. hover, pressed, focus, filled는 runtime-derived다. public `state`나 각각의 boolean prop을 만들지 않는다.
+6. 값은 `value`, 선택 여부는 `checked`, 열림은 `open` 문법을 쓴다. React에서는 React Aria 이름을 public interface로 새지 않게 한다.
+7. 위치에는 `leading`, `trailing`을 쓴다. `left`, `right`나 token 이름을 public prop으로 만들지 않는다.
+8. 지원되지 않은 native prop이 필요하면 기존 allowlist와 테스트 근거를 먼저 확인한다. React Aria props 전체를 상속하지 않는다.
+9. Figma 현재값과 정본 convention이 다르면 현재값, 정본값, instance migration 영향을 따로 쓴다. 현재 Figma에 맞춰 정본을 바꾸지 않는다.
+10. 미구현 컴포넌트의 예상 props는 확정 계약처럼 쓰지 않는다.
+11. 모바일 interface는 공통 계약과 iOS·Android 번역 원칙에서 출발한다. React prop, form 제출 연결, `default*` 초기값 쌍을 복사하지 않는다.
+12. React에 새 prop을 추가하면 공통 계약이나 React 번역 규칙에 먼저 이름과 의미를 기록한다.
 
 ## 근거
 
 - Canon property model 정본: 이 문서에 기록한 사용자와 에이전트의 합의
 - 모바일 번역 원칙: [Mobile foundation 결정](./decisions/mobile-foundation.md), 2026-11-16 사용자 확정
 - Canon runtime 구현 근거: `packages/react/src/*.tsx`, `packages/react/styles.css`
-- Canon Figma 현황 근거: file `9GZgtyTnVbm2YfJoadmIjp`, 2026-11-15 원문 확인
+- Canon Figma 현황 근거: file `9GZgtyTnVbm2YfJoadmIjp`, 2026-11-22 Button 원문 확인. 나머지 inventory는 2026-11-15 확인
 - Prism: `packages/liner-prism/rules/`, `packages/design-token/rules/`의 표면 분리와 migration 방식만 비교
 - [React Aria Components](https://react-spectrum.adobe.com/react-aria/components.html): interaction과 accessibility behavior, DOM state contract
