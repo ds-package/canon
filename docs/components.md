@@ -204,6 +204,15 @@ React는 현재 구현된 유일한 번역이다. React Aria Components 위에�
 
 TextField와 TextArea는 native input과 textarea가 직접 hover와 focus를 계산하므로 `:hover`와 `:focus-visible`을 쓴다. SelectItem의 `data-focused`는 roving focus로 현재 option을 가리키고, `data-focus-visible`은 keyboard focus ring을 그린다. 두 상태는 합치지 않는다.
 
+### Figma component set 나열 규칙
+
+- 가로축은 `size`다. 큰 크기에서 작은 크기 순으로 `lg`, `md`, `sm`, `xs`를 놓는다.
+- 세로축은 interaction 검수 순서다. `default`, `hover`, `pressed`, `focus`, `disabled` 순으로 놓는다.
+- `disabled` 행은 `interaction=default`, `disabled=true`로 구성한다. 나머지 interaction 행은 `disabled=false`다.
+- 한 interaction 5행 묶음이 끝나면 다음 `variant` 묶음을 아래에 놓는다. Button은 `solid`, `subtle`, `ghost` 순서다.
+- `tone`이 있으면 variant 묶음보다 바깥 그룹으로 둔다. Button은 `accent`, `neutral`, `negative` 순서다.
+- 모든 경우의 수를 채우기 위해 빈 variant를 만들지 않는다. 실제로 제공하는 `tone + variant`의 크기·interaction만 나열한다.
+
 ## 실제 Figma inventory
 
 2026-11-15에 파일 `9GZgtyTnVbm2YfJoadmIjp`의 31개 페이지와 모든 local component property owner를 읽었다. 아래는 구현된 React component에 대응하는 현재 Figma다. 이는 목표 convention이나 정본이 아니라, Figma를 Canon property model에 맞추기 위한 원문 확인 결과다.
