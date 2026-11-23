@@ -8,6 +8,7 @@ export type {
   ButtonSize,
   ButtonVariant,
   IconButtonProps,
+  IconButtonVariant,
 } from './Button'
 
 export { Checkbox } from './Checkbox'

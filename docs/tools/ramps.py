@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Canon 컬러 램프 생성기 (OKLCH).
 
-docs/color.md 의 규칙을 코드로 옮긴 것이다. 실행하면 10개 색의 50~1000 램프를 JSON으로 출력한다.
+docs/foundations/color.md 의 규칙을 코드로 옮긴 것이다. 실행하면 10개 색의 50~1000 램프를 JSON으로 출력한다.
 Figma `primitive` 컬렉션의 값이 정본이고, 이 스크립트는 같은 값을 재현하고 조정할 때 쓴다.
 
     python3 docs/tools/ramps.py            # JSON 출력

@@ -6,7 +6,9 @@ import {
 } from 'react-aria-components'
 
 export type ButtonVariant = 'primary' | 'secondary' | 'quiet' | 'destructive'
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+// Icon-only destructive actions are easy to trigger by mistake; use a labeled Button.
+export type IconButtonVariant = Exclude<ButtonVariant, 'destructive'>
 
 export interface ButtonProps {
   children: ReactNode
@@ -32,8 +34,8 @@ export interface ButtonProps {
 
 export function Button({
   children,
-  variant = 'primary',
-  size = 'md',
+  variant = 'secondary',
+  size = 'lg',
   leadingIcon,
   trailingIcon,
   disabled,
@@ -68,14 +70,14 @@ export function Button({
 export interface IconButtonProps extends Omit<ButtonProps, 'children' | 'leadingIcon' | 'trailingIcon' | 'variant'> {
   icon: ReactElement
   'aria-label': string
-  variant?: ButtonVariant
+  variant?: IconButtonVariant
   shape?: 'square' | 'round'
 }
 
 export function IconButton({
   icon,
   'aria-label': ariaLabel,
-  variant = 'quiet',
+  variant = 'secondary',
   shape = 'square',
   className,
   ...props

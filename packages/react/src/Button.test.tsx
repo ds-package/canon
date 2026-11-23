@@ -6,15 +6,15 @@ import { Button, IconButton, type IconButtonProps } from './index'
 
 afterEach(cleanup)
 
-test('uses safe primary defaults and handles an accessible press', async () => {
+test('uses secondary and lg defaults and handles an accessible press', async () => {
   const user = userEvent.setup()
   const onPress = vi.fn()
   render(<Button onPress={onPress}>Save</Button>)
 
   const button = screen.getByRole('button', { name: 'Save' })
   expect(button.getAttribute('type')).toBe('button')
-  expect(button.getAttribute('data-variant')).toBe('primary')
-  expect(button.getAttribute('data-size')).toBe('md')
+  expect(button.getAttribute('data-variant')).toBe('secondary')
+  expect(button.getAttribute('data-size')).toBe('lg')
 
   await user.click(button)
   expect(onPress).toHaveBeenCalledOnce()
@@ -33,7 +33,7 @@ test('requires an accessible name for an icon-only button at runtime', () => {
 
 test('exposes every documented variant and size through the public DOM contract', () => {
   for (const variant of ['primary', 'secondary', 'quiet', 'destructive'] as const) {
-    for (const size of ['xs', 'sm', 'md', 'lg'] as const) {
+    for (const size of ['xs', 'sm', 'md', 'lg', 'xl'] as const) {
       const { unmount } = render(<Button variant={variant} size={size}>{variant} {size}</Button>)
       const button = screen.getByRole('button', { name: `${variant} ${size}` })
       expect(button.getAttribute('data-variant')).toBe(variant)
@@ -43,13 +43,20 @@ test('exposes every documented variant and size through the public DOM contract'
   }
 })
 
-test('keeps decorative icons out of the accessible name', () => {
-  render(<IconButton aria-label="Close" icon={<svg data-testid="icon"><title>Hidden icon title</title></svg>} />)
+test('keeps decorative icons out of the accessible name and exposes the largest size', () => {
+  render(<IconButton aria-label="Close" icon={<svg data-testid="icon"><title>Hidden icon title</title></svg>} size="xl" />)
 
   const button = screen.getByRole('button', { name: 'Close' })
-  expect(button.getAttribute('data-variant')).toBe('quiet')
+  expect(button.getAttribute('data-variant')).toBe('secondary')
+  expect(button.getAttribute('data-size')).toBe('xl')
   expect(button.getAttribute('data-shape')).toBe('square')
   expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).toBeTruthy()
+})
+
+test('does not offer a destructive icon-only button', () => {
+  // @ts-expect-error destructive is not an IconButton variant
+  const props: IconButtonProps = { icon: <svg />, 'aria-label': 'Delete', variant: 'destructive' }
+  expect(props.variant).toBe('destructive')
 })
 
 test('disabled and pending buttons do not run product actions', async () => {

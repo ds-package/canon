@@ -32,17 +32,18 @@
 }
 
 .canon-button[data-variant="secondary"] {
-  border-color: var(--semantic-border-default);
-  background: var(--semantic-surface-default);
+  background: var(--semantic-control-neutral);
   color: var(--semantic-text-default);
 }
 
 .canon-button[data-variant="secondary"][data-hovered] {
-  background: linear-gradient(var(--semantic-overlay-hover), var(--semantic-overlay-hover)), var(--semantic-surface-default);
+  background-color: var(--semantic-control-neutral);
+  background-image: linear-gradient(var(--semantic-overlay-hover), var(--semantic-overlay-hover));
 }
 
 .canon-button[data-variant="secondary"][data-pressed] {
-  background: linear-gradient(var(--semantic-overlay-pressed), var(--semantic-overlay-pressed)), var(--semantic-surface-default);
+  background-color: var(--semantic-control-neutral);
+  background-image: linear-gradient(var(--semantic-overlay-pressed), var(--semantic-overlay-pressed));
 }
 
 .canon-button[data-variant="quiet"] {
@@ -105,8 +106,8 @@
   animation: canon-button-spin 640ms linear infinite;
 }
 
+.canon-button[data-size="xl"],
 .canon-button[data-size="lg"] {
-  height: var(--control-height-lg);
   padding: 0 var(--spacing-200);
   border-radius: var(--radius-2xl);
   font-family: var(--typography-label-16-font-family);
@@ -115,6 +116,15 @@
   letter-spacing: var(--typography-label-16-letter-spacing);
   line-height: var(--typography-label-16-line-height);
   --canon-button-icon-size: var(--icon-size-20);
+}
+
+.canon-button[data-size="xl"] {
+  height: var(--size-56);
+  border-radius: var(--radius-3xl);
+}
+
+.canon-button[data-size="lg"] {
+  height: var(--control-height-lg);
 }
 
 .canon-button[data-size="md"] {

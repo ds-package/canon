@@ -3,11 +3,11 @@ verified: 2026-10-14
 navigation: foundation
 navigationOrder: 2
 ---
-# 타이포그래피
+# Typography
 
 폰트는 Pretendard Variable이다. 텍스트 스타일은 역할과 실제 글자 크기로 이름을 붙인 29개다.
 
-## 1. 텍스트 스타일
+## 1. Text styles
 
 | 역할 | 스타일 | 크기 / 행간 | 굵기 | 자간 |
 | --- | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ navigationOrder: 2
 | Caption | `Caption/11` | 11px / 18px | Regular | 0% |
 | Caption | `Caption/10` | 10px / 16px | Regular | 0% |
 
-## 2. 이름과 역할 규칙
+## 2. Naming and role rules
 
 1. **이름에는 `large`, `md` 같은 크기 단어 대신 실제 크기 숫자를 쓴다.**
    - 이유: 크기 단어는 몇 px인지 스타일을 열어 봐야 안다.
@@ -52,7 +52,7 @@ navigationOrder: 2
 4. **10px, 11px, 12px는 Label과 Caption에서 쓴다.** Label은 배지, 태그, 탭에 쓴다.
    - 이유: 작은 크기에서도 컨트롤용 글자와 보조 설명의 역할을 구분한다.
 
-## 3. 행간 규칙
+## 3. Line height rules
 
 1. **행간은 한글을 우선해 영문 기준보다 넉넉하게 잡는다.** Body는 1.57~1.6, Heading은 약 1.33, Display는 1.2~1.25이고, 20px 미만은 대체로 1.5 이상이다.
    - 이유: 한글 가독성을 확보한다.
@@ -61,7 +61,7 @@ navigationOrder: 2
 3. **Label의 행간은 고정값으로 둔다.**
    - 이유: Label이 들어가는 컨트롤 높이가 흔들리지 않게 한다.
 
-## 4. 변수 바인딩
+## 4. Variable bindings
 
 모든 스타일의 크기, 행간, 굵기를 변수에 바인딩한다.
 
@@ -78,9 +78,9 @@ navigationOrder: 2
 2. **행간 변수 이름의 소수점은 `_`로 쓴다.**
    - 이유: 변수 이름에는 `.`을 쓸 수 없다.
 
-## 5. 바꾸는 법
+## 5. How to change
 
-1. [tools/figma-plugins/type-styles/code.js](./tools/figma-plugins/type-styles/code.js)의 `SPEC`을 고친다.
+1. [tools/figma-plugins/type-styles/code.js](../tools/figma-plugins/type-styles/code.js)의 `SPEC`을 고친다.
 2. Pretendard Variable이 컴퓨터에 설치되어 있는지 확인한다.
 3. Figma 데스크톱에서 Canon 파일을 연다.
 4. 처음 한 번은 `Plugins > Development > Import plugin from manifest`로 플러그인을 가져온다.
@@ -93,6 +93,6 @@ navigationOrder: 2
 2. **플러그인을 실행하기 전에 Pretendard Variable을 설치한다.**
    - 이유: 스타일을 만들 때 해당 로컬 폰트를 읽어야 한다.
 
-## 6. 이력
+## 6. History
 
 Chakra에서 온 옛 스타일 96개는 새 스타일로 교체한 뒤 삭제했다. 옛 이름은 `text-md/lineHeight-6/font-bold`처럼 크기, 행간, 굵기를 이어 붙인 형태였다.

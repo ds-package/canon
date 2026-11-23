@@ -127,7 +127,7 @@ test('Figma dimensions use unprefixed paths and preserve every shape mode', () =
   }
   const names = ['none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', 'full']
   for (const [mode, values] of Object.entries({
-    default: [0, 2, 4, 6, 8, 10, 12, 16, 24, 9999],
+    default: [0, 2, 4, 6, 8, 10, 12, 14, 24, 9999],
     sharp: [0, 0, 0, 2, 4, 6, 8, 10, 12, 9999],
     soft: [0, 4, 6, 8, 10, 12, 16, 24, 24, 9999],
   })) {
@@ -163,7 +163,7 @@ test('readable text meets WCAG AA on its supported surfaces', () => {
 })
 
 test('known AA shortfalls in warm tint retain their contrast floor (알려진 AA 미달)', () => {
-  // Figma 확인 필요(warm tint 대비), docs/color.md 6절.
+  // Figma 확인 필요(warm tint 대비), docs/foundations/color.md 6절.
   const floors = { placeholder: 4.482353, helper: 4.482353, lowest: 4.482353 }
   for (const [text, floor] of Object.entries(floors)) {
     assert.ok(

@@ -1,7 +1,7 @@
 export const initialButtonPlaygroundState = Object.freeze({
   component: 'button',
-  variant: 'primary',
-  size: 'md',
+  variant: 'secondary',
+  size: 'lg',
   disabled: false,
   pending: false,
   shape: 'square',
@@ -18,8 +18,11 @@ export function getButtonPlaygroundModel(state) {
   const flags = [state.disabled && 'disabled', state.pending && 'pending'].filter(Boolean)
 
   if (state.component === 'icon') {
+    // IconButton has no destructive variant; fall back to the default.
+    const variant = state.variant === 'destructive' ? 'secondary' : state.variant
     const componentProps = {
       ...commonProps,
+      variant,
       shape: state.shape,
       'aria-label': 'Close',
     }
@@ -31,7 +34,7 @@ export function getButtonPlaygroundModel(state) {
         '<IconButton',
         '  icon={<XIcon />}',
         '  aria-label="Close"',
-        `  variant="${state.variant}"`,
+        `  variant="${variant}"`,
         `  size="${state.size}"`,
         `  shape="${state.shape}"`,
         ...flags.map((flag) => `  ${flag}`),

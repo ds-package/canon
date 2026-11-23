@@ -1,29 +1,29 @@
 ---
-verified: 2026-11-15
+verified: 2026-11-23
 navigation: getting-started
 navigationOrder: 2
 ---
-# 컴포넌트 선택 가이드
+# Component selection guide
 
 가이드는 제품 상황에서 어떤 Canon 컴포넌트나 패턴을 선택할지 답한다. API 목록이나 일반 UX 지식을 다시 쓰는 문서가 아니다.
 
-## 다른 문서와의 경계
+## Relation to other docs
 
 | 문서 | 답하는 질문 |
 | --- | --- |
-| foundation | Canon 전체에 적용되는 시각·접근성 원리는 무엇인가 |
+| foundation | Canon 전체에 적용되는 시각·접근성 원리와 공통 property 계약은 무엇인가 |
 | rule | 컴포넌트와 토큰을 만들 때 무엇을 지켜야 하는가 |
 | component docs | 선택한 컴포넌트를 어떻게 구성하고 사용하는가 |
 | decision | 왜 이 foundation과 구조를 선택했는가 |
 | guide | 현재 제품 상황에서 무엇을 선택해야 하는가 |
 
-## 현재 상태
+## Current status
 
-`@canon/react`는 Preview로 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공하지만, 컴포넌트 사이의 선택을 일반화할 만큼 확인된 제품 사용 사례는 아직 없다. 따라서 현재 확정된 컴포넌트 선택 가이드는 없다. 가이드가 없는 질문은 일반적인 관행이나 외부 디자인 시스템을 Canon 규칙으로 추정하지 않고 미확인으로 남긴다.
+`@canon/react`는 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField를 제공하지만, 컴포넌트 사이의 선택을 일반화할 만큼 확인된 제품 사용 사례는 아직 없다. 따라서 현재 확정된 컴포넌트 선택 가이드는 없다. 가이드가 없는 질문은 일반적인 관행이나 외부 디자인 시스템을 Canon 규칙으로 추정하지 않고 미확인으로 남긴다.
 
 Button, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField의 실제 사용 근거가 생기면 컴포넌트 이름 하나보다 선택 질문 단위로 가이드를 추가한다. 예를 들면 `overlays`, `selection`, `fields`처럼 여러 컴포넌트의 경계를 비교하는 문서다.
 
-## 작성 근거
+## Sources
 
 가이드는 다음 근거를 함께 확인할 수 있을 때만 추가한다.
 

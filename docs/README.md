@@ -3,76 +3,41 @@ verified: 2026-11-15
 navigation: getting-started
 navigationOrder: 1
 ---
-# Canon 제작 가이드
+# Getting started with Canon
 
-Canon의 컬러, 타이포, 컴포넌트를 만들고 고칠 때 따르는 문서다. [DESIGN.md](../DESIGN.md)는 작업 질문을 해당 정본으로 연결하고, 이 문서는 각 문서의 현재 역할과 정본 경계를 기록한다.
+Canon은 개인과 작은 팀이 쓰는 디자인 시스템입니다. React 컴포넌트와 디자인 토큰으로 화면의 기본 스타일을 구성합니다.
 
-| 문서 | 현재 역할 | 정본 경계 |
-| --- | --- | --- |
-| [color.md](./color.md) | 컬러 foundation과 현재 토큰 계약 | Figma 변수는 설계 값과 이름의 정본이고 `packages/tokens`는 코드 배포 정본이다. 이 문서는 둘의 대응과 선택 규칙을 설명한다. |
-| [typography.md](./typography.md) | 타이포 foundation과 Figma 바인딩 규칙 | Figma 텍스트 스타일은 설계 정본이고 `packages/tokens`는 코드 토큰 정본이다. |
-| [components.md](./components.md) | 플랫폼 공통 property 계약, React·iOS·Android 번역, runtime 상태, Figma authoring property와 playground state의 분리 원칙 | 공통 계약이 property 의미의 정본이다. `@canon/react`의 TypeScript는 Button, IconButton, Checkbox, Dialog, NumberField, RadioGroup, Select, Switch, TextArea, TextField의 React 번역 구현 근거이고, Figma property는 설계 편집의 정본이며 공통 계약과 mapping으로 연결한다. |
-| [icons.md](./icons.md) | 아이콘 foundation, Phosphor 채택 결정, Figma 적용 현황 | Phosphor 원본과 Canon Figma 컴포넌트가 현재 근거다. 코드 icon package 계약은 아직 없다. |
-| [workflow.md](./workflow.md) | Figma contributing 절차 | Figma MCP 제약과 실제 마이그레이션에서 검증한 순서를 기록한다. |
-| [decisions/interaction-foundation.md](./decisions/interaction-foundation.md) | React Aria Components 채택 결정 | interaction foundation의 이유, 책임 경계, 재검토 조건의 정본이다. |
-| [decisions/docs-platform.md](./decisions/docs-platform.md) | 자체 docs web 채택 결정 | Next.js shell, document index, search와 playground의 현재 경계를 기록한다. |
-| [decisions/mobile-foundation.md](./decisions/mobile-foundation.md) | 모바일 지원 범위와 번역 원칙 결정 | SwiftUI·Compose 범위, 최소 버전, 이름 번역, Dialog, size, 토큰 선행, 저장소 배치의 정본이다. |
-| [button.md](./button.md) | Button 선택, 접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [checkbox.md](./checkbox.md) | Checkbox 선택, form·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [dialog.md](./dialog.md) | Dialog anatomy, behavior, playground와 Figma mapping | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. Figma `Modal`은 시각 구조의 정본이다. |
-| [number-field.md](./number-field.md) | NumberField 숫자·범위·locale form 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [radio-group.md](./radio-group.md) | RadioGroup 단일 선택, form·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [select.md](./select.md) | Select 선택, form·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [switch.md](./switch.md) | Switch 선택, 즉시 적용 설정·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [text-field.md](./text-field.md) | TextField 선택, form·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. Figma `Input`은 시각 구조의 정본이다. |
-| [text-area.md](./text-area.md) | TextArea 선택, 다중행 form·접근성 계약, playground | props 의미는 `components.md`의 공통 계약이 정본이고 TypeScript public interface는 React 구현 근거다. 문서는 사용 판단을 설명한다. |
-| [guides/README.md](./guides/README.md) | 컴포넌트 선택 가이드의 범위와 작성 기준 | 실제 선택 가이드는 아직 없다. 확인되지 않은 선택을 Canon 규칙으로 만들지 않는다. |
-| [references.md](./references.md) | 외부 시스템을 참고한 근거 | 가져온 것과 가져오지 않은 것을 구분하는 증거다. Canon 규칙 자체의 정본은 아니다. |
-| [tools/](./tools/) | 문서를 실제 값과 Figma에 연결하는 도구 | 생성된 결과가 아니라 스크립트와 플러그인 소스가 정본이다. |
+## Design guidelines
 
-현재 문서는 foundation, 규칙, 현황이 일부 섞여 있다. 기존 URL을 보존하기 위해 지금은 이동하지 않는다. runtime 컴포넌트와 실제 선택 근거가 생기면 package-local rules와 component guide로 필요한 내용만 분리한다.
+색은 쓰임에 맞는 토큰을 고릅니다. 본문에는 `text/default`, 콘텐츠를 담는 면에는 `surface/default`를 사용합니다. 글자 스타일도 제목과 본문처럼 용도에 맞춰 선택합니다.
 
-문서의 `verified`는 본문을 실제 Figma, 코드, 공식 원천과 다시 대조한 날짜다. 일부만 바꿨다면 전체 문서의 `verified`를 갱신하지 않는다.
+## Using with React
 
-`pnpm test:docs`는 `DESIGN.md`와 이 index의 로컬 링크, decision metadata와 ID 중복을 검사한다. CI도 같은 명령을 실행한다.
+프로젝트의 전역 CSS에서 토큰과 컴포넌트 스타일을 불러옵니다.
 
-## 원칙
+```css
+@import '@canon/tokens/css';
+@import '@canon/react/styles.css';
+```
 
-1. **토큰 이름과 값의 기준은 Figma 변수다.** `packages/tokens`는 Figma를 따라간다. 코드가 일부러 다르게 둔 값은 [color.md](./color.md) 「5. Figma와 다른 값」에만 둔다.
-2. **컴포넌트의 컬러는 시멘틱 토큰만 바인딩한다.** 컬러 프리미티브(`color/gray/200`)를 컴포넌트에 직접 연결하지 않는다. 직접 연결하면 다크 모드가 안 된다. 간격·모서리·타이포그래피에는 해당 토큰을 사용한다.
-3. **이름은 쓰임새로 고른다.** `blue/bold/bold`나 `text-md/lineHeight-6/font-bold`가 아니라 `status/informative/default`, `Label/16 Strong`처럼 용도를 말하는 이름을 쓴다.
-4. **참고는 선별한다.** 다른 시스템의 규칙은 근거가 코드나 표준에 있는 것만 가져오고, 통째로 따르지 않는다. 기준은 [references.md](./references.md)에 있다.
-5. **바꿀 때는 추가, 재바인딩, 검증, 삭제 순서로 한다.** 옛것을 먼저 지우지 않는다. 자세한 절차는 [workflow.md](./workflow.md)에 있다.
+`Button`으로 동작을 실행할 수 있습니다.
 
-## 코드 토큰과 Figma 동기화 상태
+```jsx
+import { Button } from '@canon/react'
 
-아래는 2026-11-16에 `packages/tokens`를 Figma 변수 404개에 맞춘 기록이다. 이후 Figma 변경을 자동으로 검사하지는 않는다. 다시 맞출 때는 Figma 원문을 읽어 대조한다.
+export function SaveButton({ onSave }) {
+  return <Button variant="primary" onPress={onSave}>저장</Button>
+}
+```
 
-| 영역 | 동기화 결과 |
-| --- | --- |
-| 시멘틱 컬러 | Figma `semantic`의 색 50개와 이름·값을 맞췄다. 구조와 강도 어휘는 [color.md](./color.md) 「2. 시멘틱 이름 규칙」에 있다. light와 dark가 같은 CSS 변수명을 쓴다. |
-| 프리미티브 컬러 | 10색 x 12단계와 색별 alpha 3단계, gray, warm, white, black, whiteAlpha, blackAlpha다. gray는 중립 회색이다. 10색 값은 `ramps.py` 출력과 같다. |
-| 크기 | spacing, control 높이, icon 크기, 테두리 두께, radius 단계를 Figma 이름으로 맞췄다. |
-| 폰트 | sans는 Pretendard Variable, mono는 JetBrains Mono다. |
-| 텍스트 | 숫자형 크기, px 행간, 굵기, 자간 프리미티브와 역할 기반 스타일 29개를 제공한다. Figma `font`, `line-height` 변수와의 대조는 아직 하지 않았다. |
-| 코드 전용 토큰 | shadow는 Figma 변수에 없어 기존 값을 유지한다. |
+## Local verification
 
-테마 속성은 문서 최상위 `html`에만 설정한다. 다크 모드는 `data-theme="dark"`에서 명시적으로 적용하고, 테마 속성이 없으면 `prefers-color-scheme: dark`를 따른다. `data-theme="light"`는 시스템 다크보다 우선한다.
+Canon을 수정하려면 Node.js와 pnpm이 필요합니다. 레포 루트에서 의존성을 설치한 뒤 빌드합니다.
 
-`data-tint`, `data-brand`, `data-shape`도 같은 `html`에서 설정한다. 하위 영역에서 테마를 바꾸거나 부모의 테마를 기본값으로 되돌리는 중첩 테마는 지원하지 않는다. 현재 dark의 cool과 warm은 같은 중립색을 사용한다.
+```sh
+pnpm install
+pnpm build
+pnpm dev
+```
 
-### 로컬 검증
-
-컴포넌트는 docs 앱의 playground에서 확인한다. 레포 루트에서 `pnpm install`과 `pnpm build`를 한 번 실행한 뒤 `pnpm dev`를 실행하고 `http://localhost:3000/docs/button/`처럼 `/docs/<컴포넌트>/`를 연다. docs 앱(`@canon/docs`)은 `@canon/react`의 빌드 산출물을 쓰고 `@canon/react`에는 watch 스크립트가 없으므로, 컴포넌트 코드를 고친 뒤에는 `pnpm --filter @canon/react build`를 다시 실행한다.
-
-`pnpm dev`는 토큰 JSON과 TypeScript 변경을 감시해 배포 파일을 갱신한다. 프리뷰는 `packages/tokens`를 정적 서버로 열어 `/preview/`에서 확인한다. 브라우저는 변경 뒤 새로고침한다.
-
-`pnpm check`는 빌드, 토큰·프리뷰·타이포 회귀 테스트, 실제 패키지 묶음의 소비 검증과 타입 검사를 실행한다. CI와 npm 배포 명령은 같은 검증을 사용한다.
-
-### 프로젝트 적용과 커스텀
-
-`canon init`은 `@canon/tokens/css`를 가져오는 `canon.css`를 만든다. 브랜드색은 실제 `--brand-*` 변수를 오버라이드한다. 기존 파일은 덮어쓰지 않으며, 사용하지 않는 `canon.config.json`은 새로 만들지 않는다.
-
-`canon eject`는 소비 프로젝트에 설치된 `@canon/tokens`에서 JSON을 `canon/tokens/`로 복사하고 `canon/build.mjs`를 만든다. `pnpm add -D 'style-dictionary@^4.1.4'` 후 `node canon/build.mjs`를 실행하면 빌드 산출물(CSS, Tailwind 프리셋)은 `canon/dist/`에 모이고, CSS만 `src/styles/canon-variables.css`로 복사된다. 이 CSS를 제품에서 가져온다. `src/styles`의 다른 파일은 건드리지 않는다.
-
-복사한 JSON은 직접 수정한다. CSS 이름과 테마 규칙을 유지하기 위해 빌드 도구는 `@canon/tokens/build`를 계속 사용하므로 `@canon/tokens` 설치와 잠금 파일을 유지한다. 이전 CLI가 만든 `style-dictionary.config.json`은 새 빌드에 쓰지 않으며 자동 삭제하지 않는다.
+개발 서버는 `pnpm dev`로 실행합니다. 문서를 수정하면 `pnpm test:docs`로 링크와 문서 빌드를 확인합니다.

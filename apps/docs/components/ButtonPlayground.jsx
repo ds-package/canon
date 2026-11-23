@@ -13,8 +13,8 @@ function XIcon() {
   )
 }
 
-export function ButtonPlayground() {
-  const [state, setState] = useState(initialButtonPlaygroundState)
+export function ButtonPlayground({ initialComponent = 'button' }) {
+  const [state, setState] = useState(() => ({ ...initialButtonPlaygroundState, component: initialComponent }))
   const [copyStatus, setCopyStatus] = useState('Copy JSX')
   const model = getButtonPlaygroundModel(state)
 
@@ -57,13 +57,13 @@ export function ButtonPlayground() {
           <label>
             Variant
             <select value={state.variant} onChange={(event) => setOption('variant', event.target.value)}>
-              {['primary', 'secondary', 'quiet', 'destructive'].map((variant) => <option key={variant}>{variant}</option>)}
+              {['primary', 'secondary', 'quiet', 'destructive'].filter((variant) => state.component !== 'icon' || variant !== 'destructive').map((variant) => <option key={variant}>{variant}</option>)}
             </select>
           </label>
           <label>
             Size
             <select value={state.size} onChange={(event) => setOption('size', event.target.value)}>
-              {['xs', 'sm', 'md', 'lg'].map((size) => <option key={size}>{size}</option>)}
+              {['xs', 'sm', 'md', 'lg', 'xl'].map((size) => <option key={size}>{size}</option>)}
             </select>
           </label>
           {state.component === 'icon' && (
@@ -90,7 +90,7 @@ export function ButtonPlayground() {
             </label>
           ))}
           <div className="playground-actions">
-            <button type="button" onClick={() => { setState(initialButtonPlaygroundState); setCopyStatus('Copy JSX') }}>Reset</button>
+            <button type="button" onClick={() => { setState({ ...initialButtonPlaygroundState, component: initialComponent }); setCopyStatus('Copy JSX') }}>Reset</button>
             <button type="button" onClick={copyJsx}>{copyStatus}</button>
             <span className="sr-only" role="status" aria-live="polite">
               {copyStatus === 'Copy JSX' ? '' : copyStatus}
@@ -114,4 +114,8 @@ export function ButtonPlayground() {
       <pre className="playground-code"><code>{model.jsx}</code></pre>
     </section>
   )
+}
+
+export function IconButtonPlayground() {
+  return <ButtonPlayground initialComponent="icon" />
 }

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
 const repositoryUrl = 'https://github.com/ds-package/canon'
+const PRIVATE_DOCS_DIRECTORY = 'docs/maintainers'
 let documentsPromise
 
 async function markdownFiles(directory, prefix) {
@@ -11,6 +12,7 @@ async function markdownFiles(directory, prefix) {
   const files = []
   for (const entry of entries.sort((left, right) => left.name.localeCompare(right.name))) {
     const relative = path.posix.join(prefix, entry.name)
+    if (entry.isDirectory() && relative === PRIVATE_DOCS_DIRECTORY) continue
     if (entry.isDirectory()) files.push(...await markdownFiles(path.join(directory, entry.name), relative))
     else if (entry.name.endsWith('.md')) files.push(relative)
   }
@@ -29,7 +31,7 @@ export function toWebHref(href, sourcePath) {
   const match = href.match(/^([^?#]*)(.*)$/)
   if (!match?.[1]) return href
   const target = path.posix.normalize(path.posix.join(path.posix.dirname(sourcePath), match[1]))
-  if (target.endsWith('.md')) return `${sourceToRoute(target)}${match[2]}`
+  if (target.endsWith('.md') && !target.startsWith(`${PRIVATE_DOCS_DIRECTORY}/`)) return `${sourceToRoute(target)}${match[2]}`
   const view = path.posix.extname(target) ? 'blob' : 'tree'
   return `${repositoryUrl}/${view}/main/${target}${match[2]}`
 }
@@ -54,9 +56,9 @@ export function parseDocument(sourcePath, source) {
   return { sourcePath, route: sourceToRoute(sourcePath), title, headings, body, markdown, navigation, navigationOrder }
 }
 
-export async function readDocuments() {
-  const sources = ['DESIGN.md', ...await markdownFiles(path.join(repoRoot, 'docs'), 'docs')]
-  return Promise.all(sources.map(async (sourcePath) => parseDocument(sourcePath, await readFile(path.join(repoRoot, sourcePath), 'utf8'))))
+export async function readDocuments(root = repoRoot) {
+  const sources = ['DESIGN.md', ...await markdownFiles(path.join(root, 'docs'), 'docs')]
+  return Promise.all(sources.map(async (sourcePath) => parseDocument(sourcePath, await readFile(path.join(root, sourcePath), 'utf8'))))
 }
 
 export function getDocuments() {
