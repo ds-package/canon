@@ -1,5 +1,24 @@
 # @canon/tokens
 
+## 2.0.0
+
+### Major Changes
+
+- 546a905: Align tokens with Figma variables.
+
+  - Rename semantic colors to the Figma structure: `background/default`, `surface/tinted`, `text/default|low|lowest`, `icon/default|low`, `status/{intent}/emphasis|default|low`, `control/accent`, `control/selected*`, `control/neutral`. Old names are removed without aliases.
+  - Hover and pressed states on filled controls now layer `overlay/*` tokens instead of dedicated `solid-hover` and `solid-pressed` colors.
+  - Rename spacing to the Figma scale (`--spacing-100` = 8px), add `--control-height-*`, `--icon-size-*`, `--border-width-*`, and follow the Figma radius steps.
+  - Use the neutral gray ramp from Figma and put `gray/700` back on the ramp.
+  - `@canon/react` styles use the new token names and require `@canon/tokens` 2.x.
+
+### Patch Changes
+
+- 561af81: Add the Preview Button and IconButton interfaces, including the 56px `xl` size and its 14px default-shape radius, allow Canon Button to trigger Dialog, and strengthen contrast across supported interactive token states.
+- a5123dc: Expose token sources and the shared Canon builder so ejected tokens retain the public CSS names and theme selectors. Resolve tokens from the consumer project, preserve existing files on repeated CLI runs, and use current brand tokens in initialization guidance.
+
+  Rebuild token and TypeScript outputs during development, validate public token references, and verify packed consumers before publishing. Theme attributes are supported on the document root.
+
 ## 1.0.0
 
 ### Major Changes
