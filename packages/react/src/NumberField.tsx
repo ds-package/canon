@@ -67,6 +67,29 @@ function isFiniteBound(value: number | undefined) {
   return value === undefined || Number.isFinite(value)
 }
 
+/**
+ * 수량, 금액, 비율처럼 숫자로 계산하거나 범위를 검증하는 값을 입력하는 form field다.
+ *
+ * ### 제약
+ * - 빈 값은 `0`이 아니라 `null`이다.
+ * - `step`은 양의 유한한 숫자, `minValue`와 `maxValue`는 유한한 숫자이고 `minValue`가 `maxValue`보다 크면 안 된다. 값은 유한한 숫자나 `null`이어야 한다(throw).
+ * - blur나 Enter로 확정하면 값이 범위 안으로 제한되고 `step` 단위에 맞춰진다. 증감 버튼과 ArrowUp·ArrowDown도 같은 `step`을 쓴다.
+ * - 통화·단위·백분율은 문자열을 붙이지 않고 `formatOptions`로 표시한다. form에는 숫자 값이 제출된다.
+ * - `minValue`, `maxValue`, `step`의 제품 의미를 확인하지 못하면 값을 임의로 정하지 않는다.
+ * - `invalid`에는 비어 있지 않은 `errorMessage`가 필요하고, `readOnly`가 아닌 controlled `value`에는 `onValueChange`가 필요하다(throw).
+ *
+ * ### 예시
+ * ```tsx
+ * <NumberField
+ *   label="Budget"
+ *   name="budget"
+ *   minValue={0}
+ *   maxValue={10000}
+ *   step={100}
+ *   formatOptions={{ style: 'currency', currency: 'USD' }}
+ * />
+ * ```
+ */
 export function NumberField({
   label,
   description,

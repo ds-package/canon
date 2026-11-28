@@ -46,6 +46,25 @@ type SelectUncontrolledProps = {
 
 export type SelectProps = SelectBaseProps & (SelectControlledProps | SelectUncontrolledProps)
 
+/**
+ * 정해진 목록에서 하나를 고르는 form field다.
+ *
+ * ### 제약
+ * - Canon에는 read-only Select가 없다.
+ * - `label`은 보이며 필수다(throw). `placeholder`로 대신하지 않는다.
+ * - `invalid`에는 비어 있지 않은 `errorMessage`가 필요하다(throw).
+ * - `value`와 `defaultValue`는 함께 쓸 수 없다(throw). controlled `value`에는 `onValueChange`가 필요하다(throw).
+ * - `onValueChange`는 선택한 {@link SelectItem}의 `id` 또는 `null`을 전달한다. `name`이 있으면 그 `id`가 form value다.
+ * - `size`의 기본값은 `md`다.
+ *
+ * ### 예시
+ * ```tsx
+ * <Select label="Fruit" name="fruit" defaultValue="apple">
+ *   <SelectItem id="apple">Apple</SelectItem>
+ *   <SelectItem id="banana">Banana</SelectItem>
+ * </Select>
+ * ```
+ */
 export function Select({
   children,
   label,
@@ -116,6 +135,14 @@ export interface SelectItemProps {
   disabled?: boolean
 }
 
+/**
+ * {@link Select} 안의 선택지 하나다.
+ *
+ * ### 제약
+ * - `id`는 선택 key이며 비어 있지 않은 문자열이어야 한다(throw). form에 저장해도 되는 안정적인 값을 목록 안에서 고유하게 쓴다.
+ * - 텍스트가 아닌 `children`에는 검색과 보조 기술용 `textValue`가 필요하다(throw).
+ * - 고를 수 없는 선택지에는 `disabled`를 준다.
+ */
 export function SelectItem({ id, children, textValue, disabled }: SelectItemProps) {
   if (typeof id !== 'string' || !id.trim()) {
     throw new Error('SelectItem requires a non-empty string id')

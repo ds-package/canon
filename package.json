@@ -14,7 +14,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm check && changeset publish",
-    "test:docs": "node --test scripts/docs/validate.test.mjs && node scripts/docs/validate.mjs && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build"
+    "sync:comments": "node scripts/docs/sync-comments.mjs",
+    "test:docs": "node --test scripts/docs/validate.test.mjs scripts/docs/sync-comments.test.mjs && node scripts/docs/validate.mjs && node scripts/docs/sync-comments.mjs --check && pnpm --filter @canon/docs test && pnpm --filter @canon/docs... build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",

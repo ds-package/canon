@@ -33,6 +33,21 @@ type SwitchUncontrolledProps = {
 
 export type SwitchProps = SwitchBaseProps & (SwitchControlledProps | SwitchUncontrolledProps)
 
+/**
+ * 설정을 켜거나 끄고 변경을 즉시 적용하는 switch다.
+ *
+ * ### 제약
+ * - `children`은 보이는 label이며 비어 있지 않은 텍스트여야 한다(throw).
+ * - `checked`와 `defaultChecked`는 함께 쓸 수 없다(throw). `readOnly`가 아닌 controlled `checked`에는 `onCheckedChange`가 필요하다(throw).
+ * - `readOnly`는 현재 값을 보여주지만 변경을 허용하지 않을 때만 쓴다.
+ * - `description`에는 상태 이름을 반복하지 않고 켰을 때 달라지는 결과를 쓴다.
+ * - form 안에서 켜지면 `name=value`를 제출한다. `value`를 생략하면 native 기본값 `on`이다.
+ *
+ * ### 예시
+ * ```tsx
+ * <Switch name="notifications" value="enabled">Notifications</Switch>
+ * ```
+ */
 export function Switch({
   children,
   description,
